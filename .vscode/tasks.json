@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "OJam18",
+            "type": "shell",
+            "windows": {
+                "command": ".\\game\\ojam18_win32.exe .\\game\\"
+            },
+            "osx": {
+                "command": "./game/ojam18_osx ./game/"
+            },
+            "linux": {
+                "command": "./game/ojam18_linux ./game/"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}
