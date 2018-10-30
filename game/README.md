@@ -3,7 +3,7 @@ Game made for the Ottawa Game Jam 2018
 
 ## Credits
 - Mathieu-André Chiasson (Code)
-- Mike Keogh (Audio)
+- Pierre Proulx (Music)
 - David St-Louis (Art)
 - Sean Sullivan (Code)
 
