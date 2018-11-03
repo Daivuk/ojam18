@@ -1,14 +1,34 @@
 var plants = [];
 
-function plant_create(_position)
+var PlantType = {
+    NORMAL: 1,
+    WATER: 2,
+    SOLAR: 3,
+    SEED: 4
+}
+
+function plant_create(_position, _type)
 {
     var plant = {
+        type: _type,
         position: _position,
         progress: 0,
-        level: 1
+        level: 0,
+        resources: 0
     };
 
     plants.push(plant);
+}
+
+function plant_progress(_plant, _amount)
+{
+    _plant.progress += _amount;
+
+    while(_plant.progress >= (100 + _plant.level * 25))
+    {
+        _plant.progress -= 100 + _plant.level * 25;
+        _plant.level++;
+    }
 }
 
 function plants_update(dt)
@@ -19,8 +39,6 @@ function plants_render()
 {
     for(var i = 0; i < plants.length; ++i)
     {
-        var height = 100.0 * plants[i].level;
-        var width = 10.0 * plants[i].level;
-        SpriteBatch.drawRect(null, new Rect(plants[i].position - width * 0.5, 0.0, width, -height), new Color(0, 1, 1, 1));
+        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", "water_level" + plants[i].level), new Vector2(plants[i].position, 0.0));
     }
 }
