@@ -23,7 +23,7 @@ var MonthData = new (function() {
 function month_update(dtDays)
 {
     MonthData.currentDay += dtDays;
-   if (MonthData.currentDay == (MonthConstants.daysPerMonth[SeasonData.currentMonth] - 1))
+   if (MonthData.currentDay >= (MonthConstants.daysPerMonth[SeasonData.currentMonth] - 1))
    {
        MonthData.currentDay = 0;
        season_update(1);

@@ -1,5 +1,5 @@
 var DayConstants = new (function() {
-    this.timeScaleFactor = 10000;
+    this.timeScaleFactor = 2500;
     this.secondsPerMinute = 60;
     this.minutesPerHour = 60;
     this.hoursPerDay = 24;
@@ -21,7 +21,8 @@ function day_update(dtSeconds)
     if (DayData.currentTimeSeconds >= DayConstants.secondsPerDay)
     {
         DayData.currentTimeSeconds -= DayConstants.secondsPerDay;
-        month_update(1);
+        // 10 real-life days per in-game day
+        month_update(10);
         weather_update(1);
     }
 }
