@@ -9,10 +9,10 @@ var PLANT_PER_LEVEL_RESOURCES = 100;
 // Progress needed to advance to next level is PLANT_BASE_LEVEL_PROG + currentLevel * PLANT_LEVEL_PROG_MULTIPLIER
 
 var PlantType = {
-    NORMAL: 1,
-    WATER: 2,
-    SOLAR: 3,
-    SEED: 4
+    NORMAL: "normal",
+    WATER: "water",
+    SOLAR: "solar",
+    SEED: "seed"
 }
 
 function plant_create(_position, _type)
@@ -88,7 +88,7 @@ function plants_render()
             color = new Color(0.2, 0.2, 0.2, 1.0);
         }
 
-        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", "water_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
+        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", plants[i].type + "_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
 
         if(plants[i].type == PlantType.WATER && plants[i].level < 4)
         {
