@@ -15,6 +15,7 @@ var bloomSelectShader = getShader("bloomSelect.ps");
 var whiteData = new Uint32Array(1);
 whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
+var font = getFont("font.fnt");
 
 plant_create(0.0, PlantType.SOLAR);
 

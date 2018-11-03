@@ -92,7 +92,7 @@ function plants_render()
 
         if(plants[i].type == PlantType.WATER && plants[i].level < 4)
         {
-            SpriteBatch.drawText(getFont("font.fnt"), "" + Math.floor(plants[i].resources), new Vector2(plants[i].position, -10.0), Vector2.TOP_LEFT, new Color(0.0, 0.5, 1.0, 1.0));
+            SpriteBatch.drawText(font, "" + Math.floor(plants[i].resources), new Vector2(plants[i].position, -10.0), Vector2.TOP_LEFT, new Color(0.0, 0.5, 1.0, 1.0));
         }
     }
 }
