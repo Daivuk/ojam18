@@ -1,5 +1,7 @@
 // Globals
 var resolution = Renderer.getResolution(); // Cache this globally
+var cameraX = 0;
+var cameraTargetX = 0;
 var transform; // global camera transform, in case we need it elsewhere
 var invTrasform; // In case we need mouse picking shit
 var transformUI;
@@ -27,11 +29,16 @@ function update(dt)
     resolution = Renderer.getResolution();
 
     // Move camera...
+    cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
+    cameraX = cameraX + (cameraTargetX - cameraX) * 10 * dt;
 
     // Update world matrix
     var scale = 8.0;
-    var translation = new Vector3((resolution.x / scale) / 2, (resolution.y / scale) * .8, 0.0)
-    transform = Matrix.createTranslation(translation).mul(Matrix.createScale(new Vector3(scale, scale, 1.0)));
+
+    transform = Matrix.IDENTITY;
+    transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
+    transform = transform.mul(Matrix.createScale(scale));
+    transform = transform.mul(Matrix.createTranslation(new Vector3(resolution.x * 0.5, resolution.y * .8, 0)));
     invTrasform = transform.invert();
 
     // Update UI matrix

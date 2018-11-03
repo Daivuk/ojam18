@@ -38,6 +38,16 @@ function debug_renderUI()
         GUI.sameLine();
         if (GUI.button("dusk")) DayData.currentTimeSeconds = seasonTable.duskTime * 60 * 60;
 
+        if (GUI.button("sunny")) WeatherData.activeWeathers[0] = WeatherConstants.sunny;
+        GUI.sameLine();
+        if (GUI.button("cloudy")) WeatherData.activeWeathers[0] = WeatherConstants.cloudy;
+        GUI.sameLine();
+        if (GUI.button("rainy")) WeatherData.activeWeathers[0] = WeatherConstants.rainy;
+        GUI.sameLine();
+        if (GUI.button("stormy")) WeatherData.activeWeathers[0] = WeatherConstants.stormy;
+        GUI.sameLine();
+        if (GUI.button("snowy")) WeatherData.activeWeathers[0] = WeatherConstants.snowy;
+
         var ret;
         if (GUI.collapsingHeader("Night"))
         {

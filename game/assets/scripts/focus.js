@@ -101,10 +101,10 @@ function focus_render()
             }
         break;
         default:
-            focusType = FocusData.currentFocusItem.type;
+            focusType = currentFocusItem.type;
         break;
 
     }
     currentFocusItem.type = focusType;
-    SpriteBatch.drawSpriteAnim(dayArrow, new Vector2(0, FocusConstants.focusArrowYPositions[focusType]));
+    SpriteBatch.drawSpriteAnim(dayArrow, new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType]));
 }
