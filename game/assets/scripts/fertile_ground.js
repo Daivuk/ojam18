@@ -81,10 +81,11 @@ function fertile_ground_update()
             FertileGroundData.activeMenuPosition = null;
         }
 
-        if(FertileGroundData.selectedPlantType && Input.isJustUp(Key.SPACE_BAR))
+        if(FertileGroundData.selectedPlantType && Input.isJustUp(Key.SPACE_BAR) && seeds > 0)
         {
             fertile_ground_destroy(currentFocusItem.itemData.position);
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
+            seeds--;
             FertileGroundData.selectedPlantType = null;
         }
         
