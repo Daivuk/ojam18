@@ -108,3 +108,11 @@ function focus_render()
     currentFocusItem.type = focusType;
     SpriteBatch.drawSpriteAnim(dayArrow, new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType]));
 }
+
+function focus_is_plant_type(type)
+{
+    return type == FocusConstants.plantTypeLevel0
+           || type == FocusConstants.plantTypeLevel1
+           || type == FocusConstants.plantTypeLevel2
+           || type == FocusConstants.plantTypeLevel3;
+}
