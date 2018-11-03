@@ -30,7 +30,7 @@ function update(dt)
 
     // Move camera...
     cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
-    cameraX = cameraTargetX;
+    cameraX = cameraX + (cameraTargetX - cameraX) * 10 * dt;
 
     // Update world matrix
     var scale = 8.0;
@@ -38,7 +38,7 @@ function update(dt)
     transform = Matrix.IDENTITY;
     transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
     transform = transform.mul(Matrix.createScale(scale));
-    transform = transform.mul(Matrix.createTranslation(new Vector3(resolution.x / 2, resolution.y / 2, 0)));
+    transform = transform.mul(Matrix.createTranslation(new Vector3(resolution.x * 0.5, resolution.y * .8, 0)));
     invTrasform = transform.invert();
 
     // Update UI matrix
