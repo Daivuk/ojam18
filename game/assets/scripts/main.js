@@ -1,4 +1,9 @@
-plant_create(0.0);
+plant_create(0.0, PlantType.WATER);
+plant_create(20.0, PlantType.SOLAR);
+plant_create(50.0, PlantType.SEED);
+
+plant_progress(plants[1], 100);
+plant_progress(plants[2], 225);
 
 function update(dt)
 {
