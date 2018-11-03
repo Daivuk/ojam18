@@ -11,6 +11,7 @@ var PLANT_MAX_LIFE_DAYS = 5.0;
 
 var PLANT_WATER_USAGE_PD = 50;
 var PLANT_WATER_ABSORB_PD = 100;
+var PLANT_WATER_LEECH_PD = 20;
 
 var PLANT_SUN_USAGE_PD = 50;
 var PLANT_SUN_ABSORB_PD = 100;
@@ -66,6 +67,9 @@ function plant_age(_plant, _amount)
 
 function plants_update(dt)
 {
+    var leeches = [];
+    var surplusWaterPlants = [];
+
     for(var i = 0; i < plants.length; ++i)
     {
         plant_age(plants[i], (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor);
@@ -91,7 +95,12 @@ function plants_update(dt)
             {
                 plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                 plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].water = Math.min(plants[i].water, plants[i].level * PLANT_WATER_MAX);
+                plants[i].water = Math.min(plants[i].water, (plants[i].level + 1) * PLANT_WATER_MAX);
+
+                if(plants[i].water > (plants[i].level + 1) * PLANT_WATER_MAX)
+                {
+                    surplusWaterPlants.push(plants[i]);
+                }
             }
             else
             {
@@ -101,6 +110,10 @@ function plants_update(dt)
             }
 
             // Sunlight
+            /*if(plants[i].type == PlantType.SOLAR)
+            {
+
+            }*/
             plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
             plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
             plants[i].sun = Math.min(plants[i].sun, PLANT_SUN_MAX);
@@ -109,6 +122,28 @@ function plants_update(dt)
             {
                 plants[i].dead = true;
             }
+            else
+            {
+                if(plants[i].water < PLANT_WATER_MAX)
+                {
+                    leeches.push(plants[i]);
+                }
+            }
+        }
+    }
+
+    if(surplusWaterPlants.length > 0)
+    {
+        var leechAmount = (leeches.length * PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor) / surplusWaterPlants.length;
+
+        for(var i = 0; i < surplusWaterPlants.length; ++i)
+        {
+            surplusWaterPlants[i].water -= leechAmount;
+        }
+
+        for(var i = 0; i < leeches.length; ++i)
+        {
+            leeches[i].water += PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
         }
     }
 

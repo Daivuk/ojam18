@@ -109,6 +109,19 @@ function debug_renderUI()
             seasonTable.dusk.b[1] = ret.g;
             seasonTable.dusk.b[2] = ret.b;
         }
+
+        if(GUI.button("Level Up"))
+        {
+            if(focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
+            {
+                var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
+
+                if(focusItem.level < 4)
+                {
+                    focusItem.level++;
+                }
+            }
+        }
     }
     GUI.end();
 }
