@@ -21,17 +21,21 @@ var font = getFont("font.fnt");
 
 // Init some crap
 weather_init();
-for (var i = 0; i < 10; ++i)
-{
-    switch (Random.randInt(0, 3))
-    {
-        case 0: plant_create(i * 30, PlantType.SEED); break;
-        case 1: plant_create(i * 30, PlantType.SOLAR); break;
-        case 2: plant_create(i * 30, PlantType.WATER); break;
-        case 3: plant_create(i * 30, PlantType.NORMAL); break;
-    }
-}
+fertile_ground_init();
+// for (var i = 0; i < 10; ++i)
+// {
+//     switch (Random.randInt(0, 4))
+//     {
+//         case 0: plant_create(i * 30, PlantType.SEED); break;
+//         case 1: plant_create(i * 30, PlantType.SOLAR); break;
+//         case 2: plant_create(i * 30, PlantType.WATER); break;
+//         case 3: plant_create(i * 30, PlantType.NORMAL); break;
+//     }
+// }
 
+plant_create(0, PlantType.SEED);
+fertile_ground_create(-30)
+fertile_ground_create(30)
 
 function update(dt)
 {
@@ -56,7 +60,12 @@ function update(dt)
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
 
-    focus_update();
+    fertile_ground_update();
+    
+    if (!fertile_ground_is_menu_open())
+    {
+        focus_update();
+    }
     
     // hues, saturation and brightness
     updateHSV(dt);
@@ -117,6 +126,8 @@ function renderWorld()
     SpriteBatch.begin(transform);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
+    fertile_ground_render();
+
     focus_render();
 
     // Plants
@@ -141,7 +152,6 @@ function renderGameUI()
     day_render();
     month_render();
     season_render();
-    weather_render();
     SpriteBatch.end();
 }
 
