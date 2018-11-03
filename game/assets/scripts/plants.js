@@ -1,10 +1,19 @@
 var plants = [];
 
-var PLANT_DEATH_PROGRESS = 1000.0;
+var PLANT_DEATH_PROGRESS = 10000.0;
 var PLANT_LEVEL_PROG_MULTIPLIER = 25;
 var PLANT_BASE_LEVEL_PROG = 100;
-var PLANT_RESOURCE_PER_DAY = 100;
-var PLANT_PER_LEVEL_RESOURCES = 100;
+
+var PLANT_WATER_AMOUNT = 100;
+var PLANT_SUN_AMOUNT = 100;
+
+// PD = Per Day
+
+var PLANT_WATER_USAGE_PD = 50;
+var PLANT_WATER_ABSORB_PD = 100;
+
+var PLANT_SUN_USAGE_PD = 50;
+var PLANT_SUN_ABSORB_PD = 100;
 
 // Progress needed to advance to next level is PLANT_BASE_LEVEL_PROG + currentLevel * PLANT_LEVEL_PROG_MULTIPLIER
 
@@ -22,7 +31,8 @@ function plant_create(_position, _type)
         position: _position,
         progress: 0,
         level: 0,
-        resources: 0
+        water: 100,
+        sun: 100
     };
 
     plants.push(plant);
@@ -68,11 +78,29 @@ function plants_update(dt)
 
         if(plants[i].level < 4)
         {
-            if(plants[i].type == PlantType.WATER && (WeatherData.activeWeathers[0] == WeatherConstants.rainy || WeatherData.activeWeathers[0] == WeatherConstants.stormy))
+            // Collect rain
+            if(WeatherData.activeWeathers[0] == WeatherConstants.rainy || WeatherData.activeWeathers[0] == WeatherConstants.stormy)
             {
-                plants[i].resources += PLANT_RESOURCE_PER_DAY * plants[i].level * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].resources = Math.min(plants[i].resources, plants[i].level * PLANT_PER_LEVEL_RESOURCES);
+                if(plants[i].type == PlantType.WATER && plants[i].level > 0)
+                {
+                    plants[i].water += PLANT_WATER_ABSORB_PD * plants[i].level * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                    plants[i].water = Math.min(plants[i].water, plants[i].level * PLANT_WATER_AMOUNT);
+                }
+                else
+                {
+                    plants[i].water += PLANT_WATER_ABSORB_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                    plants[i].water = Math.min(plants[i].water, PLANT_WATER_AMOUNT);
+                }
             }
+            else
+            {
+                plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            }
+
+            // Sunlight
+            plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            plants[i].sun = Math.min(plants[i].sun, PLANT_SUN_AMOUNT);
         }
     }
 }
@@ -90,9 +118,15 @@ function plants_render()
 
         SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", plants[i].type + "_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
 
-        if(plants[i].type == PlantType.WATER && plants[i].level < 4)
+        /*if(plants[i].type == PlantType.WATER && plants[i].level < 4)
         {
             SpriteBatch.drawText(font, "" + Math.floor(plants[i].resources), new Vector2(plants[i].position, -10.0), Vector2.TOP_LEFT, new Color(0.0, 0.5, 1.0, 1.0));
+        }*/
+
+        if(plants[i].level < 4)
+        {
+            SpriteBatch.drawRect(null, new Rect(plants[i].position - 8, -plants[i].water / 10, 2, plants[i].water / 10), new Color(0, 0, 1, 1));
+            SpriteBatch.drawRect(null, new Rect(plants[i].position - 11, -plants[i].sun / 10, 2, plants[i].sun / 10), new Color(0, 1, 0, 1));
         }
     }
 }

@@ -19,7 +19,7 @@ var font = getFont("font.fnt");
 
 // Init some crap
 weather_init();
-plant_create(0.0, PlantType.SOLAR);
+plant_create(0.0, PlantType.SEED);
 
 function update(dt)
 {
