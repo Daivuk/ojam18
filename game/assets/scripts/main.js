@@ -55,7 +55,7 @@ function update(dt)
     invTrasform = transform.invert();
 
     // Update UI matrix
-    var uiscale = 240.0 / resolution.y;
+    var uiscale = 180.0 / resolution.y;
     resolutionUI = new Vector2(resolution.x * uiscale, resolution.y * uiscale);
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
