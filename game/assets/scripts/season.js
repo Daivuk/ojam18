@@ -54,7 +54,7 @@ function season_get_current_season_index()
             }
             else
             {
-                return SeasonConstants.spring;
+                return SeasonConstants.summer;
             }
         case MonthConstants.october:
         case MonthConstants.november:
@@ -73,7 +73,15 @@ function season_get_current_season_index()
 
 function season_update(dtMonths)
 {
-    SeasonData.currentMonth += dtMonths;
+    if (SeasonData.currentMonth == MonthConstants.december)
+    {
+        print("" + SeasonData.currentMonth);
+        SeasonData.currentMonth = MonthConstants.january;
+    }
+    else
+    {
+        SeasonData.currentMonth += dtMonths;
+    }
 }
 
 function season_render()

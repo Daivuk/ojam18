@@ -35,19 +35,21 @@ function day_render()
     var weatherPositionShift = DayConstants.weatherIconSize.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
     var weatherPosition = new Vector2(arrowPosition.x - weatherPositionShift, arrowPosition.y + DayConstants.dayArrowSize.y + 2);
 
+    var color = new Color(.5, .5, .5, 1);
+
     for (var i = 0; i < WeatherData.activeWeathers.length; ++i)
     {
         var weather = WeatherData.weathers[WeatherData.activeWeathers[i]];
         if (i == WeatherData.activeWeathers.length - 1)
-            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition.add(incomingCardAnim.get()));
+            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition.add(incomingCardAnim.get()), color);
         else
-            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition);
+            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition, color);
         weatherPosition.x += DayConstants.weatherIconSize.x;
     };
 
     if (droppingCard.weather)
     {
-        SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get());
+        SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get(), color);
     }
     
 

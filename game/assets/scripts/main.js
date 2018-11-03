@@ -19,6 +19,7 @@ whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 var font = getFont("font.fnt");
 var boomSelect = 0.8;
+var boomAmount = 1;
 
 // Init some crap
 weather_init();
@@ -69,7 +70,6 @@ function update(dt)
     
     // hues, saturation and brightness
     updateHSV(dt);
-    boomSelect = 0.8;
 
     debug_update(dt); // Debug menu
     if (!showDebug)
@@ -110,9 +110,10 @@ function postProcess()
     Renderer.setBlendMode(BlendMode.OPAQUE);
     SpriteBatch.drawRect(screenRT, screenRect);
     SpriteBatch.end();
+
     SpriteBatch.begin();
     Renderer.setBlendMode(BlendMode.ADD);
-    SpriteBatch.drawRect(bloomRT, screenRect);
+    SpriteBatch.drawRect(bloomRT, screenRect, new Color(boomAmount));
     SpriteBatch.end();
 }
 
@@ -127,6 +128,9 @@ function renderWorld()
     SpriteBatch.begin(transform);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
+    // Ground
+    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
+
     fertile_ground_render();
 
     focus_render();
@@ -134,10 +138,10 @@ function renderWorld()
     // Plants
     plants_render();
 
-    // Ground
-    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
-
     SpriteBatch.end();
+
+    renderGameUI();
+    resolution = Renderer.getResolution();
 
     Renderer.popRenderTarget();
 
@@ -168,7 +172,7 @@ function render()
     renderWorld();
 
     // In-game UI
-    renderGameUI();
+    // renderGameUI();
 }
 
 // This UI function is only for imgui debug stuff. Not in game UI

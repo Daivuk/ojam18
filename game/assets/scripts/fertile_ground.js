@@ -10,6 +10,8 @@ var FertileGroundConstants = {
     menuSprite: playSpriteAnim("seeding_ui.json", "center")
 }
 
+var fertile_groundSprite = playSpriteAnim("fertile_ground.json", "idle");
+
 function fertile_ground_create(_position)
 {
     var ground = {
@@ -103,6 +105,11 @@ function fertile_ground_is_menu_open()
 
 function fertile_ground_render()
 {
+    FertileGroundData.grounds.forEach(function(ground)
+    {
+        SpriteBatch.drawSpriteAnim(fertile_groundSprite, new Vector2(ground.position, 0));
+    });
+
     if (FertileGroundData.activeMenuPosition != null)
     {
         SpriteBatch.drawSpriteAnim(FertileGroundConstants.menuSprite, new Vector2(FertileGroundData.activeMenuPosition, -25));
