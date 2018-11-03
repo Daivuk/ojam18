@@ -5,13 +5,72 @@
 // Winter - December 21 to March 19
 
 var SeasonConstants = new (function() {
-    this.seasons = ["Winter", "Spring", "Summer", "Fall"];
+    this.seasons = ["Spring", "Summer", "Fall", "Winter"];
+    this.spring = 0;
+    this.summer = 1;
+    this.fall = 2;
+    this.winter = 3;
     this.font = getFont("font.fnt");
 });
 
 var SeasonData = new (function() {
     this.currentMonth = 0;
 });
+
+function season_get_current_season_index()
+{
+    switch(SeasonData.currentMonth)
+    {
+        case MonthConstants.january:
+        case MonthConstants.february:
+            return SeasonConstants.winter;
+        case MonthConstants.march:
+            if (MonthData.currentDay >= 20) 
+            {
+                return SeasonConstants.spring;
+            }
+            else
+            {
+                return SeasonConstants.winter;
+            }
+        case MonthConstants.april:
+        case MonthConstants.may:
+            return SeasonConstants.spring;
+        case MonthConstants.june:
+            if (MonthData.currentDay >= 21)
+            {
+                return SeasonConstants.summer;
+            }
+            else
+            {
+                return SeasonConstants.spring;
+            }
+        case MonthConstants.july:
+        case MonthConstants.august:
+            return SeasonConstants.summer;
+        case MonthConstants.september:
+            if (MonthData.currentDay >= 21)
+            {
+                return SeasonConstants.fall;
+            }
+            else
+            {
+                return SeasonConstants.spring;
+            }
+        case MonthConstants.october:
+        case MonthConstants.november:
+            return SeasonConstants.fall;
+        case MonthConstants.december:
+            if (MonthConstants.currentDay >= 21)
+            {
+                return SeasonConstants.winter;
+            }
+            else
+            {
+                return SeasonConstants.fall;
+            }        
+    }
+}
 
 function season_update(dtMonths)
 {
@@ -20,6 +79,5 @@ function season_update(dtMonths)
 
 function season_render()
 {
-    //var currentSeason;
-    //SpriteBatch.drawText(SeasonConstants.font, cure, new Vector2(0, 30), new Vector2(), new Color());
+    SpriteBatch.drawText(SeasonConstants.font, SeasonConstants.seasons[season_get_current_season_index()], new Vector2(0, 30), new Vector2(), new Color());
 }
