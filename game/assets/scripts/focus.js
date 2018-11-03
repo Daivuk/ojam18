@@ -39,7 +39,7 @@ function focus_item_create(_type, _id, _itemData)
     }
 }
 
-function focus_item_remove(_type, _id)
+function focus_item_destroy(_type, _id)
 {
     var indexToRemove = null;
     for(var i = 0; i < FocusData.focusItems.length; i++)

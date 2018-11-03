@@ -23,6 +23,24 @@ function fertile_ground_create(_position)
     FertileGroundData.globalId++;
 }
 
+function fertile_ground_destroy(_position)
+{
+    var groundToRemove = null;
+    var indexToRemove = null;
+    for(var i = 0; i < FertileGroundData.grounds.length; i++)
+    {
+        var ground = FertileGroundData.grounds[i];
+        if (ground.position == _position)
+        {
+            groundToRemove = ground;
+            indexToRemove = i;
+            break;
+        }
+    }
+    FertileGroundData.grounds.splice(indexToRemove, 1);
+    focus_item_destroy(FocusConstants.fertileGroundType, groundToRemove.id);
+}
+
 function fertile_ground_update()
 {
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
@@ -65,6 +83,7 @@ function fertile_ground_update()
 
         if(FertileGroundData.selectedPlantType && Input.isJustUp(Key.SPACE_BAR))
         {
+            fertile_ground_destroy(currentFocusItem.itemData.position);
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
             FertileGroundData.selectedPlantType = null;
         }
