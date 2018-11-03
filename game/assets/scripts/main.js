@@ -1,3 +1,4 @@
+// Globals
 var resolution = Renderer.getResolution(); // Cache this globally
 var transform; // global camera transform, in case we need it elsewhere
 var invTrasform; // In case we need mouse picking shit
@@ -5,10 +6,16 @@ var transformUI;
 var invTransformUI;
 var resolutionUI;
 
-plant_create(0.0, PlantType.WATER);
+// Resources
+var worldShader = getShader("world.ps");
+var whiteData = new Uint32Array(1);
+whiteData[0] = 0xFFFFFFFF;
+var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
+
+plant_create(75.0, PlantType.WATER);
 plant_create(20.0, PlantType.SOLAR);
 plant_create(50.0, PlantType.SEED);
-plant_create(75.0, PlantType.NORMAL);
+plant_create(0.0, PlantType.NORMAL);
 
 plant_progress(plants[1], 100);
 plant_progress(plants[2], 225);
@@ -19,8 +26,6 @@ weather_add(WeatherType.RAINY);
 weather_add(WeatherType.SNOWY);
 weather_add(WeatherType.STORMY);
 weather_add(WeatherType.SUNNY);
-
-var worldShader = getShader("world.ps");
 
 function update(dt)
 {
@@ -47,20 +52,21 @@ function update(dt)
     }
 }
 
-function render()
+function renderWorld()
 {
-    resolution = Renderer.getResolution();
-
-    Renderer.clear(Color.fromHexRGB(0x306082));
-    Renderer.setFilterMode(FilterMode.NEAREST);
-
-    // World
     SpriteBatch.begin(transform, worldShader);
-    plants_render();
-    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), Color.fromHexRGB(0x222034));
-    SpriteBatch.end();
 
-    // In-game UI
+    // Plants
+    plants_render();
+
+    // Ground
+    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), Color.fromHexRGB(0x222034));
+
+    SpriteBatch.end();
+}
+
+function renderGameUI()
+{
     resolution = resolutionUI;
 
     SpriteBatch.begin(transformUI);
@@ -69,6 +75,20 @@ function render()
     season_render();
     weather_render();
     SpriteBatch.end();
+}
+
+function render()
+{
+    resolution = Renderer.getResolution();
+
+    Renderer.clear(Color.fromHexRGB(0x306082));
+    Renderer.setFilterMode(FilterMode.NEAREST);
+
+    // World
+    renderWorld();
+
+    // In-game UI
+    renderGameUI();
 }
 
 // This UI function is only for imgui debug stuff. Not in game UI
