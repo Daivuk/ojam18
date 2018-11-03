@@ -10,7 +10,6 @@ var SeasonConstants = new (function() {
     this.summer = 1;
     this.fall = 2;
     this.winter = 3;
-    this.font = getFont("font.fnt");
 });
 
 var SeasonData = new (function() {
@@ -79,5 +78,5 @@ function season_update(dtMonths)
 
 function season_render()
 {
-    SpriteBatch.drawText(SeasonConstants.font, SeasonConstants.seasons[season_get_current_season_index()], new Vector2(0, 30), new Vector2(), new Color());
+    SpriteBatch.drawText(font, SeasonConstants.seasons[season_get_current_season_index()], new Vector2(0, 30), new Vector2(), new Color());
 }

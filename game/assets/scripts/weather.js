@@ -19,8 +19,97 @@ function weather_update(dtDays)
     WeatherData.activeWeathers.push(getRandomInt(0, 4));
 }
 
+function weather_updateActive(dt)
+{
+    var activeWeather = WeatherData.activeWeathers[0];
+    switch (activeWeather)
+    {
+        case WeatherConstants.sunny:
+        {
+            sunny_update(dt);
+            break;
+        }
+        case WeatherConstants.cloudy:
+        {
+            break;
+        }
+        case WeatherConstants.rainy:
+        {
+            break;
+        }
+        case WeatherConstants.stormy:
+        {
+            break;
+        }
+        case WeatherConstants.snowy:
+        {
+            break;
+        }
+    }
+}
+
 function weather_render()
 {
+    var activeWeather = WeatherData.activeWeathers[0];
+    switch (activeWeather)
+    {
+        case WeatherConstants.sunny:
+        {
+            sunny_render();
+            break;
+        }
+        case WeatherConstants.cloudy:
+        {
+            break;
+        }
+        case WeatherConstants.rainy:
+        {
+            break;
+        }
+        case WeatherConstants.stormy:
+        {
+            break;
+        }
+        case WeatherConstants.snowy:
+        {
+            break;
+        }
+    }
+}
+
+function weather_getSunMultiplier()
+{
+    var activeWeather = WeatherData.activeWeathers[0];
+    switch (activeWeather)
+    {
+        case WeatherConstants.sunny:
+        {
+            return 1.0;
+            break;
+        }
+        case WeatherConstants.cloudy:
+        {
+            return 0.5;
+            break;
+        }
+        case WeatherConstants.rainy:
+        {
+            return 0.25;
+            break;
+        }
+        case WeatherConstants.stormy:
+        {
+            return 0.25;
+            break;
+        }
+        case WeatherConstants.snowy:
+        {
+            return 0.25;
+            break;
+        }
+    }
+
+    return 0.0;
 }
 
 function weather_init()
@@ -38,5 +127,9 @@ function weather_init()
     {
         WeatherData.activeWeathers.push(getRandomInt(0, 4));
     }
+
+    // Always start with 2 days of sunny
+    WeatherData.activeWeathers[0] = WeatherConstants.sunny;
+    WeatherData.activeWeathers[1] = WeatherConstants.sunny;
 }
 weather_init();

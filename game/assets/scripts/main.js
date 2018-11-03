@@ -5,13 +5,17 @@ var invTrasform; // In case we need mouse picking shit
 var transformUI;
 var invTransformUI;
 var resolutionUI;
-var worldRT = Texture.createScreenRenderTarget();
 
 // Resources
+var worldRT = Texture.createScreenRenderTarget();
+var screenRT = Texture.createScreenRenderTarget();
+var bloomRT = Texture.createScreenRenderTarget();
 var worldShader = getShader("world.ps");
+var bloomSelectShader = getShader("bloomSelect.ps");
 var whiteData = new Uint32Array(1);
 whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
+var font = getFont("font.fnt");
 
 plant_create(0.0, PlantType.SEED);
 plant_create(20.0, PlantType.SEED);
@@ -34,8 +38,6 @@ function update(dt)
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
 
-    plants_update(dt);
-
     focus_update();
     
     // hues, saturation and brightness
@@ -45,7 +47,9 @@ function update(dt)
     if (!showDebug)
     {
         day_update(dt);
+        plants_update(dt);
     }
+    weather_updateActive(dt);
 }
 
 function renderWorld()
@@ -67,12 +71,37 @@ function renderWorld()
     SpriteBatch.end();
     Renderer.popRenderTarget();
 
+    var screenRect = new Rect(0, 0, resolution.x, resolution.y);
+
+    Renderer.pushRenderTarget(screenRT);
     worldShader.setVector3("red", RGB.r);
     worldShader.setVector3("green", RGB.g);
     worldShader.setVector3("blue", RGB.b);
     SpriteBatch.begin(Matrix.IDENTITY, worldShader);
     Renderer.setBlendMode(BlendMode.OPAQUE);
-    SpriteBatch.drawRect(worldRT, new Rect(0, 0, resolution.x, resolution.y));
+    SpriteBatch.drawRect(worldRT, screenRect);
+    SpriteBatch.end();
+    Renderer.popRenderTarget();
+
+    Renderer.pushRenderTarget(bloomRT);
+    bloomSelectShader.setNumber("select", 0.8);
+    SpriteBatch.begin(Matrix.IDENTITY, bloomSelectShader);
+    Renderer.setBlendMode(BlendMode.OPAQUE);
+    SpriteBatch.drawRect(screenRT, screenRect);
+    SpriteBatch.end();
+    Renderer.popRenderTarget();
+    bloomRT.sepia();
+    bloomRT.blur(32);
+
+    Renderer.clear(new Color(0, 0, 0));
+
+    SpriteBatch.begin();
+    Renderer.setBlendMode(BlendMode.OPAQUE);
+    SpriteBatch.drawRect(screenRT, screenRect);
+    SpriteBatch.end();
+    SpriteBatch.begin();
+    Renderer.setBlendMode(BlendMode.ADD);
+    SpriteBatch.drawRect(bloomRT, screenRect);
     SpriteBatch.end();
 }
 
@@ -81,6 +110,7 @@ function renderGameUI()
     resolution = resolutionUI;
 
     SpriteBatch.begin(transformUI);
+    Renderer.setFilterMode(FilterMode.NEAREST);
     day_render();
     month_render();
     season_render();
