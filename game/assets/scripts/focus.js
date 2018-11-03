@@ -68,7 +68,6 @@ function focus_update()
     {
         FocusData.currentFocusItemIndex = Math.min(FocusData.currentFocusItemIndex + 1, FocusData.focusItems.length - 1);
     }
-    print("" + FocusData.currentFocusItemIndex )
 }
 
 function focus_render()

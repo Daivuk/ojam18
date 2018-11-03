@@ -17,6 +17,8 @@ whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 var font = getFont("font.fnt");
 
+// Init some crap
+weather_init();
 plant_create(0.0, PlantType.SEED);
 plant_create(20.0, PlantType.SEED);
 
@@ -52,25 +54,8 @@ function update(dt)
     weather_updateActive(dt);
 }
 
-function renderWorld()
+function postProcess()
 {
-    Renderer.pushRenderTarget(worldRT);
-    Renderer.clear(new Color(1, 0, 0));
-
-    SpriteBatch.begin(transform);
-    Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
-
-    // Ground
-    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
-
-    focus_render();
-
-    // Plants
-    plants_render();
-
-    SpriteBatch.end();
-    Renderer.popRenderTarget();
-
     var screenRect = new Rect(0, 0, resolution.x, resolution.y);
 
     Renderer.pushRenderTarget(screenRT);
@@ -103,6 +88,32 @@ function renderWorld()
     Renderer.setBlendMode(BlendMode.ADD);
     SpriteBatch.drawRect(bloomRT, screenRect);
     SpriteBatch.end();
+}
+
+function renderWorld()
+{
+    Renderer.pushRenderTarget(worldRT);
+    Renderer.clear(new Color(1, 0, 0));
+
+    // Weathers
+    weather_render();
+
+    SpriteBatch.begin(transform);
+    Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+
+    focus_render();
+
+    // Plants
+    plants_render();
+
+    // Ground
+    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
+
+    SpriteBatch.end();
+
+    Renderer.popRenderTarget();
+
+    postProcess();
 }
 
 function renderGameUI()
