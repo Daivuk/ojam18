@@ -57,7 +57,7 @@ function sunny_render()
             var rightCol = percent * RAYS_INTENSITY * t;
             var leftColor = new Color(0, leftCol, 0, leftCol);
             var rightColor = new Color(0, rightCol, 0, rightCol);
-            var x = sunRay.xPos + sunRay.xOffset;
+            var x = sunRay.xPos + sunRay.xOffset + cameraX;
 
             PrimitiveBatch.draw(new Vector2(x, sunRay.yPos), leftColor.mul(0.25));
             PrimitiveBatch.draw(new Vector2(x + 16, sunRay.yPos), rightColor.mul(0.25));
@@ -84,7 +84,7 @@ function sunny_render()
             var leftCol = percent * STARS_INTENSITY * t;
             var leftColor = new Color(0, leftCol, 0, leftCol);
 
-            SpriteBatch.drawSprite(null, new Vector2(sunRay.xPos, sunRay.yPos), leftColor, 0, .5);
+            SpriteBatch.drawSprite(null, new Vector2(sunRay.xPos + cameraX, sunRay.yPos), leftColor, 0, .5);
         }
 
         SpriteBatch.end();

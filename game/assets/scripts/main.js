@@ -21,8 +21,17 @@ var font = getFont("font.fnt");
 
 // Init some crap
 weather_init();
-plant_create(0.0, PlantType.SEED);
-plant_create(20.0, PlantType.SEED);
+for (var i = 0; i < 10; ++i)
+{
+    switch (Random.randInt(0, 3))
+    {
+        case 0: plant_create(i * 30, PlantType.SEED); break;
+        case 1: plant_create(i * 30, PlantType.SOLAR); break;
+        case 2: plant_create(i * 30, PlantType.WATER); break;
+        case 3: plant_create(i * 30, PlantType.NORMAL); break;
+    }
+}
+
 
 function update(dt)
 {
