@@ -50,6 +50,8 @@ function debug_renderUI()
 
         seasonTable.bloomSelect = GUI.dragNumber("Bloom Select", seasonTable.bloomSelect, .01, 0, 1);
         seasonTable.bloomAmount = GUI.dragNumber("Bloom Amount", seasonTable.bloomAmount, .01, 0, 1);
+        seasonTable.bloomSelectN = GUI.dragNumber("Bloom Select Night", seasonTable.bloomSelectN, .01, 0, 1);
+        seasonTable.bloomAmountN = GUI.dragNumber("Bloom Amount Night", seasonTable.bloomAmountN, .01, 0, 1);
 
         var ret;
         if (GUI.collapsingHeader("Night"))
