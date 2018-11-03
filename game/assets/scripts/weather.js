@@ -11,7 +11,8 @@ var WeatherType = {
 function weather_add(_type)
 {
     var weather = {
-        type: _type
+        type: _type,
+        sprite: playSpriteAnim("days.json", _type)
     };
 
     weathers.push(weather);
@@ -25,8 +26,6 @@ function weather_render()
 {
     for(var i = 0; i < weathers.length; ++i)
     {
-        var sprite = playSpriteAnim("days.json", weathers[i].type);
-
-        SpriteBatch.drawSpriteAnim(sprite, new Vector2(i * 21, 0.0));
+        SpriteBatch.drawSpriteAnim(weathers[i].sprite, new Vector2(i * 21, 0.0));
     }
 }

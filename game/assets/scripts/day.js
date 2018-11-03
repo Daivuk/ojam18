@@ -10,6 +10,8 @@ var DayData = new (function() {
     this.currentTimeSeconds = 0;
 });
 
+var dayArrow = playSpriteAnim("day_arrow.json", "idle")
+
 function day_update(dtSeconds)
 {
     DayData.currentTimeSeconds += (DayConstants.timeScaleFactor * dtSeconds);
@@ -22,6 +24,8 @@ function day_update(dtSeconds)
 
 function day_render()
 {
-    var xPos = resolution.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
-    SpriteBatch.drawRect(null, new Rect(xPos, resolution.y - 25, 50, 50), new Color(255,255,153));
+    SpriteBatch.drawSpriteAnim(dayArrow, new Vector2(resolution.x / 2, 3));
+
+    // var xPos = resolution.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
+    // SpriteBatch.drawRect(null, new Rect(xPos, resolution.y - 25, 50, 50), new Color(255,255,153));
 }
