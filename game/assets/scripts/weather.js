@@ -19,8 +19,62 @@ function weather_update(dtDays)
     WeatherData.activeWeathers.push(getRandomInt(0, 4));
 }
 
+function weather_updateActive(dt)
+{
+    var activeWeather = WeatherData.activeWeathers[0];
+    switch (activeWeather)
+    {
+        case WeatherConstants.sunny:
+        {
+            sunny_update(dt);
+            break;
+        }
+        case WeatherConstants.cloudy:
+        {
+            break;
+        }
+        case WeatherConstants.rainy:
+        {
+            break;
+        }
+        case WeatherConstants.stormy:
+        {
+            break;
+        }
+        case WeatherConstants.snowy:
+        {
+            break;
+        }
+    }
+}
+
 function weather_render()
 {
+    var activeWeather = WeatherData.activeWeathers[0];
+    switch (activeWeather)
+    {
+        case WeatherConstants.sunny:
+        {
+            sunny_render();
+            break;
+        }
+        case WeatherConstants.cloudy:
+        {
+            break;
+        }
+        case WeatherConstants.rainy:
+        {
+            break;
+        }
+        case WeatherConstants.stormy:
+        {
+            break;
+        }
+        case WeatherConstants.snowy:
+        {
+            break;
+        }
+    }
 }
 
 function weather_init()
