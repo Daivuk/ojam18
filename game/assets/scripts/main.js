@@ -5,6 +5,7 @@ var invTrasform; // In case we need mouse picking shit
 var transformUI;
 var invTransformUI;
 var resolutionUI;
+var worldRT = Texture.createScreenRenderTarget();
 
 // Resources
 var worldShader = getShader("world.ps");
@@ -33,6 +34,9 @@ function update(dt)
     invTransformUI = transformUI.invert();
 
     plants_update(dt);
+    
+    // hues, saturation and brightness
+    updateHSV(dt);
 
     debug_update(dt); // Debug menu
     if (!showDebug)
@@ -43,14 +47,27 @@ function update(dt)
 
 function renderWorld()
 {
-    SpriteBatch.begin(transform, worldShader);
+    Renderer.pushRenderTarget(worldRT);
+    Renderer.clear(new Color(1, 0, 0));
+
+    SpriteBatch.begin(transform);
+    Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
     // Plants
     plants_render();
 
     // Ground
-    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), Color.fromHexRGB(0x222034));
+    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
 
+    SpriteBatch.end();
+    Renderer.popRenderTarget();
+
+    worldShader.setVector3("red", RGB.r);
+    worldShader.setVector3("green", RGB.g);
+    worldShader.setVector3("blue", RGB.b);
+    SpriteBatch.begin(Matrix.IDENTITY, worldShader);
+    Renderer.setBlendMode(BlendMode.OPAQUE);
+    SpriteBatch.drawRect(worldRT, new Rect(0, 0, resolution.x, resolution.y));
     SpriteBatch.end();
 }
 

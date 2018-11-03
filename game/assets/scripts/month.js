@@ -17,13 +17,13 @@ var MonthConstants = new (function() {
 });
 
 var MonthData = new (function() {
-    this.currentDay = 0;
+    this.currentDay = 20;
 });
 
 function month_update(dtDays)
 {
     MonthData.currentDay += dtDays;
-   if (MonthData.currentDay == (MonthConstants.daysPerMonth[SeasonData.currentMonth] - 1))
+   if (MonthData.currentDay >= (MonthConstants.daysPerMonth[SeasonData.currentMonth] - 1))
    {
        MonthData.currentDay = 0;
        season_update(1);
