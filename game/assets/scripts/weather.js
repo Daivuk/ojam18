@@ -1,31 +1,42 @@
-var weathers = [];
-
-var WeatherType = {
-    SUNNY: "sunny",
-    CLOUDY: "cloudy",
-    RAINY: "rainy",
-    STORMY: "stormy",
-    SNOWY: "snowy"
+var WeatherConstants = {
+    weatherTypes: ["sunny", "cloudy", "rainy", "stormy", "snowy"],
+    sunny: 0,
+    cloudy: 1,
+    rainy: 2,
+    stormy: 3,
+    snowy: 4
 }
 
-function weather_add(_type)
-{
-    var weather = {
-        type: _type,
-        sprite: playSpriteAnim("days.json", _type)
-    };
-
-    weathers.push(weather);
+var WeatherData = {
+    activeWeathers: [],
+    weathers: []
 }
 
-function weather_update(dt)
+function weather_update(dtDays)
 {
+    // Remove old weather and add a new one.
+    WeatherData.activeWeathers.shift();
+    WeatherData.activeWeathers.push(getRandomInt(0, 4));
 }
 
 function weather_render()
 {
-    for(var i = 0; i < weathers.length; ++i)
+}
+
+function weather_init()
+{
+    WeatherConstants.weatherTypes.forEach(function(weatherType) {
+        var weather = {
+            type: weatherType,
+            sprite: playSpriteAnim("days.json", weatherType)
+        };
+    
+        WeatherData.weathers.push(weather);
+    });
+
+    for (var i = 0; i < DayConstants.daysToDisplay; i++)
     {
-        SpriteBatch.drawSpriteAnim(weathers[i].sprite, new Vector2(i * 21, 0.0));
+        WeatherData.activeWeathers.push(getRandomInt(0, 4));
     }
 }
+weather_init();

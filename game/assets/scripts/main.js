@@ -21,12 +21,6 @@ plant_progress(plants[1], 100);
 plant_progress(plants[2], 225);
 plant_progress(plants[3], 375);
 
-weather_add(WeatherType.CLOUDY);
-weather_add(WeatherType.RAINY);
-weather_add(WeatherType.SNOWY);
-weather_add(WeatherType.STORMY);
-weather_add(WeatherType.SUNNY);
-
 function update(dt)
 {
     resolution = Renderer.getResolution();
