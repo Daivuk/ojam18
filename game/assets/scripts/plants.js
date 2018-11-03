@@ -3,6 +3,7 @@ var plants = [];
 var PLANT_WATER_MAX = 100;
 var PLANT_SUN_MAX = 100;
 var PLANT_SEED_MAX = 100;
+var PLANT_BIOMASS_MAX = 100;
 
 var PLANT_MAX_LIFE_DAYS = 5.0;
 
@@ -15,6 +16,7 @@ var PLANT_SUN_USAGE_PD = 50;
 var PLANT_SUN_ABSORB_PD = 100;
 
 var PLANT_SEED_PROGRESS_PD = 50;
+var PLANT_BIOMASS_PROGRESS_PD = 50;
 
 var PlantType = {
     NORMAL: "normal",
@@ -37,6 +39,7 @@ function plant_create(_position, _type)
         water: 100,
         sun: 100,
         seed: 0,
+        biomass: 0,
         dead: false,
         id: PlantData.globalId
     };
@@ -72,14 +75,21 @@ function plants_update(dt)
             // Seed
             if(plants[i].type == PlantType.SEED && plants[i].seed < PLANT_SEED_MAX)
             {
-                plants[i].seed += PLANT_SEED_PROGRESS_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                plants[i].seed += PLANT_SEED_PROGRESS_PD * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                 plants[i].seed = Math.min(plants[i].seed, PLANT_SEED_MAX);
+            }
+
+            // Biomass
+            if(plants[i].type == PlantType.NORMAL && plants[i].biomass < PLANT_BIOMASS_MAX)
+            {
+                plants[i].biomass += PLANT_BIOMASS_PROGRESS_PD * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                plants[i].biomass = Math.min(plants[i].biomass, PLANT_BIOMASS_MAX);
             }
 
             // Water
             if(plants[i].type == PlantType.WATER && plants[i].level > 0)
             {
-                plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * plants[i].level * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                 plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                 plants[i].water = Math.min(plants[i].water, plants[i].level * PLANT_WATER_MAX);
             }
@@ -127,7 +137,7 @@ function plants_render()
             SpriteBatch.drawRect(null, new Rect(plants[i].position - 11, -plants[i].sun / 10, 2, plants[i].sun / 10), new Color(0, 1, 0, 1));
         }
 
-        if(plants[i].seed == PLANT_SEED_MAX)
+        if(plants[i].seed == PLANT_SEED_MAX || plants[i].biomass == PLANT_BIOMASS_MAX)
         {
             SpriteBatch.drawRect(null, new Rect(plants[i].position, -2, 2, 2), new Color(1, 1, 1, 1));
         }
