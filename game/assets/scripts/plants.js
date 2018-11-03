@@ -5,6 +5,7 @@ var PLANT_LEVEL_PROG_MULTIPLIER = 25;
 var PLANT_BASE_LEVEL_PROG = 100;
 
 var PLANT_WATER_AMOUNT = 100;
+var PLANT_SUN_AMOUNT = 100;
 
 // PD = Per Day
 
@@ -80,7 +81,7 @@ function plants_update(dt)
             // Collect rain
             if(WeatherData.activeWeathers[0] == WeatherConstants.rainy || WeatherData.activeWeathers[0] == WeatherConstants.stormy)
             {
-                if(plants[i].type == PlantType.WATER)
+                if(plants[i].type == PlantType.WATER && plants[i].level > 0)
                 {
                     plants[i].water += PLANT_WATER_ABSORB_PD * plants[i].level * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                     plants[i].water = Math.min(plants[i].water, plants[i].level * PLANT_WATER_AMOUNT);
@@ -95,6 +96,11 @@ function plants_update(dt)
             {
                 plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
             }
+
+            // Sunlight
+            plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            plants[i].sun = Math.min(plants[i].sun, PLANT_SUN_AMOUNT);
         }
     }
 }
