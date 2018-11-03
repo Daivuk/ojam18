@@ -1,5 +1,5 @@
-var seeds = 0;
-var biomass = 0;
+var seeds = 1;
+var biomass = 1;
 
 function resources_render()
 {
