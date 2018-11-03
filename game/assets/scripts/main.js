@@ -143,6 +143,7 @@ function renderGameUI()
     day_render();
     month_render();
     season_render();
+    resources_render();
     SpriteBatch.end();
 }
 
