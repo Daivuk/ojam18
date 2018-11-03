@@ -33,14 +33,13 @@ function update(dt)
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
 
-    plants_update(dt);
-    
     // hues, saturation and brightness
     updateHSV(dt);
 
     debug_update(dt); // Debug menu
     if (!showDebug)
     {
+        plants_update(dt);
         day_update(dt);
     }
 }
