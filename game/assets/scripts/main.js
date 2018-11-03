@@ -7,6 +7,12 @@ plant_progress(plants[1], 100);
 plant_progress(plants[2], 225);
 plant_progress(plants[3], 375);
 
+weather_add(WeatherType.CLOUDY);
+weather_add(WeatherType.RAINY);
+weather_add(WeatherType.SNOWY);
+weather_add(WeatherType.STORMY);
+weather_add(WeatherType.SUNNY);
+
 function update(dt)
 {
     day_update(dt);
@@ -38,4 +44,10 @@ function render()
 
 function renderUI()
 {
+    var scale = 4.0;
+    SpriteBatch.begin(Matrix.createScale(new Vector3(scale, scale, 1.0)))
+
+    weather_render();
+
+    SpriteBatch.end();
 }
