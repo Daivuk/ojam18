@@ -21,6 +21,7 @@ function debug_renderUI()
         }
         GUI.text(Math.floor(DayData.currentTimeSeconds / 60 / 60) + ":00");
         DayData.currentTimeSeconds = GUI.sliderNumber("Time of day", DayData.currentTimeSeconds, 0, 24 * 60 * 60);
+        DayConstants.timeScaleFactor = GUI.sliderNumber("Time Scale Factor", DayConstants.timeScaleFactor, 0, 35000);
 
         SeasonData.currentMonth = GUI.radioButton("Winter", SeasonData.currentMonth, MonthConstants.january);
         SeasonData.currentMonth = GUI.radioButton("Spring", SeasonData.currentMonth, MonthConstants.april);
