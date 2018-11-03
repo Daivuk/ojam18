@@ -36,25 +36,30 @@ function fertile_ground_update()
         if (Input.isDown(Key.SPACE_BAR))
         {
             FertileGroundData.activeMenuPosition = currentFocusItem.itemData.position;
-            if (Input.isJustDown(Key.UP))
+            if (Input.isDown(Key.UP))
             {
                 FertileGroundConstants.menuSprite.play("up");
                 FertileGroundData.selectedPlantType = PlantType.SEED;
             }
-            else if (Input.isJustDown(Key.DOWN))
+            else if (Input.isDown(Key.DOWN))
             {
                 FertileGroundConstants.menuSprite.play("bottom");
                 FertileGroundData.selectedPlantType = PlantType.NORMAL;
             }
-            else if (Input.isJustDown(Key.LEFT))
+            else if (Input.isDown(Key.LEFT))
             {
                 FertileGroundConstants.menuSprite.play("left");
                 FertileGroundData.selectedPlantType = PlantType.WATER;
             }
-            else if (Input.isJustDown(Key.RIGHT))
+            else if (Input.isDown(Key.RIGHT))
             {
                 FertileGroundConstants.menuSprite.play("right");
                 FertileGroundData.selectedPlantType = PlantType.SOLAR;
+            }
+            else
+            {
+                FertileGroundConstants.menuSprite.play("center");
+                FertileGroundData.selectedPlantType = null;
             }
         }
         else
