@@ -17,7 +17,7 @@ var MonthConstants = new (function() {
 });
 
 var MonthData = new (function() {
-    this.currentDay = 0;
+    this.currentDay = 20;
 });
 
 function month_update(dtDays)

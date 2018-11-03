@@ -14,7 +14,7 @@ var SeasonConstants = new (function() {
 });
 
 var SeasonData = new (function() {
-    this.currentMonth = 0;
+    this.currentMonth = MonthConstants.march;
 });
 
 function season_get_current_season_index()
