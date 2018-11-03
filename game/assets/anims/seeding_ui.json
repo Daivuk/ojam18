@@ -97,51 +97,6 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
     "duration": 100
-   },
-   {
-    "filename": "seeding_ui 11.aseprite",
-    "frame": { "x": 704, "y": 0, "w": 64, "h": 64 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
-    "sourceSize": { "w": 64, "h": 64 },
-    "duration": 100
-   },
-   {
-    "filename": "seeding_ui 12.aseprite",
-    "frame": { "x": 768, "y": 0, "w": 64, "h": 64 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
-    "sourceSize": { "w": 64, "h": 64 },
-    "duration": 100
-   },
-   {
-    "filename": "seeding_ui 13.aseprite",
-    "frame": { "x": 832, "y": 0, "w": 64, "h": 64 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
-    "sourceSize": { "w": 64, "h": 64 },
-    "duration": 100
-   },
-   {
-    "filename": "seeding_ui 14.aseprite",
-    "frame": { "x": 896, "y": 0, "w": 64, "h": 64 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
-    "sourceSize": { "w": 64, "h": 64 },
-    "duration": 100
-   },
-   {
-    "filename": "seeding_ui 15.aseprite",
-    "frame": { "x": 960, "y": 0, "w": 64, "h": 64 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
-    "sourceSize": { "w": 64, "h": 64 },
-    "duration": 100
    }
  ],
  "meta": {
@@ -149,22 +104,17 @@
   "version": "1.2.8",
   "image": "/Users/davidst-louis/github/ojam18/game/assets/textures/seeding_ui.png",
   "format": "I8",
-  "size": { "w": 1024, "h": 64 },
+  "size": { "w": 704, "h": 64 },
   "scale": "1",
   "frameTags": [
    { "name": "center", "from": 0, "to": 2, "direction": "forward" },
-   { "name": "center_loop", "from": 3, "to": 3, "direction": "forward" },
-   { "name": "right", "from": 4, "to": 5, "direction": "forward" },
-   { "name": "right_loop", "from": 6, "to": 6, "direction": "forward" },
-   { "name": "left", "from": 7, "to": 8, "direction": "forward" },
-   { "name": "left_loop", "from": 9, "to": 9, "direction": "forward" },
-   { "name": "up", "from": 10, "to": 11, "direction": "forward" },
-   { "name": "up_loop", "from": 12, "to": 12, "direction": "forward" },
-   { "name": "bottom", "from": 13, "to": 14, "direction": "forward" },
-   { "name": "bottom_loop", "from": 15, "to": 15, "direction": "forward" }
+   { "name": "right", "from": 3, "to": 4, "direction": "forward" },
+   { "name": "left", "from": 5, "to": 6, "direction": "forward" },
+   { "name": "up", "from": 7, "to": 8, "direction": "forward" },
+   { "name": "bottom", "from": 9, "to": 10, "direction": "forward" }
   ],
   "layers": [
-   { "name": "center", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=32,32" }, { "frame": 2, "data": "next=center_loop" }, { "frame": 3, "data": "loop" }, { "frame": 5, "data": "next=right_loop" }, { "frame": 6, "data": "loop" }, { "frame": 8, "data": "next=left_loop" }, { "frame": 9, "data": "loop" }, { "frame": 11, "data": "next=up_loop" }, { "frame": 12, "data": "loop" }, { "frame": 14, "data": "next=bottom_loop" }, { "frame": 15, "data": "loop" }] }
+   { "name": "center", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=32,32" }] }
   ],
   "slices": [
   ]

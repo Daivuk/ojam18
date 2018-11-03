@@ -28,11 +28,6 @@ function fertile_ground_update()
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
     if (currentFocusItem.type == FocusConstants.fertileGroundType)
     {
-        if (Input.isJustDown(Key.SPACE_BAR))
-        {
-            FertileGroundConstants.menuSprite.play("center");
-        }
-
         if (Input.isDown(Key.SPACE_BAR))
         {
             FertileGroundData.activeMenuPosition = currentFocusItem.itemData.position;
