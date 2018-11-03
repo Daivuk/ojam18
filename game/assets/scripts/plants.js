@@ -3,6 +3,8 @@ var plants = [];
 var PLANT_DEATH_PROGRESS = 1000.0;
 var PLANT_LEVEL_PROG_MULTIPLIER = 25;
 var PLANT_BASE_LEVEL_PROG = 100;
+var PLANT_RESOURCE_PER_DAY = 100;
+var PLANT_PER_LEVEL_RESOURCES = 100;
 
 // Progress needed to advance to next level is PLANT_BASE_LEVEL_PROG + currentLevel * PLANT_LEVEL_PROG_MULTIPLIER
 
@@ -63,6 +65,15 @@ function plants_update(dt)
     for(var i = 0; i < plants.length; ++i)
     {
         plant_progress(plants[i], dt * 20.0);
+
+        if(plants[i].level < 4)
+        {
+            if(plants[i].type == PlantType.WATER && (WeatherData.activeWeathers[0] == WeatherConstants.rainy || WeatherData.activeWeathers[0] == WeatherConstants.stormy))
+            {
+                plants[i].resources += PLANT_RESOURCE_PER_DAY * plants[i].level * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                plants[i].resources = Math.min(plants[i].resources, plants[i].level * PLANT_PER_LEVEL_RESOURCES);
+            }
+        }
     }
 }
 
@@ -70,7 +81,7 @@ function plants_render()
 {
     for(var i = 0; i < plants.length; ++i)
     {
-        var color = new Color(1, 1, 1, 1);
+        var color = Color.WHITE;
 
         if(plants[i].level == 4)
         {
@@ -78,5 +89,10 @@ function plants_render()
         }
 
         SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", "water_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
+
+        if(plants[i].type == PlantType.WATER && plants[i].level < 4)
+        {
+            SpriteBatch.drawText(getFont("font.fnt"), "" + Math.floor(plants[i].resources), new Vector2(plants[i].position, -10.0), Vector2.TOP_LEFT, new Color(0.0, 0.5, 1.0, 1.0));
+        }
     }
 }

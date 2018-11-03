@@ -13,7 +13,7 @@ var whiteData = new Uint32Array(1);
 whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 
-plant_create(0.0, PlantType.SEED);
+plant_create(0.0, PlantType.WATER);
 
 function update(dt)
 {
@@ -33,8 +33,6 @@ function update(dt)
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
 
-    plants_update(dt);
-    
     // hues, saturation and brightness
     updateHSV(dt);
 
@@ -42,6 +40,7 @@ function update(dt)
     if (!showDebug)
     {
         day_update(dt);
+        plants_update(dt);
     }
 }
 
