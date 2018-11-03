@@ -69,6 +69,10 @@ function sunny_render()
         }
 
         PrimitiveBatch.end();
+        
+        SpriteBatch.begin(transform);
+        Renderer.setBlendMode(BlendMode.ADD);
+        SpriteBatch.end();
     }
     if (t < 1)
     {
