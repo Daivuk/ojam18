@@ -2,6 +2,7 @@ plant_create(0.0);
 
 function update(dt)
 {
+    day_update(dt);
 }
 
 function render()
@@ -14,6 +15,14 @@ function render()
 
     plants_render();
 
+    SpriteBatch.end();
+
+    SpriteBatch.begin();
+
+    day_render();
+    month_render();
+    season_render();
+    
     SpriteBatch.end();
 }
 
