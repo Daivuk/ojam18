@@ -18,6 +18,7 @@ var whiteData = new Uint32Array(1);
 whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 var font = getFont("font.fnt");
+var boomSelect = 0.8;
 
 // Init some crap
 weather_init();
@@ -69,6 +70,7 @@ function update(dt)
     
     // hues, saturation and brightness
     updateHSV(dt);
+    boomSelect = 0.8;
 
     debug_update(dt); // Debug menu
     if (!showDebug)
@@ -94,7 +96,7 @@ function postProcess()
     Renderer.popRenderTarget();
 
     Renderer.pushRenderTarget(bloomRT);
-    bloomSelectShader.setNumber("select", 0.8);
+    bloomSelectShader.setNumber("select", boomSelect);
     SpriteBatch.begin(Matrix.IDENTITY, bloomSelectShader);
     Renderer.setBlendMode(BlendMode.OPAQUE);
     SpriteBatch.drawRect(screenRT, screenRect);
@@ -152,6 +154,7 @@ function renderGameUI()
     day_render();
     month_render();
     season_render();
+    resources_render();
     SpriteBatch.end();
 }
 

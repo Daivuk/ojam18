@@ -31,14 +31,20 @@ function weather_updateActive(dt)
         }
         case WeatherConstants.cloudy:
         {
+            cloud_update(dt);
             break;
         }
         case WeatherConstants.rainy:
         {
+            cloud_update(dt);
+            rain_update(dt);
             break;
         }
         case WeatherConstants.stormy:
         {
+            lightning_update(dt);
+            cloud_update(dt);
+            rain_update(dt);
             break;
         }
         case WeatherConstants.snowy:
@@ -60,14 +66,20 @@ function weather_render()
         }
         case WeatherConstants.cloudy:
         {
+            cloud_render();
             break;
         }
         case WeatherConstants.rainy:
         {
+            rain_render();
+            cloud_render();
             break;
         }
         case WeatherConstants.stormy:
         {
+            lightning_render();
+            rain_render();
+            cloud_render();
             break;
         }
         case WeatherConstants.snowy:
@@ -150,6 +162,9 @@ function weather_getWaterMultiplier()
 function weather_init()
 {
     sunny_init();
+    cloud_init();
+    rain_init();
+    lightning_init();
     
     WeatherConstants.weatherTypes.forEach(function(weatherType) {
         var weather = {
