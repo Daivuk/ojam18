@@ -28,35 +28,31 @@ function fertile_ground_update()
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
     if (currentFocusItem.type == FocusConstants.fertileGroundType)
     {
-        if (Input.isJustDown(Key.SPACE_BAR))
-        {
-            FertileGroundConstants.menuSprite.play("center");
-        }
-
         if (Input.isDown(Key.SPACE_BAR))
         {
             FertileGroundData.activeMenuPosition = currentFocusItem.itemData.position;
-            if (Input.isDown(Key.UP))
+            if (Input.isDown(Key.UP) && FertileGroundData.selectedPlantType != PlantType.SEED)
             {
                 FertileGroundConstants.menuSprite.play("up");
                 FertileGroundData.selectedPlantType = PlantType.SEED;
             }
-            else if (Input.isDown(Key.DOWN))
+            else if (Input.isDown(Key.DOWN) && FertileGroundData.selectedPlantType != PlantType.NORMAL)
             {
                 FertileGroundConstants.menuSprite.play("bottom");
                 FertileGroundData.selectedPlantType = PlantType.NORMAL;
             }
-            else if (Input.isDown(Key.LEFT))
+            else if (Input.isDown(Key.LEFT) && FertileGroundData.selectedPlantType != PlantType.WATER)
             {
                 FertileGroundConstants.menuSprite.play("left");
                 FertileGroundData.selectedPlantType = PlantType.WATER;
             }
-            else if (Input.isDown(Key.RIGHT))
+            else if (Input.isDown(Key.RIGHT) && FertileGroundData.selectedPlantType != PlantType.SOLAR)
             {
                 FertileGroundConstants.menuSprite.play("right");
                 FertileGroundData.selectedPlantType = PlantType.SOLAR;
             }
-            else
+
+            if (FertileGroundData.selectedPlantType != null && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || Input.isJustUp(Key.LEFT) || Input.isJustUp(Key.RIGHT)))
             {
                 FertileGroundConstants.menuSprite.play("center");
                 FertileGroundData.selectedPlantType = null;
