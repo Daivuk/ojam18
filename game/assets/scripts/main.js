@@ -14,6 +14,7 @@ whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 
 plant_create(0.0, PlantType.SEED);
+plant_create(20.0, PlantType.SEED);
 
 function update(dt)
 {
@@ -34,6 +35,8 @@ function update(dt)
     invTransformUI = transformUI.invert();
 
     plants_update(dt);
+
+    focus_update();
     
     // hues, saturation and brightness
     updateHSV(dt);
@@ -53,11 +56,13 @@ function renderWorld()
     SpriteBatch.begin(transform);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
-    // Plants
-    plants_render();
-
     // Ground
     SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
+
+    focus_render();
+
+    // Plants
+    plants_render();
 
     SpriteBatch.end();
     Renderer.popRenderTarget();

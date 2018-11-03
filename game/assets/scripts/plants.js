@@ -13,6 +13,10 @@ var PlantType = {
     SEED: 4
 }
 
+var PlantData = {
+    globalId: 0
+}
+
 function plant_create(_position, _type)
 {
     var plant = {
@@ -20,10 +24,14 @@ function plant_create(_position, _type)
         position: _position,
         progress: 0,
         level: 0,
-        resources: 0
+        resources: 0,
+        id: PlantData.globalId
     };
 
     plants.push(plant);
+    focus_item_create(FocusConstants.plantTypeLevel0, PlantData.globalId, plant);
+
+    PlantData.globalId++;
 }
 
 function plant_progress(_plant, _amount)
