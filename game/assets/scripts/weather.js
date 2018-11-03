@@ -49,6 +49,8 @@ function weather_updateActive(dt)
         }
         case WeatherConstants.snowy:
         {
+            cloud_update(dt);
+            snow_update(dt);
             break;
         }
     }
@@ -84,6 +86,8 @@ function weather_render()
         }
         case WeatherConstants.snowy:
         {
+            snow_render();
+            cloud_render();
             break;
         }
     }
@@ -165,6 +169,7 @@ function weather_init()
     cloud_init();
     rain_init();
     lightning_init();
+    snow_init();
     
     WeatherConstants.weatherTypes.forEach(function(weatherType) {
         var weather = {
