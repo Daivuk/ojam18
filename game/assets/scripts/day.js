@@ -10,7 +10,7 @@ var DayConstants = new (function() {
 });
 
 var DayData = new (function() {
-    this.currentTimeSeconds = 6 * 60 * 60; // start at 6 am
+    this.currentTimeSeconds = 22 * 60 * 60; // start at 6 am
 });
 
 var dayArrow = playSpriteAnim("day_arrow.json", "idle")
@@ -34,12 +34,21 @@ function day_render()
 
     var weatherPositionShift = DayConstants.weatherIconSize.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
     var weatherPosition = new Vector2(arrowPosition.x - weatherPositionShift, arrowPosition.y + DayConstants.dayArrowSize.y + 2);
-    WeatherData.activeWeathers.forEach(function(weatherIndex)
+
+    for (var i = 0; i < WeatherData.activeWeathers.length; ++i)
     {
-        var weather = WeatherData.weathers[weatherIndex];
-        SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition);
+        var weather = WeatherData.weathers[WeatherData.activeWeathers[i]];
+        if (i == WeatherData.activeWeathers.length - 1)
+            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition.add(incomingCardAnim.get()));
+        else
+            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition);
         weatherPosition.x += DayConstants.weatherIconSize.x;
-    });
+    };
+
+    if (droppingCard.weather)
+    {
+        SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get());
+    }
     
 
     // var xPos = resolution.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);

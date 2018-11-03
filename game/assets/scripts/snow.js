@@ -2,7 +2,7 @@ var snows = [];
 
 var snowS_COUNT = 200;
 var snowS_TIME = 4;
-var snow_INTENSITY = 0.15;
+var snow_INTENSITY = 1;
 var snow_SPEED = 20;
 
 function create_snow() 
