@@ -16,7 +16,7 @@ var whiteData = new Uint32Array(1);
 whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 
-plant_create(0.0, PlantType.SEED);
+plant_create(0.0, PlantType.SOLAR);
 
 function update(dt)
 {
@@ -42,8 +42,8 @@ function update(dt)
     debug_update(dt); // Debug menu
     if (!showDebug)
     {
-        plants_update(dt);
         day_update(dt);
+        plants_update(dt);
     }
     weather_updateActive(dt);
 }
