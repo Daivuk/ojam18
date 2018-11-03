@@ -10,7 +10,7 @@ var DayConstants = new (function() {
 });
 
 var DayData = new (function() {
-    this.currentTimeSeconds = 22 * 60 * 60; // start at 6 am
+    this.currentTimeSeconds = 6 * 60 * 60; // start at 6 am
 });
 
 var dayArrow = playSpriteAnim("day_arrow.json", "idle")

@@ -8,7 +8,7 @@ var snow_SPEED = 20;
 function create_snow() 
 {
     return {
-        xPos: Random.randNumber(-92, 128),
+        xPos: Random.randNumber(-92, 200),
         yPos: Random.randNumber(-80, -50),
         xOffset: 0,
         yOffset: 0,
@@ -26,13 +26,13 @@ function snow_init()
 
 function snow_update(dt)
 {
-    RGB.r = RGB.r.mul(0.5);
+    RGB.r = RGB.r.mul(1.5);
     boomSelect = 0.95;
     for (var i = 0; i < snows.length; ++i)
     {
         var snow = snows[i];
         snow.progress += dt;
-        snow.xOffset -= dt * snow_SPEED;
+        snow.xOffset -= dt * snow_SPEED * 1;
         snow.yOffset += dt * snow_SPEED;
         if (snow.progress >= snowS_TIME)
         {
@@ -45,8 +45,8 @@ function snow_update(dt)
 
 function snow_render()
 {
-    SpriteBatch.begin(transform);
     Renderer.setBlendMode(BlendMode.PREMULIPLIED);
+    SpriteBatch.begin(transform);
 
     for (var i = 0; i < snows.length; ++i)
     {
