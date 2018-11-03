@@ -10,7 +10,7 @@ var DayConstants = new (function() {
 });
 
 var DayData = new (function() {
-    this.currentTimeSeconds = 0;
+    this.currentTimeSeconds = 6 * 60 * 60; // start at 6 am
 });
 
 var dayArrow = playSpriteAnim("day_arrow.json", "idle")
@@ -44,4 +44,31 @@ function day_render()
 
     // var xPos = resolution.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
     // SpriteBatch.drawRect(null, new Rect(xPos, resolution.y - 25, 50, 50), new Color(255,255,153));
+}
+
+function day_getLightLevel()
+{
+    var seasonTable = rgbTable[SeasonConstants.seasons[season_get_current_season_index()]];
+    var time = DayData.currentTimeSeconds / 60 / 60; // in hours
+
+    if (time < seasonTable.dawnTime - seasonTable.spread)
+    {
+        return 0;
+    }
+    else if (time < seasonTable.dawnTime + seasonTable.spread)
+    {
+        return (time - (seasonTable.dawnTime - seasonTable.spread)) / (seasonTable.spread * 2);
+    }
+    else if (time < seasonTable.duskTime - seasonTable.spread)
+    {
+        return 1;
+    }
+    else if (time < seasonTable.duskTime + seasonTable.spread)
+    {
+        return 1 - (time - (seasonTable.duskTime - seasonTable.spread)) / (seasonTable.spread * 2);
+    }
+    else
+    {
+        return 0;
+    }
 }
