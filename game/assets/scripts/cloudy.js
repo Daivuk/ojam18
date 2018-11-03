@@ -46,6 +46,7 @@ function cloud_update(dt)
 function cloud_render()
 {
     SpriteBatch.begin(transform);
+    Renderer.setFilterMode(FilterMode.LINEAR);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
     for (var i = 0; i < clouds.length; ++i)
@@ -54,10 +55,11 @@ function cloud_render()
         var percent = cloud.progress / (CLOUDS_TIME / 2);
         if (percent > 1) percent = 1 - (percent - 1);
         var leftCol = percent * CLOUD_INTENSITY;
-        var leftColor = new Color(0, leftCol, 0, leftCol);
+        var leftColor = new Color(0, leftCol * 0.5, leftCol, leftCol);
 
         SpriteBatch.drawSprite(cloudTexture, new Vector2(cloud.xPos + cameraX + cloud.xOffset, cloud.yPos), leftColor, 0, 3);
     }
 
     SpriteBatch.end();
+    Renderer.setFilterMode(FilterMode.NEAREST);
 }
