@@ -12,10 +12,31 @@ var WeatherData = {
     weathers: []
 }
 
+var droppingCard = {
+    weather: null,
+    anim: new Vector2Anim()
+};
+var incomingCardAnim = new Vector2Anim();
+
 function weather_update(dtDays)
 {
     // Remove old weather and add a new one.
-    WeatherData.activeWeathers.shift();
+    droppingCard.weather = WeatherData.weathers[WeatherData.activeWeathers.shift()];
+
+    var arrowPosition = new Vector2(resolutionUI.x / 2, 3);
+    var weatherPosition = new Vector2(arrowPosition.x - DayConstants.weatherIconSize.x, arrowPosition.y + DayConstants.dayArrowSize.y + 2);
+
+    droppingCard.anim.stop();
+    droppingCard.anim.set(weatherPosition);
+    droppingCard.anim.queue(new Vector2(-DayConstants.weatherIconSize.x, weatherPosition.y), 1, Tween.EASE_IN, function()
+    {
+        droppingCard.weather = null;
+    });
+    droppingCard.anim.play();
+
+    incomingCardAnim.stop();
+    incomingCardAnim.playSingle(new Vector2(resolutionUI.x / 2, 0), Vector2.ZERO, 1, Tween.BOUNCE_OUT);
+
     WeatherData.activeWeathers.push(getRandomInt(0, 4));
 }
 
@@ -49,6 +70,8 @@ function weather_updateActive(dt)
         }
         case WeatherConstants.snowy:
         {
+            cloud_update(dt);
+            snow_update(dt);
             break;
         }
     }
@@ -84,6 +107,8 @@ function weather_render()
         }
         case WeatherConstants.snowy:
         {
+            snow_render();
+            cloud_render();
             break;
         }
     }
@@ -165,6 +190,7 @@ function weather_init()
     cloud_init();
     rain_init();
     lightning_init();
+    snow_init();
     
     WeatherConstants.weatherTypes.forEach(function(weatherType) {
         var weather = {

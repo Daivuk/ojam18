@@ -22,17 +22,21 @@ var boomSelect = 0.8;
 
 // Init some crap
 weather_init();
-for (var i = 0; i < 10; ++i)
-{
-    switch (Random.randInt(0, 3))
-    {
-        case 0: plant_create(i * 30, PlantType.SEED); break;
-        case 1: plant_create(i * 30, PlantType.SOLAR); break;
-        case 2: plant_create(i * 30, PlantType.WATER); break;
-        case 3: plant_create(i * 30, PlantType.NORMAL); break;
-    }
-}
+fertile_ground_init();
+// for (var i = 0; i < 10; ++i)
+// {
+//     switch (Random.randInt(0, 4))
+//     {
+//         case 0: plant_create(i * 30, PlantType.SEED); break;
+//         case 1: plant_create(i * 30, PlantType.SOLAR); break;
+//         case 2: plant_create(i * 30, PlantType.WATER); break;
+//         case 3: plant_create(i * 30, PlantType.NORMAL); break;
+//     }
+// }
 
+plant_create(0, PlantType.SEED);
+fertile_ground_create(-30)
+fertile_ground_create(30)
 
 function update(dt)
 {
@@ -52,12 +56,17 @@ function update(dt)
     invTrasform = transform.invert();
 
     // Update UI matrix
-    var uiscale = 240.0 / resolution.y;
+    var uiscale = 180.0 / resolution.y;
     resolutionUI = new Vector2(resolution.x * uiscale, resolution.y * uiscale);
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
 
-    focus_update();
+    fertile_ground_update();
+    
+    if (!fertile_ground_is_menu_open())
+    {
+        focus_update();
+    }
     
     // hues, saturation and brightness
     updateHSV(dt);
@@ -118,6 +127,8 @@ function renderWorld()
 
     SpriteBatch.begin(transform);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+
+    fertile_ground_render();
 
     focus_render();
 
