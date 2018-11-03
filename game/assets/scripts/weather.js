@@ -79,6 +79,8 @@ function weather_render()
 
 function weather_init()
 {
+    sunny_init();
+    
     WeatherConstants.weatherTypes.forEach(function(weatherType) {
         var weather = {
             type: weatherType,
@@ -97,4 +99,3 @@ function weather_init()
     WeatherData.activeWeathers[0] = WeatherConstants.sunny;
     WeatherData.activeWeathers[1] = WeatherConstants.sunny;
 }
-weather_init();
