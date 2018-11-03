@@ -13,7 +13,7 @@ var whiteData = new Uint32Array(1);
 whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 
-plant_create(0.0, PlantType.SOLAR);
+plant_create(0.0, PlantType.SEED);
 
 function update(dt)
 {
