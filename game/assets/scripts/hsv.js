@@ -16,6 +16,9 @@ function updateHSV(dt)
     var from = seasonTable.night;
     var to = seasonTable.day;
 
+    boomSelect = seasonTable.bloomSelect;
+    boomAmount = seasonTable.bloomAmount;
+
     // if (time < seasonTable.dawnTime - seasonTable.spread)
     // {
     //     from = seasonTable.night;

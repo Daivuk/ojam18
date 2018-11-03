@@ -28,14 +28,14 @@ function weather_update(dtDays)
 
     droppingCard.anim.stop();
     droppingCard.anim.set(weatherPosition);
-    droppingCard.anim.queue(new Vector2(-DayConstants.weatherIconSize.x, weatherPosition.y), 1, Tween.EASE_IN, function()
+    droppingCard.anim.queue(new Vector2(-DayConstants.weatherIconSize.x, weatherPosition.y), 2, Tween.EASE_OUT, function()
     {
         droppingCard.weather = null;
     });
     droppingCard.anim.play();
 
     incomingCardAnim.stop();
-    incomingCardAnim.playSingle(new Vector2(resolutionUI.x / 2, 0), Vector2.ZERO, 1, Tween.BOUNCE_OUT);
+    incomingCardAnim.playSingle(new Vector2(resolutionUI.x / 2, 0), Vector2.ZERO, 3, Tween.EASE_IN);
 
     WeatherData.activeWeathers.push(getRandomInt(0, 4));
 }

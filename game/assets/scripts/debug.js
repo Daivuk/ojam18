@@ -48,6 +48,9 @@ function debug_renderUI()
         GUI.sameLine();
         if (GUI.button("snowy")) WeatherData.activeWeathers[0] = WeatherConstants.snowy;
 
+        seasonTable.bloomSelect = GUI.dragNumber("Bloom Select", seasonTable.bloomSelect, .01, 0, 1);
+        seasonTable.bloomAmount = GUI.dragNumber("Bloom Amount", seasonTable.bloomAmount, .01, 0, 1);
+
         var ret;
         if (GUI.collapsingHeader("Night"))
         {
