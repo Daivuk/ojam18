@@ -1,11 +1,9 @@
 var plants = [];
 
-var PLANT_DEATH_PROGRESS = 10000.0;
-var PLANT_LEVEL_PROG_MULTIPLIER = 25;
-var PLANT_BASE_LEVEL_PROG = 100;
-
 var PLANT_WATER_AMOUNT = 100;
 var PLANT_SUN_AMOUNT = 100;
+
+var PLANT_MAX_LIFE_DAYS = 5.0;
 
 // PD = Per Day
 
@@ -33,10 +31,11 @@ function plant_create(_position, _type)
     var plant = {
         type: _type,
         position: _position,
-        progress: 0,
+        age: 0,
         level: 0,
         water: 100,
         sun: 100,
+        dead: false,
         id: PlantData.globalId
     };
 
@@ -49,32 +48,14 @@ function plant_create(_position, _type)
 function plant_progress(_plant, _amount)
 {
     // Dead
-    if(_plant.level < 4)
-    {
-        _plant.progress += _amount;
-    }
-    else
+    if(_plant.dead || _plant.level < 3)
     {
         return;
     }
-    
-    // Growing
-    if(_plant.level < 3)
-    {
-        while(_plant.progress >= (PLANT_BASE_LEVEL_PROG + _plant.level * PLANT_LEVEL_PROG_MULTIPLIER) && _plant.level < 3)
-        {
-            _plant.progress -= PLANT_BASE_LEVEL_PROG + _plant.level * PLANT_LEVEL_PROG_MULTIPLIER;
-            _plant.level++;
-        }
-    }
 
-    // Max level
-    if(_plant.level == 3)
+    if(_plant.age > PLANT_MAX_LIFE_DAYS)
     {
-        if(_plant.progress > PLANT_DEATH_PROGRESS)
-        {
-            _plant.level++;
-        }
+        _plant.dead = true;
     }
 }
 
@@ -82,9 +63,9 @@ function plants_update(dt)
 {
     for(var i = 0; i < plants.length; ++i)
     {
-        plant_progress(plants[i], dt * 20.0);
+        plant_progress(plants[i], (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor);
 
-        if(plants[i].level < 4)
+        if(!plants[i].dead)
         {
             // Water
             if(plants[i].type == PlantType.WATER && plants[i].level > 0)
@@ -104,6 +85,11 @@ function plants_update(dt)
             plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
             plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
             plants[i].sun = Math.min(plants[i].sun, PLANT_SUN_AMOUNT);
+
+            if(plants[i].sun <= 0 || plants[i].water <= 0)
+            {
+                plants[i].dead = true;
+            }
         }
     }
 }
@@ -114,7 +100,7 @@ function plants_render()
     {
         var color = Color.WHITE;
 
-        if(plants[i].level == 4)
+        if(plants[i].dead)
         {
             color = new Color(0.2, 0.2, 0.2, 1.0);
         }
@@ -126,7 +112,7 @@ function plants_render()
             SpriteBatch.drawText(font, "" + Math.floor(plants[i].resources), new Vector2(plants[i].position, -10.0), Vector2.TOP_LEFT, new Color(0.0, 0.5, 1.0, 1.0));
         }*/
 
-        if(plants[i].level < 4)
+        if(!plants[i].dead)
         {
             SpriteBatch.drawRect(null, new Rect(plants[i].position - 8, -plants[i].water / 10, 2, plants[i].water / 10), new Color(0, 0, 1, 1));
             SpriteBatch.drawRect(null, new Rect(plants[i].position - 11, -plants[i].sun / 10, 2, plants[i].sun / 10), new Color(0, 1, 0, 1));
