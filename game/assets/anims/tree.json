@@ -106,6 +106,42 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
     "sourceSize": { "w": 48, "h": 48 },
     "duration": 100
+   },
+   {
+    "filename": "tree 12.aseprite",
+    "frame": { "x": 576, "y": 0, "w": 48, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
+   },
+   {
+    "filename": "tree 13.aseprite",
+    "frame": { "x": 624, "y": 0, "w": 48, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
+   },
+   {
+    "filename": "tree 14.aseprite",
+    "frame": { "x": 672, "y": 0, "w": 48, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
+   },
+   {
+    "filename": "tree 15.aseprite",
+    "frame": { "x": 720, "y": 0, "w": 48, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 48 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
    }
  ],
  "meta": {
@@ -113,7 +149,7 @@
   "version": "1.2.8",
   "image": "/Users/davidst-louis/github/ojam18/game/assets/textures/tree.png",
   "format": "I8",
-  "size": { "w": 576, "h": 48 },
+  "size": { "w": 768, "h": 48 },
   "scale": "1",
   "frameTags": [
    { "name": "water_level0", "from": 0, "to": 0, "direction": "forward" },
@@ -127,10 +163,14 @@
    { "name": "solar_level0", "from": 8, "to": 8, "direction": "forward" },
    { "name": "solar_level1", "from": 9, "to": 9, "direction": "forward" },
    { "name": "solar_level2", "from": 10, "to": 10, "direction": "forward" },
-   { "name": "solar_level3", "from": 11, "to": 11, "direction": "forward" }
+   { "name": "solar_level3", "from": 11, "to": 11, "direction": "forward" },
+   { "name": "seed_level0", "from": 12, "to": 12, "direction": "forward" },
+   { "name": "seed_level1", "from": 13, "to": 13, "direction": "forward" },
+   { "name": "seed_level2", "from": 14, "to": 14, "direction": "forward" },
+   { "name": "seed_level3", "from": 15, "to": 15, "direction": "forward" }
   ],
   "layers": [
-   { "name": "tree", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=24,48" }, { "frame": 4, "data": "origin=24,48" }, { "frame": 5, "data": "origin=24,48" }, { "frame": 6, "data": "origin=24,48" }, { "frame": 7, "data": "origin=24,48" }, { "frame": 8, "data": "origin=24,48" }, { "frame": 9, "data": "origin=24,48" }, { "frame": 10, "data": "origin=24,48" }, { "frame": 11, "data": "origin=24,48" }] }
+   { "name": "tree", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=24,48" }, { "frame": 4, "data": "origin=24,48" }, { "frame": 5, "data": "origin=24,48" }, { "frame": 6, "data": "origin=24,48" }, { "frame": 7, "data": "origin=24,48" }, { "frame": 8, "data": "origin=24,48" }, { "frame": 9, "data": "origin=24,48" }, { "frame": 10, "data": "origin=24,48" }, { "frame": 11, "data": "origin=24,48" }, { "frame": 12, "data": "origin=24,48" }, { "frame": 13, "data": "origin=24,48" }, { "frame": 14, "data": "origin=24,48" }, { "frame": 15, "data": "origin=24,48" }] }
   ],
   "slices": [
   ]

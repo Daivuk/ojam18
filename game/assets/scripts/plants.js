@@ -77,6 +77,6 @@ function plants_render()
             color = new Color(0.2, 0.2, 0.2, 1.0);
         }
 
-        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", "water_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
+        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", "solar_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
     }
 }
