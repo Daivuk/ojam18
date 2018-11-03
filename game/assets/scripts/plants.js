@@ -78,23 +78,18 @@ function plants_update(dt)
 
         if(plants[i].level < 4)
         {
-            // Collect rain
-            if(WeatherData.activeWeathers[0] == WeatherConstants.rainy || WeatherData.activeWeathers[0] == WeatherConstants.stormy)
+            // Water
+            if(plants[i].type == PlantType.WATER && plants[i].level > 0)
             {
-                if(plants[i].type == PlantType.WATER && plants[i].level > 0)
-                {
-                    plants[i].water += PLANT_WATER_ABSORB_PD * plants[i].level * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                    plants[i].water = Math.min(plants[i].water, plants[i].level * PLANT_WATER_AMOUNT);
-                }
-                else
-                {
-                    plants[i].water += PLANT_WATER_ABSORB_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                    plants[i].water = Math.min(plants[i].water, PLANT_WATER_AMOUNT);
-                }
+                plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * plants[i].level * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                plants[i].water = Math.min(plants[i].water, plants[i].level * PLANT_WATER_AMOUNT);
             }
             else
             {
+                plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                 plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+                plants[i].water = Math.min(plants[i].water, PLANT_WATER_AMOUNT);
             }
 
             // Sunlight

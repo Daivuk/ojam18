@@ -104,7 +104,42 @@ function weather_getSunMultiplier()
         }
         case WeatherConstants.snowy:
         {
+            return 0.5;
+            break;
+        }
+    }
+
+    return 0.0;
+}
+
+function weather_getWaterMultiplier()
+{
+    var activeWeather = WeatherData.activeWeathers[0];
+    switch (activeWeather)
+    {
+        case WeatherConstants.sunny:
+        {
             return 0.25;
+            break;
+        }
+        case WeatherConstants.cloudy:
+        {
+            return 0.25;
+            break;
+        }
+        case WeatherConstants.rainy:
+        {
+            return 1.0;
+            break;
+        }
+        case WeatherConstants.stormy:
+        {
+            return 1.0;
+            break;
+        }
+        case WeatherConstants.snowy:
+        {
+            return 0.5;
             break;
         }
     }
