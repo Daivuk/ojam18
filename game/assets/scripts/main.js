@@ -20,6 +20,7 @@ var font = getFont("font.fnt");
 // Init some crap
 weather_init();
 plant_create(0.0, PlantType.SEED);
+plant_create(20.0, PlantType.SEED);
 
 function update(dt)
 {
@@ -39,6 +40,8 @@ function update(dt)
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
 
+    focus_update();
+    
     // hues, saturation and brightness
     updateHSV(dt);
 
@@ -97,6 +100,8 @@ function renderWorld()
 
     SpriteBatch.begin(transform);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+
+    focus_render();
 
     // Plants
     plants_render();
