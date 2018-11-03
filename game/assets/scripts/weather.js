@@ -31,6 +31,7 @@ function weather_updateActive(dt)
         }
         case WeatherConstants.cloudy:
         {
+            cloud_update(dt);
             break;
         }
         case WeatherConstants.rainy:
@@ -60,6 +61,7 @@ function weather_render()
         }
         case WeatherConstants.cloudy:
         {
+            cloud_render();
             break;
         }
         case WeatherConstants.rainy:
@@ -150,6 +152,7 @@ function weather_getWaterMultiplier()
 function weather_init()
 {
     sunny_init();
+    cloud_init();
     
     WeatherConstants.weatherTypes.forEach(function(weatherType) {
         var weather = {
