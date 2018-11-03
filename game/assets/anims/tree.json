@@ -50,7 +50,7 @@
    { "name": "water_level3", "from": 3, "to": 3, "direction": "forward" }
   ],
   "layers": [
-   { "name": "tree", "opacity": 255, "blendMode": "normal" }
+   { "name": "tree", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=24,48" }] }
   ],
   "slices": [
   ]

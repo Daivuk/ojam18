@@ -15,14 +15,13 @@ function day_update(dtSeconds)
     DayData.currentTimeSeconds += (DayConstants.timeScaleFactor * dtSeconds);
     if (DayData.currentTimeSeconds >= DayConstants.secondsPerDay)
     {
-        DayData.currentTimeSeconds = 0;
+        DayData.currentTimeSeconds -= DayConstants.secondsPerDay;
         month_update(1);
     }
 }
 
 function day_render()
 {
-    var resolution = Renderer.getResolution();
     var xPos = resolution.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
     SpriteBatch.drawRect(null, new Rect(xPos, resolution.y - 25, 50, 50), new Color(255,255,153));
 }
