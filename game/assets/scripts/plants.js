@@ -1,9 +1,10 @@
 var plants = [];
 
 var PlantType = {
-    WATER: 1,
-    SOLAR: 2,
-    SEED: 3
+    NORMAL: 1,
+    WATER: 2,
+    SOLAR: 3,
+    SEED: 4
 }
 
 function plant_create(_position, _type)
@@ -12,7 +13,8 @@ function plant_create(_position, _type)
         type: _type,
         position: _position,
         progress: 0,
-        level: 0
+        level: 0,
+        resources: 0
     };
 
     plants.push(plant);
@@ -37,8 +39,6 @@ function plants_render()
 {
     for(var i = 0; i < plants.length; ++i)
     {
-        var height = 100.0 * (plants[i].level + 1);
-        var width = 10.0 * (plants[i].level + 1);
-        SpriteBatch.drawRect(null, new Rect(plants[i].position - width * 0.5, 0.0, width, -height), new Color(0, 1, 1, 1));
+        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", "water_level" + plants[i].level), new Vector2(plants[i].position, 0.0));
     }
 }
