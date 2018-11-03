@@ -22,7 +22,6 @@ var boomSelect = 0.8;
 
 // Init some crap
 weather_init();
-fertile_ground_init();
 // for (var i = 0; i < 10; ++i)
 // {
 //     switch (Random.randInt(0, 4))

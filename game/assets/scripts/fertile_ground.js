@@ -3,16 +3,11 @@ var FertileGroundData = {
     grounds: [],
     globalId: 0,
     activeMenuPosition: null,
-    menuSprites: []
+    selectedPlantType: null
 };
 
 var FertileGroundConstants = {
-    menuDirections: ["up", "bottom", "left", "right", "center"],
-    menuUp: 0,
-    menuDown: 1,
-    menuLeft: 2,
-    menuRight: 3,
-    menuCenter: 4
+    menuSprite: playSpriteAnim("seeding_ui.json", "center")
 }
 
 function fertile_ground_create(_position)
@@ -31,34 +26,48 @@ function fertile_ground_create(_position)
 function fertile_ground_update()
 {
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
-    if (currentFocusItem.type == FocusConstants.fertileGroundType && Input.isDown(Key.SPACE_BAR))
+    if (currentFocusItem.type == FocusConstants.fertileGroundType)
     {
-        FertileGroundData.activeMenuPosition = currentFocusItem.itemData.position;
         if (Input.isJustDown(Key.SPACE_BAR))
         {
-            print("PLAY SPACE");
-            FertileGroundData.menuSprites[FertileGroundConstants.menuCenter].play();
+            FertileGroundConstants.menuSprite.play("center");
         }
-        else if (Input.isJustDown(Key.UP))
+
+        if (Input.isDown(Key.SPACE_BAR))
         {
-            print("PLAY UP");
-            FertileGroundData.menuSprites[FertileGroundConstants.menuUp].play();
+            FertileGroundData.activeMenuPosition = currentFocusItem.itemData.position;
+            if (Input.isJustDown(Key.UP))
+            {
+                FertileGroundConstants.menuSprite.play("up");
+                FertileGroundData.selectedPlantType = PlantType.SEED;
+            }
+            else if (Input.isJustDown(Key.DOWN))
+            {
+                FertileGroundConstants.menuSprite.play("bottom");
+                FertileGroundData.selectedPlantType = PlantType.NORMAL;
+            }
+            else if (Input.isJustDown(Key.LEFT))
+            {
+                FertileGroundConstants.menuSprite.play("left");
+                FertileGroundData.selectedPlantType = PlantType.WATER;
+            }
+            else if (Input.isJustDown(Key.RIGHT))
+            {
+                FertileGroundConstants.menuSprite.play("right");
+                FertileGroundData.selectedPlantType = PlantType.SOLAR;
+            }
         }
-        else if (Input.isJustDown(Key.DOWN))
+        else
         {
-            print("PLAY DOWN");
-            FertileGroundData.menuSprites[FertileGroundConstants.menuDown].play();
+            FertileGroundData.activeMenuPosition = null;
         }
-        else if (Input.isJustDown(Key.LEFT))
+
+        if(FertileGroundData.selectedPlantType && Input.isJustUp(Key.SPACE_BAR))
         {
-            print("PLAY LEFT");
-            FertileGroundData.menuSprites[FertileGroundConstants.menuLeft].play();
+            plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
+            FertileGroundData.selectedPlantType = null;
         }
-        else if (Input.isJustDown(Key.RIGHT))
-        {
-            print("PLAY RIGHT");
-            FertileGroundData.menuSprites[FertileGroundConstants.menuRight].play();
-        }
+        
     }
     else
     {
@@ -75,13 +84,6 @@ function fertile_ground_render()
 {
     if (FertileGroundData.activeMenuPosition != null)
     {
-        SpriteBatch.drawSpriteAnim(FertileGroundData.menuSprites[FertileGroundConstants.menuCenter], new Vector2(FertileGroundData.activeMenuPosition, -25));
+        SpriteBatch.drawSpriteAnim(FertileGroundConstants.menuSprite, new Vector2(FertileGroundData.activeMenuPosition, -25));
     }
-}
-
-function fertile_ground_init()
-{
-    FertileGroundConstants.menuDirections.forEach(function(menuDirection) {
-        FertileGroundData.menuSprites.push(playSpriteAnim("seeding_ui.json", menuDirection));
-    });
 }
