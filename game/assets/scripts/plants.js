@@ -111,6 +111,23 @@ function plants_update(dt)
             }
         }
     }
+
+    if (Input.isJustDown(Key.SPACE_BAR) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
+    {
+        var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
+
+        if(focusItem.seed == PLANT_SEED_MAX)
+        {
+            seeds++;
+            focusItem.seed = 0;
+        }
+
+        if(focusItem.biomass == PLANT_BIOMASS_MAX)
+        {
+            biomass++;
+            focusItem.biomass = 0;
+        }
+    }
 }
 
 function plants_render()
