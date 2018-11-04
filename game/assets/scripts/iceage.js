@@ -45,8 +45,8 @@ function iceage_render()
 
     SpriteBatch.drawSprite(iceageTexture, new Vector2(xRenderPos, yRenderPos), Color.WHITE, 0, 2, Vector2.LEFT);
 
-    // SpriteBatch.drawRect(null, new Rect(xRenderPos, yRenderPos + 4.0, renderWidth, 2.0), Color.WHITE);
-
     var percent = (IceageData.daysToIceage / IceageData.startingDaysToIceage);
     SpriteBatch.drawRect(null, new Rect(4 + xRenderPos + (renderWidth - (renderWidth * percent)), yRenderPos - 4, 2.0, 10.0), Color.WHITE);
+
+    SpriteBatch.drawPrettyOutlinedText(font, "" + IceageData.seedsNeeded, new Vector2(xRenderPos + 30, yRenderPos - 19), Vector2.TOP_LEFT, Color.WHITE, new Color(0, 0, 0, .5), 1);
 }
