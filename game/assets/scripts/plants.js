@@ -67,7 +67,7 @@ function plant_age(_plant, _amount)
         return;
     }
 
-    _plant.age += (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+    _plant.age += _amount;
 
     if(_plant.age > PLANT_MAX_LIFE_DAYS)
     {
