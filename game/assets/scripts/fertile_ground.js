@@ -18,6 +18,15 @@ var FertileGroundConstants = {
 
 var fertile_groundSprite = playSpriteAnim("fertile_ground.json", "idle");
 
+function fertile_ground_load()
+{
+    // Focus items needs to be a reference to the actual ground items, so they are not saved.
+    // Reload here.
+    FertileGroundData.grounds.forEach(function(ground){
+        focus_item_create(FocusConstants.fertileGroundType, ground.id, ground);
+    });
+}
+
 function fertile_ground_create(_position)
 {
     var ground = {
