@@ -27,7 +27,8 @@ var PlantType = {
 
 var PlantData = {
     plants : [],
-    globalId: 0
+    globalId: 0,
+    dtMsSinceLastConsume: 0
 }
 
 var PlantDataSaveProperties = [
@@ -39,7 +40,7 @@ var PlantMenuData = {
     menuSprite: playSpriteAnim("plant_ui.json", "center"),
     menuAborted: false,
     action: "none",
-    activeMenuPosition: null
+    activeMenuPosition: null,
 }
 
 function plant_create(_position, _type)
@@ -187,27 +188,39 @@ function plants_update(dt)
     }
 
     var handled = false;
-
+    var updateMsSinceLastConsume = true;
+    // Consume dropped resource
     if ((Input.isJustDown(Key.SPACE_BAR) || GamePad.isJustDown(0, Button.A)) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
 
         if(focusItem.seed == PLANT_SEED_MAX)
         {
+            updateMsSinceLastConsume = false;
             handled = true;
             ResourceData.seeds++;
             focusItem.seed = 0;
+            PlantData.dtMsSinceLastConsume = 0;
         }
 
         if(focusItem.biomass == PLANT_BIOMASS_MAX)
         {
+            updateMsSinceLastConsume = false;
             handled = true;
             ResourceData.biomass++;
             focusItem.biomass = 0;
+            PlantData.dtMsSinceLastConsume = 0;
         }
     }
+    
+    if (updateMsSinceLastConsume)
+    {
+        PlantData.dtMsSinceLastConsume += dt * 1000;
+    }
 
-    if(!handled)
+
+    // Handle pop-up menu
+    if(!handled && PlantData.dtMsSinceLastConsume > 150)
     {
         var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
         if (focus_is_plant_type(currentFocusItem.type))
