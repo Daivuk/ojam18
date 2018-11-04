@@ -5,6 +5,11 @@ var MainMenuData = {
 };
 
 var titleTexture = getTexture("title.png");
+var menuSkullSprite = playSpriteAnim("icons.json", "skull");
+
+var menuSkullAnim = new NumberAnim(-1);
+menuSkullAnim.playSingle(-1, 1, 1, Tween.EASE_BOTH, Loop.PING_PONG_LOOP);
+
 
 function main_menu_render()
 {
@@ -26,7 +31,12 @@ function main_menu_render()
     SpriteBatch.begin(Matrix.createScale(scale));
     Renderer.setBlendMode(BlendMode.ADD);
     SpriteBatch.drawSprite(titleTexture, scaledRes.mul(new Vector2(0.5, .5)).add(new Vector2(0, 15)));
-    SpriteBatch.drawText(font, "Press Enter", new Vector2((scaledRes.x / 2) - (font.measure("Press Enter").x / 2), scaledRes.y * .7), new Color());
+    var textPosition = new Vector2((scaledRes.x / 2) - (font.measure(text).x / 2), scaledRes.y * .7);
+    SpriteBatch.drawText(font, text, textPosition, new Color());
+    if (MainMenuData.isGameOver)
+    {
+        SpriteBatch.drawSpriteAnim(menuSkullSprite, new Vector2((scaledRes.x / 2), textPosition.y + 30 + menuSkullAnim.get()));
+    }
     SpriteBatch.end();
 
 
@@ -108,7 +118,7 @@ function main_menu_update(dt)
     }
 
     MainMenuData.gameOverShownForS += dt;
-    if (MainMenuData.gameOverShownForS >= 2)
+    if (MainMenuData.gameOverShownForS >= 5)
     {
         MainMenuData.gameOverShownForS = 0;
         MainMenuData.isGameOver = false;

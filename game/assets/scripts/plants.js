@@ -130,7 +130,7 @@ function plant_destroy(_plant)
 
     if (!_plant.dead)
     {
-        ResourcesData.seeds++;
+        ResourcesData.biomass++;
     }
 
     if(plantIndex != -1)
