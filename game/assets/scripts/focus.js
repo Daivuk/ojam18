@@ -60,11 +60,11 @@ function focus_item_destroy(_type, _id)
 
 function focus_update()
 {
-    if (Input.isJustDown(Key.LEFT)) 
+    if (Input.isJustDown(Key.LEFT) || GamePad.isJustDown(0, Button.LEFT_THUMBSTICK_LEFT)) 
     {
         FocusData.currentFocusItemIndex = Math.max(0, FocusData.currentFocusItemIndex - 1);
     } 
-    else if (Input.isJustDown(Key.RIGHT))
+    else if (Input.isJustDown(Key.RIGHT) || GamePad.isJustDown(0, Button.LEFT_THUMBSTICK_RIGHT))
     {
         FocusData.currentFocusItemIndex = Math.min(FocusData.currentFocusItemIndex + 1, FocusData.focusItems.length - 1);
     }

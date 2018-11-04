@@ -173,7 +173,7 @@ function plants_update(dt)
         }
     }
 
-    if (Input.isJustDown(Key.SPACE_BAR) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
+    if ((Input.isJustDown(Key.SPACE_BAR) || GamePad.isJustDown(0, Button.A)) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
 
