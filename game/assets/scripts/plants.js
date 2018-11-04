@@ -187,36 +187,38 @@ function plants_update(dt)
             PlantData.plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
             PlantData.plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
             PlantData.plants[i].sun = Math.min(PlantData.plants[i].sun, PLANT_SUN_MAX);
+        }
 
-            // Find all the water and sun plants to apply their global effects
-            if(PlantData.plants[i].sun <= 0 || PlantData.plants[i].water <= 0)
-            {
-                plant_make_dead(PlantData.plants[i]);
-            }
-            else
-            {
-                if(PlantData.plants[i].type == PlantType.WATER && PlantData.plants[i].water > PLANT_WATER_MAX)
-                {
-                    surplusWaterPlants.push(PlantData.plants[i]);
-                }
+        // Find all the water and sun plants to apply their global effects
+        if((PlantData.plants[i].sun <= 0 || PlantData.plants[i].water <= 0) && !PlantData.plants[i].dead)
+        {
+            plant_make_dead(PlantData.plants[i]);
+        }
 
-                if(PlantData.plants[i].water < PLANT_WATER_MAX)
-                {
-                    waterLeeches.push(PlantData.plants[i]);
-                }
 
-                if(PlantData.plants[i].type == PlantType.SOLAR && PlantData.plants[i].level > 0)
-                {
-                    sunPlantBonus += PlantData.plants[i].level * PLANT_SUN_BONUS_PD;
-                }
+        if(PlantData.plants[i].type == PlantType.WATER && PlantData.plants[i].water > PLANT_WATER_MAX && !PlantData.plants[i].dead)
+        {
+            surplusWaterPlants.push(PlantData.plants[i]);
+        }
 
-                if(PlantData.plants[i].sun < PLANT_SUN_MAX)
-                {
-                    // Sun plants also benefit from their own sun bonus
-                    sunLeeches.push(PlantData.plants[i]);
-                }
-            }
+        if(PlantData.plants[i].water < PLANT_WATER_MAX || PlantData.plants[i].dead)
+        {
+            waterLeeches.push(PlantData.plants[i]);
+        }
 
+        if(PlantData.plants[i].type == PlantType.SOLAR && PlantData.plants[i].level > 0 && !PlantData.plants[i].dead)
+        {
+            sunPlantBonus += PlantData.plants[i].level * PLANT_SUN_BONUS_PD;
+        }
+
+        if(PlantData.plants[i].sun < PLANT_SUN_MAX || PlantData.plants[i].dead)
+        {
+            // Sun plants also benefit from their own sun bonus
+            sunLeeches.push(PlantData.plants[i]);
+        }
+
+        if(!PlantData.plants[i].dead)
+        {
             var waterCap = PLANT_WATER_MAX;
             if (PlantData.plants[i].type == PlantType.WATER && PlantData.plants[i].level > 0)
             {
