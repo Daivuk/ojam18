@@ -15,6 +15,7 @@ var PLANT_WATER_LEECH_PD = 50;
 
 var PLANT_SUN_USAGE_PD = 50;
 var PLANT_SUN_ABSORB_PD = 100;
+var PLANT_SUN_BONUS_PD = 20;
 
 var PLANT_SEED_PROGRESS_PD = 50;
 var PLANT_BIOMASS_PROGRESS_PD = 50;
@@ -67,8 +68,11 @@ function plant_age(_plant, _amount)
 
 function plants_update(dt)
 {
-    var leeches = [];
+    var waterLeeches = [];
     var surplusWaterPlants = [];
+
+    var sunLeeches = [];
+    var sunPlantBonus = 0;
 
     for(var i = 0; i < plants.length; ++i)
     {
@@ -96,11 +100,6 @@ function plants_update(dt)
                 plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                 plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
                 plants[i].water = Math.min(plants[i].water, (plants[i].level + 1) * PLANT_WATER_MAX);
-
-                if(plants[i].water > (plants[i].level + 1) * PLANT_WATER_MAX)
-                {
-                    surplusWaterPlants.push(plants[i]);
-                }
             }
             else
             {
@@ -110,40 +109,67 @@ function plants_update(dt)
             }
 
             // Sunlight
-            /*if(plants[i].type == PlantType.SOLAR)
-            {
-
-            }*/
             plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
             plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
             plants[i].sun = Math.min(plants[i].sun, PLANT_SUN_MAX);
 
+            // Find all the water and sun plants to apply their global effects
             if(plants[i].sun <= 0 || plants[i].water <= 0)
             {
                 plants[i].dead = true;
             }
             else
             {
+                if(plants[i].type == PlantType.WATER && plants[i].water > (plants[i].level + 1) * PLANT_WATER_MAX)
+                {
+                    surplusWaterPlants.push(plants[i]);
+                }
+
                 if(plants[i].water < PLANT_WATER_MAX)
                 {
-                    leeches.push(plants[i]);
+                    waterLeeches.push(plants[i]);
+                }
+
+                if(plants[i].type == PlantType.SOLAR && plants[i].level > 0)
+                {
+                    sunPlantBonus += plants[i].level * PLANT_SUN_BONUS_PD;
+                }
+
+                if(plants[i].sun < PLANT_SUN_MAX)
+                {
+                    // Sun plants also benefit from their own sun bonus
+                    sunLeeches.push(plants[i]);
                 }
             }
         }
     }
 
-    if(surplusWaterPlants.length > 0)
+    // Apply water plant bonus
+    if(surplusWaterPlants.length > 0 && waterLeeches.length > 0)
     {
-        var leechAmount = (leeches.length * PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor) / surplusWaterPlants.length;
+        var leechAmount = (waterLeeches.length * PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor) / surplusWaterPlants.length;
 
         for(var i = 0; i < surplusWaterPlants.length; ++i)
         {
             surplusWaterPlants[i].water -= leechAmount;
         }
 
-        for(var i = 0; i < leeches.length; ++i)
+        for(var i = 0; i < waterLeeches.length; ++i)
         {
-            leeches[i].water += PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            waterLeeches[i].water += PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            waterLeeches[i].water = Math.min(waterLeeches[i].water, PLANT_WATER_MAX);
+        }
+    }
+
+    // Apply sun plant bonus
+    if(sunPlantBonus > 0 && sunLeeches.length > 0)
+    {
+        var leechAmount = (sunPlantBonus * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor) / sunLeeches.length;
+
+        for(var i = 0; i < sunLeeches.length; ++i)
+        {
+            sunLeeches[i].sun += leechAmount;
+            sunLeeches[i].sun = Math.min(sunLeeches[i].sun, PLANT_SUN_MAX);
         }
     }
 

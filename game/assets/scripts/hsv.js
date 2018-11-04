@@ -16,9 +16,6 @@ function updateHSV(dt)
     var from = seasonTable.night;
     var to = seasonTable.day;
 
-    boomSelect = seasonTable.bloomSelect;
-    boomAmount = seasonTable.bloomAmount;
-
     // if (time < seasonTable.dawnTime - seasonTable.spread)
     // {
     //     from = seasonTable.night;
@@ -58,6 +55,9 @@ function updateHSV(dt)
     //     from = seasonTable.night;
     //     to = from;
     // }
+
+    boomSelect = seasonTable.bloomSelectN + (seasonTable.bloomSelect - seasonTable.bloomSelectN) * percent;
+    boomAmount = seasonTable.bloomAmountN + (seasonTable.bloomAmount - seasonTable.bloomAmountN) * percent;
 
     RGB.r = Vector3.lerp(new Vector3(from.r[0], from.r[1], from.r[2]),
                          new Vector3(to.r[0], to.r[1], to.r[2]), percent);
