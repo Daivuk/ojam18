@@ -130,7 +130,8 @@ function renderWorld()
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
     // Ground
-    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
+    var worldWidth = FocusData.focusItems.length * (distanceBetweenPlants + 50);
+    SpriteBatch.drawRect(null, new Rect(-(worldWidth / 2), 0, worldWidth, 2000), new Color(0, 0, 1));
 
     fertile_ground_render();
 
