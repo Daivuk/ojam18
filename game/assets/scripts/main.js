@@ -49,7 +49,7 @@ weather_init();
 var ppp = null;
 init_plants();
 
-var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resources"];
+var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resources", "Iceage"];
 
 function save()
 {
@@ -161,6 +161,7 @@ function update(dt)
         {
             day_update(dt);
             plants_update(dt);
+            iceage_update(dt);
 
             // plant_update can trigger game over
             if (MainMenuData.isDisplaying)
