@@ -106,6 +106,7 @@ function main_menu_update(dt)
     if(input_is_activation_just_down())
     {
         playSound("pickup.wav", master_volume, 0, 1.5);
+        reset_game();
         if (MainMenuData.isGameOver)
         {
             MainMenuData.gameOverShownForS = 0;
@@ -129,8 +130,4 @@ function main_menu_show(isGameOver)
 {
     MainMenuData.isGameOver = isGameOver;
     MainMenuData.isDisplaying = true;
-    if (isGameOver)
-    {
-        reset_game();
-    }
 }
