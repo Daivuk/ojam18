@@ -3,8 +3,14 @@ var FertileGroundData = {
     grounds: [],
     globalId: 0,
     activeMenuPosition: null,
-    selectedPlantType: null
+    selectedPlantType: null,
+    plantingAborted: false
 };
+
+var FertileGroundDataSaveProperties = [
+    "grounds",
+    "globalId"
+];
 
 var FertileGroundConstants = {
     menuSprite: playSpriteAnim("seeding_ui.json", "center")
@@ -72,10 +78,10 @@ function fertile_ground_update()
                 FertileGroundData.selectedPlantType = PlantType.SOLAR;
             }
 
-            if (FertileGroundData.selectedPlantType != null && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || Input.isJustUp(Key.LEFT) || Input.isJustUp(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)))
+            if (!FertileGroundData.plantingAborted && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || Input.isJustUp(Key.LEFT) || Input.isJustUp(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)))
             {
                 FertileGroundConstants.menuSprite.play("center");
-                FertileGroundData.selectedPlantType = null;
+                FertileGroundData.plantingAborted = true;
             }
         }
         else
@@ -83,13 +89,20 @@ function fertile_ground_update()
             FertileGroundData.activeMenuPosition = null;
         }
 
-        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && seeds > 0)
+        if (FertileGroundData.plantingAborted && !FertileGroundConstants.menuSprite.isPlaying())
+        {
+            FertileGroundData.plantingAborted = false;
+            FertileGroundData.selectedPlantType = null;
+        }
+
+        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourceData.seeds > 0)
         {
             fertile_ground_destroy(currentFocusItem.itemData.position);
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
-            seeds--;
+            ResourceData.seeds--;
             FertileGroundData.selectedPlantType = null;
-
+            
+            var shouldFixFocus = false;
             var newPosition;
             if (currentFocusItem.itemData.position > 0)
             {
@@ -97,9 +110,18 @@ function fertile_ground_update()
             }
             else
             {
+                shouldFixFocus = true;
                 newPosition = currentFocusItem.itemData.position - distanceBetweenPlants;
             }
+            
             fertile_ground_create(newPosition);
+            
+            // If we added an item on the left we need to set focus to index 1 so it remains at the original position
+            // Index 0 will now be the new fertile ground.
+            if (shouldFixFocus)
+            {
+                FocusData.currentFocusItemIndex = 1;
+            }
         }
         
     }

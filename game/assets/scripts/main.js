@@ -1,4 +1,16 @@
 // Globals
+if (typeof global === 'undefined') {
+    (function () {
+        var global = new Function('return this;')();
+        Object.defineProperty(global, 'global', {
+            value: global,
+            writable: true,
+            enumerable: false,
+            configurable: true
+        });
+    })();
+}
+
 var resolution = Renderer.getResolution(); // Cache this globally
 var cameraX = 0;
 var cameraTargetX = 0;
@@ -39,8 +51,79 @@ weather_init();
 // }
 
 plant_create(0, PlantType.SEED);
-fertile_ground_create(-distanceBetweenPlants)
-fertile_ground_create(distanceBetweenPlants)
+fertile_ground_create(-distanceBetweenPlants);
+fertile_ground_create(distanceBetweenPlants);
+
+var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resource"];
+
+// TODO: Write to a file. Does this even exist?
+var saveDataJSON = null;
+function save()
+{
+    var saveObject = new Object();
+    saveLoadTypes.forEach(function(type) {
+        // Generic Save from TypeDataSaveProperties
+        var saveObjectForType = new Object();
+        var currentData = global[type + "Data"];
+        if (currentData !== undefined)
+        {
+            global[type + "DataSaveProperties"].forEach(function(saveProperty) {
+                saveObjectForType[saveProperty] = currentData[saveProperty];
+            });
+            saveObject[type] = saveObjectForType;
+        }
+
+        // Custom Save
+        var customSaveFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_save"];
+        if (typeof customSaveFunction === "function")
+        {
+            customSaveFunction();
+        }
+    });
+
+    saveDataJSON = JSON.stringify(saveObject);
+}
+
+function load()
+{
+    if (saveDataJSON == null) 
+    {
+        return;
+    }
+
+    var loadObject = JSON.parse(saveDataJSON);
+    saveLoadTypes.forEach(function(type) {
+        // Generic Load
+        var currentloadObject = loadObject[type];
+        var currentData = global[type + "Data"];
+        Object.getOwnPropertyNames(loadObject[type]).forEach(function (functionloadDataProperty) {
+            currentData[functionloadDataProperty] = currentloadObject[functionloadDataProperty];
+        });
+
+        // Custom Load
+        var customLoadFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_load"];
+        if (typeof customLoadFunction === "function")
+        {
+            customLoadFunction(currentloadObject);
+        }
+    });
+}
+
+function focus_save()
+{
+    var saveData = new Object();
+    FocusDataSaveProperties.forEach(function(saveProperty) {
+        saveData[saveProperty] = FocusData[saveProperty];
+    });
+    return saveData;
+}
+
+function focus_load(loadData)
+{
+    Object.getOwnPropertyNames(loadData).forEach(function (functionloadDataProperty) {
+        FocusData[functionloadDataProperty] = loadData[functionloadDataProperty];
+    });
+}
 
 function update(dt)
 {
@@ -65,11 +148,20 @@ function update(dt)
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
 
+    if (Input.isJustDown(Key.S))
+    {
+        save();
+    }
+    else if(Input.isJustDown(Key.L))
+    {
+        load();
+    }
+
     fertile_ground_update();
     
     if (!fertile_ground_is_menu_open())
     {
-        focus_update();
+        focus_update(dt);
     }
     
     // hues, saturation and brightness
@@ -133,7 +225,8 @@ function renderWorld()
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
     // Ground
-    SpriteBatch.drawRect(null, new Rect(-1000, 0, 2000, 2000), new Color(0, 0, 1));
+    var worldWidth = FocusData.focusItems.length * (distanceBetweenPlants + 50);
+    SpriteBatch.drawRect(null, new Rect(-(worldWidth / 2), 0, worldWidth, 2000), new Color(0, 0, 1));
 
     fertile_ground_render();
 

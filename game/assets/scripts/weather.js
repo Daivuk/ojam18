@@ -12,11 +12,22 @@ var WeatherData = {
     weathers: []
 }
 
+var WeatherDataSaveProperties = [
+    "activeWeathers"
+];
+
+
 var droppingCard = {
     weather: null,
     anim: new Vector2Anim()
 };
 var incomingCardAnim = new Vector2Anim();
+
+function weather_load(loadData)
+{
+    droppingCard.anim.stopAndGoToEnd();
+    incomingCardAnim.stopAndGoToEnd();
+}
 
 function weather_update(dtDays)
 {
@@ -37,7 +48,8 @@ function weather_update(dtDays)
     incomingCardAnim.stop();
     incomingCardAnim.playSingle(new Vector2(resolutionUI.x / 2, 0), Vector2.ZERO, 3, Tween.EASE_OUT);
 
-    WeatherData.activeWeathers.push(getRandomInt(0, 4));
+    var possibleWeathers = season_get_weathers_for_season(season_get_season_for_day_offset(10 * (DayConstants.daysToDisplay - 1)));
+    WeatherData.activeWeathers.push(possibleWeathers[getRandomInt(0, possibleWeathers.length - 1)]);
 }
 
 function weather_updateActive(dt)
@@ -203,7 +215,8 @@ function weather_init()
 
     for (var i = 0; i < DayConstants.daysToDisplay; i++)
     {
-        WeatherData.activeWeathers.push(getRandomInt(0, 4));
+        var possibleWeathers = season_get_weathers_for_season(season_get_season_for_day_offset(10 * i));
+        WeatherData.activeWeathers.push(possibleWeathers[getRandomInt(0, possibleWeathers.length - 1)]);
     }
 
     // Always start with 2 days of sunny

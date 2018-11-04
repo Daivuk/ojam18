@@ -1,5 +1,3 @@
-var plants = [];
-
 var PLANT_WATER_MAX = 100;
 var PLANT_SUN_MAX = 100;
 var PLANT_SEED_MAX = 100;
@@ -15,10 +13,10 @@ var PLANT_WATER_LEECH_PD = 50;
 
 var PLANT_SUN_USAGE_PD = 50;
 var PLANT_SUN_ABSORB_PD = 100;
-var PLANT_SUN_BONUS_PD = 20;
+var PLANT_SUN_BONUS_PD = 25;
 
 var PLANT_SEED_PROGRESS_PD = 50;
-var PLANT_BIOMASS_PROGRESS_PD = 50;
+var PLANT_BIOMASS_PROGRESS_PD = 100;
 
 var PlantType = {
     NORMAL: "normal",
@@ -28,7 +26,20 @@ var PlantType = {
 }
 
 var PlantData = {
+    plants : [],
     globalId: 0
+}
+
+var PlantDataSaveProperties = [
+    "plants",
+    "globalId"
+];
+
+var PlantMenuData = {
+    menuSprite: playSpriteAnim("plant_ui.json", "center"),
+    menuAborted: false,
+    action: "none",
+    activeMenuPosition: null
 }
 
 function plant_create(_position, _type)
@@ -46,7 +57,7 @@ function plant_create(_position, _type)
         id: PlantData.globalId
     };
 
-    plants.push(plant);
+    PlantData.plants.push(plant);
     focus_item_create(FocusConstants.plantTypeLevel0, PlantData.globalId, plant);
 
     PlantData.globalId++;
@@ -59,6 +70,8 @@ function plant_age(_plant, _amount)
     {
         return;
     }
+
+    _plant.age += _amount;
 
     if(_plant.age > PLANT_MAX_LIFE_DAYS)
     {
@@ -74,71 +87,71 @@ function plants_update(dt)
     var sunLeeches = [];
     var sunPlantBonus = 0;
 
-    for(var i = 0; i < plants.length; ++i)
+    for(var i = 0; i < PlantData.plants.length; ++i)
     {
-        plant_age(plants[i], (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor);
+        plant_age(PlantData.plants[i], (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor);
 
-        if(!plants[i].dead)
+        if(!PlantData.plants[i].dead)
         {
             // Seed
-            if(plants[i].type == PlantType.SEED && plants[i].seed < PLANT_SEED_MAX)
+            if(PlantData.plants[i].type == PlantType.SEED && PlantData.plants[i].seed < PLANT_SEED_MAX)
             {
-                plants[i].seed += PLANT_SEED_PROGRESS_PD * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].seed = Math.min(plants[i].seed, PLANT_SEED_MAX);
+                PlantData.plants[i].seed += PLANT_SEED_PROGRESS_PD * (PlantData.plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+                PlantData.plants[i].seed = Math.min(PlantData.plants[i].seed, PLANT_SEED_MAX);
             }
 
             // Biomass
-            if(plants[i].type == PlantType.NORMAL && plants[i].biomass < PLANT_BIOMASS_MAX)
+            if(PlantData.plants[i].type == PlantType.NORMAL && PlantData.plants[i].biomass < PLANT_BIOMASS_MAX)
             {
-                plants[i].biomass += PLANT_BIOMASS_PROGRESS_PD * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].biomass = Math.min(plants[i].biomass, PLANT_BIOMASS_MAX);
+                PlantData.plants[i].biomass += PLANT_BIOMASS_PROGRESS_PD * (PlantData.plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+                PlantData.plants[i].biomass = Math.min(PlantData.plants[i].biomass, PLANT_BIOMASS_MAX);
             }
 
             // Water
-            if(plants[i].type == PlantType.WATER && plants[i].level > 0)
+            if(PlantData.plants[i].type == PlantType.WATER && PlantData.plants[i].level > 0)
             {
-                plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].water = Math.min(plants[i].water, (plants[i].level + 1) * PLANT_WATER_MAX);
+                PlantData.plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (PlantData.plants[i].level + 1) * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+                PlantData.plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+                PlantData.plants[i].water = Math.min(PlantData.plants[i].water, (PlantData.plants[i].level + 1) * PLANT_WATER_MAX);
             }
             else
             {
-                plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-                plants[i].water = Math.min(plants[i].water, PLANT_WATER_MAX);
+                PlantData.plants[i].water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+                PlantData.plants[i].water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+                PlantData.plants[i].water = Math.min(PlantData.plants[i].water, PLANT_WATER_MAX);
             }
 
             // Sunlight
-            plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-            plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
-            plants[i].sun = Math.min(plants[i].sun, PLANT_SUN_MAX);
+            PlantData.plants[i].sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+            PlantData.plants[i].sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+            PlantData.plants[i].sun = Math.min(PlantData.plants[i].sun, PLANT_SUN_MAX);
 
             // Find all the water and sun plants to apply their global effects
-            if(plants[i].sun <= 0 || plants[i].water <= 0)
+            if(PlantData.plants[i].sun <= 0 || PlantData.plants[i].water <= 0)
             {
-                plants[i].dead = true;
+                PlantData.plants[i].dead = true;
             }
             else
             {
-                if(plants[i].type == PlantType.WATER && plants[i].water > (plants[i].level + 1) * PLANT_WATER_MAX)
+                if(PlantData.plants[i].type == PlantType.WATER && PlantData.plants[i].water > PLANT_WATER_MAX)
                 {
                     surplusWaterPlants.push(plants[i]);
                 }
 
-                if(plants[i].water < PLANT_WATER_MAX)
+                if(PlantData.plants[i].water < PLANT_WATER_MAX)
                 {
-                    waterLeeches.push(plants[i]);
+                    waterLeeches.push(PlantData.plants[i]);
                 }
 
-                if(plants[i].type == PlantType.SOLAR && plants[i].level > 0)
+                if(PlantData.plants[i].type == PlantType.SOLAR && PlantData.plants[i].level > 0)
                 {
-                    sunPlantBonus += plants[i].level * PLANT_SUN_BONUS_PD;
+                    sunPlantBonus += PlantData.plants[i].level * PLANT_SUN_BONUS_PD;
                 }
 
-                if(plants[i].sun < PLANT_SUN_MAX)
+                if(PlantData.plants[i].sun < PLANT_SUN_MAX)
                 {
                     // Sun plants also benefit from their own sun bonus
-                    sunLeeches.push(plants[i]);
+                    sunLeeches.push(PlantData.plants[i]);
                 }
             }
         }
@@ -147,7 +160,7 @@ function plants_update(dt)
     // Apply water plant bonus
     if(surplusWaterPlants.length > 0 && waterLeeches.length > 0)
     {
-        var leechAmount = (waterLeeches.length * PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor) / surplusWaterPlants.length;
+        var leechAmount = (waterLeeches.length * PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor) / surplusWaterPlants.length;
 
         for(var i = 0; i < surplusWaterPlants.length; ++i)
         {
@@ -156,7 +169,7 @@ function plants_update(dt)
 
         for(var i = 0; i < waterLeeches.length; ++i)
         {
-            waterLeeches[i].water += PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor;
+            waterLeeches[i].water += PLANT_WATER_LEECH_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
             waterLeeches[i].water = Math.min(waterLeeches[i].water, PLANT_WATER_MAX);
         }
     }
@@ -164,7 +177,7 @@ function plants_update(dt)
     // Apply sun plant bonus
     if(sunPlantBonus > 0 && sunLeeches.length > 0)
     {
-        var leechAmount = (sunPlantBonus * (dt / DayConstants.secondsPerDay) * DayConstants.timeScaleFactor) / sunLeeches.length;
+        var leechAmount = (sunPlantBonus * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor) / sunLeeches.length;
 
         for(var i = 0; i < sunLeeches.length; ++i)
         {
@@ -173,51 +186,112 @@ function plants_update(dt)
         }
     }
 
+    var handled = false;
+
     if ((Input.isJustDown(Key.SPACE_BAR) || GamePad.isJustDown(0, Button.A)) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
 
         if(focusItem.seed == PLANT_SEED_MAX)
         {
-            seeds++;
+            handled = true;
+            ResourceData.seeds++;
             focusItem.seed = 0;
         }
 
         if(focusItem.biomass == PLANT_BIOMASS_MAX)
         {
-            biomass++;
+            handled = true;
+            ResourceData.biomass++;
             focusItem.biomass = 0;
         }
+    }
+
+    if(!handled)
+    {
+        var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
+        if (focus_is_plant_type(currentFocusItem.type))
+        {
+            if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
+            {
+                PlantMenuData.activeMenuPosition = currentFocusItem.itemData.position;
+                if (Input.isDown(Key.UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) && PlantMenuData.action != "level")
+                {
+                    PlantMenuData.menuSprite.play("up");
+                    PlantMenuData.action = "level";
+                }
+                else if (Input.isDown(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) && PlantMenuData.action != "destroy")
+                {
+                    PlantMenuData.menuSprite.play("bottom");
+                    PlantMenuData.action = "destroy";
+                }
+
+                if (!PlantMenuData.menuAborted && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN)))
+                {
+                    PlantMenuData.menuSprite.play("center");
+                    PlantMenuData.menuAborted = true;
+                }
+            }
+            else
+            {
+                PlantMenuData.activeMenuPosition = null;
+            }
+
+            if (PlantMenuData.menuAborted && !PlantMenuData.menuSprite.isPlaying())
+            {
+                PlantMenuData.menuAborted = false;
+                PlantMenuData.action = "none";
+            }
+
+            if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourceData.biomass > 0)
+            {
+                if(currentFocusItem.itemData.level < 3)
+                {
+                    currentFocusItem.itemData.level++;
+                    ResourceData.biomass--;
+                }
+
+                PlantMenuData.action = "none";
+            }
+        }
+        else
+        {
+            PlantMenuData.activeMenuPosition = null;
+        }
+    }
+    else
+    {
+        PlantMenuData.activeMenuPosition = null;
     }
 }
 
 function plants_render()
 {
-    for(var i = 0; i < plants.length; ++i)
+    for(var i = 0; i < PlantData.plants.length; ++i)
     {
         var color = Color.WHITE;
 
-        if(plants[i].dead)
+        if(PlantData.plants[i].dead)
         {
             color = new Color(0.2, 0.2, 0.2, 1.0);
         }
 
-        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", plants[i].type + "_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
+        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", PlantData.plants[i].type + "_level" + Math.min(PlantData.plants[i].level, 3)), new Vector2(PlantData.plants[i].position, 0.0), color);
 
-        /*if(plants[i].type == PlantType.WATER && plants[i].level < 4)
+        if(!PlantData.plants[i].dead)
         {
-            SpriteBatch.drawText(font, "" + Math.floor(plants[i].resources), new Vector2(plants[i].position, -10.0), Vector2.TOP_LEFT, new Color(0.0, 0.5, 1.0, 1.0));
-        }*/
-
-        if(!plants[i].dead)
-        {
-            SpriteBatch.drawRect(null, new Rect(plants[i].position - 8, -plants[i].water / 10, 2, plants[i].water / 10), new Color(0, 0, 1, 1));
-            SpriteBatch.drawRect(null, new Rect(plants[i].position - 11, -plants[i].sun / 10, 2, plants[i].sun / 10), new Color(0, 1, 0, 1));
+            SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 8, -PlantData.plants[i].water / 10, 2, PlantData.plants[i].water / 10), new Color(0, 0, 1, 1));
+            SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 11, -PlantData.plants[i].sun / 10, 2, PlantData.plants[i].sun / 10), new Color(0, 1, 0, 1));
         }
 
-        if(plants[i].seed == PLANT_SEED_MAX || plants[i].biomass == PLANT_BIOMASS_MAX)
+        if(PlantData.plants[i].seed == PLANT_SEED_MAX || PlantData.plants[i].biomass == PLANT_BIOMASS_MAX)
         {
-            SpriteBatch.drawRect(null, new Rect(plants[i].position, -2, 2, 2), new Color(1, 1, 1, 1));
+            SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position, -2, 2, 2), new Color(1, 1, 1, 1));
+        }
+
+        if (PlantMenuData.activeMenuPosition != null)
+        {
+            SpriteBatch.drawSpriteAnim(PlantMenuData.menuSprite, new Vector2(PlantMenuData.activeMenuPosition, -25));
         }
     }
 }

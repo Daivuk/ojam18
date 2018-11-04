@@ -1,5 +1,5 @@
 var DayConstants = new (function() {
-    this.timeScaleFactor = 2500;
+    this.timeScaleFactorDefault = 2500;
     this.secondsPerMinute = 60;
     this.minutesPerHour = 60;
     this.hoursPerDay = 24;
@@ -11,13 +11,40 @@ var DayConstants = new (function() {
 
 var DayData = new (function() {
     this.currentTimeSeconds = 6 * 60 * 60; // start at 6 am
+    this.dtMsSinceLastShift = 0;
+    this.timeScaleFactor = 2500;
 });
 
-var dayArrow = playSpriteAnim("day_arrow.json", "idle")
+var DayDataSaveProperties = [
+    "currentTimeSeconds"
+];
+
+var dayArrow = playSpriteAnim("day_arrow.json", "idle");
 
 function day_update(dtSeconds)
 {
-    DayData.currentTimeSeconds += (DayConstants.timeScaleFactor * dtSeconds);
+    DayData.timeScaleFactor = DayConstants.timeScaleFactorDefault;
+    if (Input.isDown(Key.LEFT_SHIFT))
+    {
+        if (DayData.dtMsSinceLastShift < 100)
+        {
+            DayData.timeScaleFactor = DayConstants.timeScaleFactorDefault * 8;
+        }
+        else
+        {
+            DayData.timeScaleFactor = DayConstants.timeScaleFactorDefault * 4;
+        }
+    }
+    else
+    {
+        DayData.dtMsSinceLastShift += dtSeconds * 1000;
+    }
+    if (Input.isJustUp(Key.LEFT_SHIFT))
+    {
+        DayData.dtMsSinceLastShift = 0;
+    }
+    
+    DayData.currentTimeSeconds += (DayData.timeScaleFactor * dtSeconds);
     if (DayData.currentTimeSeconds >= DayConstants.secondsPerDay)
     {
         DayData.currentTimeSeconds -= DayConstants.secondsPerDay;
