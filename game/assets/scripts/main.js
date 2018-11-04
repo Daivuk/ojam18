@@ -22,6 +22,9 @@ var boomSelect = 0.8;
 var boomAmount = 1;
 var distanceBetweenPlants = 30;
 
+var music = getMusic("Fertile_Ground_Music_v0.1h.ogg");
+music.play();
+
 // Init some crap
 weather_init();
 // for (var i = 0; i < 10; ++i)
