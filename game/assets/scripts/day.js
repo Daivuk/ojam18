@@ -51,10 +51,6 @@ function day_render()
     {
         SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get(), color);
     }
-    
-
-    // var xPos = resolution.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
-    // SpriteBatch.drawRect(null, new Rect(xPos, resolution.y - 25, 50, 50), new Color(255,255,153));
 }
 
 function day_getLightLevel()
