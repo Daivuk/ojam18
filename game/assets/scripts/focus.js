@@ -80,7 +80,7 @@ function focus_item_destroy(_type, _id)
 
 function focus_update(dt)
 {
-    if ((Input.isDown(Key.LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT)) &&  FocusData.dtMsSinceLastLeft > 150) 
+    if (input_is_left_down() &&  FocusData.dtMsSinceLastLeft > 150) 
     {
         FocusData.dtMsSinceLastLeft = 0;
         if (FocusData.currentFocusItemIndex > 0)
@@ -94,7 +94,7 @@ function focus_update(dt)
         FocusData.dtMsSinceLastLeft += dt * 1000;
     }
 
-    if ((Input.isDown(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)) &&  FocusData.dtMsSinceLastRight > 150)
+    if (input_is_right_down() &&  FocusData.dtMsSinceLastRight > 150)
     {
         if (FocusData.currentFocusItemIndex < FocusData.focusItems.length - 1)
         {

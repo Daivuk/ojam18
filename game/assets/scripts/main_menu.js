@@ -93,7 +93,7 @@ function main_menu_render()
 function main_menu_update(dt)
 {
     sunny_update(dt);
-    if(Input.isJustDown(Key.ENTER))
+    if(input_is_activation_just_down())
     {
         playSound("pickup.wav", master_volume, 0, 1.5);
         if (MainMenuData.isGameOver)

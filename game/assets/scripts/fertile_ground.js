@@ -68,36 +68,36 @@ function fertile_ground_update()
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
     if (currentFocusItem.type == FocusConstants.fertileGroundType && ResourcesData.seeds > 0)
     {
-        if (Input.isJustDown(Key.SPACE_BAR || GamePad.isDown(0, Button.A)))
+        if (input_is_activation_just_down())
         {
             FertileGroundConstants.menuSprite.play("center");
         }
 
-        if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
+        if (input_is_activation_down())
         {
             FertileGroundData.activeMenuPosition = currentFocusItem.itemData.position;
-            if ((Input.isDown(Key.UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP)) && FertileGroundData.selectedPlantType != PlantType.SEED)
+            if (input_is_up_down() && FertileGroundData.selectedPlantType != PlantType.SEED)
             {
                 FertileGroundConstants.menuSprite.play("up");
                 FertileGroundData.selectedPlantType = PlantType.SEED;
             }
-            else if ((Input.isDown(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN)) && FertileGroundData.selectedPlantType != PlantType.NORMAL)
+            else if (input_is_down_down() && FertileGroundData.selectedPlantType != PlantType.NORMAL)
             {
                 FertileGroundConstants.menuSprite.play("bottom");
                 FertileGroundData.selectedPlantType = PlantType.NORMAL;
             }
-            else if ((Input.isDown(Key.LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT)) && FertileGroundData.selectedPlantType != PlantType.WATER)
+            else if (input_is_left_down() && FertileGroundData.selectedPlantType != PlantType.WATER)
             {
                 FertileGroundConstants.menuSprite.play("left");
                 FertileGroundData.selectedPlantType = PlantType.WATER;
             }
-            else if ((Input.isDown(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)) && FertileGroundData.selectedPlantType != PlantType.SOLAR)
+            else if (input_is_right_down() && FertileGroundData.selectedPlantType != PlantType.SOLAR)
             {
                 FertileGroundConstants.menuSprite.play("right");
                 FertileGroundData.selectedPlantType = PlantType.SOLAR;
             }
 
-            if (!FertileGroundData.plantingAborted && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || Input.isJustUp(Key.LEFT) || Input.isJustUp(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)))
+            if (!FertileGroundData.plantingAborted && input_is_any_direction_just_up())
             {
                 FertileGroundConstants.menuSprite.play("center");
                 FertileGroundData.plantingAborted = true;
@@ -118,7 +118,7 @@ function fertile_ground_update()
             FertileGroundData.selectedPlantType = null;
         }
 
-        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourcesData.seeds > 0)
+        if(FertileGroundData.selectedPlantType && input_is_activation_just_up() && ResourcesData.seeds > 0)
         {
             // playSound("");
 

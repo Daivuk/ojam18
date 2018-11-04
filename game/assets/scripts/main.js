@@ -139,11 +139,11 @@ function update(dt)
         transformUI = Matrix.createScale(1.0 / uiscale);
         invTransformUI = transformUI.invert();
 
-        if (Input.isJustDown(Key.S))
+        if (Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.S))
         {
             save();
         }
-        else if(Input.isJustDown(Key.L))
+        else if(Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.L))
         {
             load();
         }
