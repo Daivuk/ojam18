@@ -24,6 +24,8 @@ var zoomTarget = 8.0;
 var zoomTargetOffset = 0;
 var zoomFast = 0;
 var wind = 0;
+var uiFade = 0;
+
 var master_volume = 0.5;
 
 // Resources
