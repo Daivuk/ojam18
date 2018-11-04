@@ -162,6 +162,7 @@ function update(dt)
         plants_update(dt);
     }
     weather_updateActive(dt);
+    butterfly_update(dt);
 }
 
 function postProcess()
@@ -229,7 +230,11 @@ function renderWorld()
     plantVSShader.setNumber("wind", wind);
     Renderer.setVertexShader(plantVSShader);
     plants_render();
+    SpriteBatch.end();
 
+    SpriteBatch.begin(transform);
+    Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+    butterfly_render();
     SpriteBatch.end();
 
     renderGameUI();
