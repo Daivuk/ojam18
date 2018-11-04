@@ -252,6 +252,11 @@ function plants_update(dt)
         var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
         if (focus_is_plant_type(currentFocusItem.type))
         {
+            if (Input.isJustDown(Key.SPACE_BAR || GamePad.isDown(0, Button.A)))
+            {
+                PlantMenuData.menuSprite.play("center");
+            }
+
             if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
             {
                 PlantMenuData.activeMenuPosition = currentFocusItem.itemData.position;

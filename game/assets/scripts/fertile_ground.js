@@ -63,6 +63,11 @@ function fertile_ground_update()
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
     if (currentFocusItem.type == FocusConstants.fertileGroundType)
     {
+        if (Input.isJustDown(Key.SPACE_BAR || GamePad.isDown(0, Button.A)))
+        {
+            FertileGroundConstants.menuSprite.play("center");
+        }
+
         if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
         {
             FertileGroundData.activeMenuPosition = currentFocusItem.itemData.position;
