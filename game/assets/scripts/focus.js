@@ -7,12 +7,14 @@ var FocusConstants = new (function() {
     // TODO: Change to a different asset?
     this.focusArrow = playSpriteAnim("day_arrow.json", "idle");
     this.focusArrowYPositions = [
-        -15, // plantTypeLevel0
-        -22, // plantTypeLevel1
-        -35, // plantTypeLevel2
-        -45, // plantTypeLevel3
-        -5, // fertileGroundType
+        -20, // plantTypeLevel0
+        -29, // plantTypeLevel1
+        -39, // plantTypeLevel2
+        -48, // plantTypeLevel3
+        -6, // fertileGroundType
     ];
+    this.focusAnim = new NumberAnim(-1);
+    this.focusAnim.playSingle(-1, 1, 1, Tween.EASE_BOTH, Loop.PING_PONG_LOOP);
 });
 
 var FocusData = new (function() {
@@ -125,7 +127,10 @@ function focus_render()
 
     }
     currentFocusItem.type = focusType;
-    SpriteBatch.drawSpriteAnim(dayArrow, new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType]));
+
+    if (!FertileGroundData.activeMenuPosition)
+        SpriteBatch.drawSpriteAnim(dayArrow, new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType] +
+            FocusConstants.focusAnim.get() * 1));
 }
 
 function focus_is_plant_type(type)

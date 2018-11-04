@@ -83,10 +83,14 @@ function fertile_ground_update()
                 FertileGroundConstants.menuSprite.play("center");
                 FertileGroundData.plantingAborted = true;
             }
+
+            zoomFast = 1;
+            zoomTargetOffset = 2;
         }
         else
         {
             FertileGroundData.activeMenuPosition = null;
+            zoomTargetOffset = 0;
         }
 
         if (FertileGroundData.plantingAborted && !FertileGroundConstants.menuSprite.isPlaying())
@@ -145,6 +149,6 @@ function fertile_ground_render()
 
     if (FertileGroundData.activeMenuPosition != null)
     {
-        SpriteBatch.drawSpriteAnim(FertileGroundConstants.menuSprite, new Vector2(FertileGroundData.activeMenuPosition, -25));
+        SpriteBatch.drawSpriteAnim(FertileGroundConstants.menuSprite, new Vector2(FertileGroundData.activeMenuPosition, -15), Color.WHITE, 0, 0.5);
     }
 }

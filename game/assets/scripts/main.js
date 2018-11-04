@@ -19,6 +19,10 @@ var invTrasform; // In case we need mouse picking shit
 var transformUI;
 var invTransformUI;
 var resolutionUI;
+var zoom = 16.0;
+var zoomTarget = 8.0;
+var zoomTargetOffset = 0;
+var zoomFast = 0;
 
 // Resources
 var worldRT = Texture.createScreenRenderTarget();
@@ -131,10 +135,17 @@ function update(dt)
 
     // Move camera...
     cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
-    cameraX = cameraX + (cameraTargetX - cameraX) * 10 * dt;
+    cameraX = cameraX + (cameraTargetX - cameraX) * 5 * dt;
 
     // Update world matrix
-    var scale = 8.0;
+    var zoomSpeed = 1;
+    if (zoomFast > 0)
+    {
+        zoomFast -= dt;
+        zoomSpeed = 4;
+    }
+    zoom = zoom + ((zoomTarget + zoomTargetOffset) - zoom) * zoomSpeed * dt;
+    var scale = zoom;
 
     transform = Matrix.IDENTITY;
     transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
