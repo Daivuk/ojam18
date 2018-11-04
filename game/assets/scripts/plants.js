@@ -55,6 +55,12 @@ function plant_load()
     PlantData.plants.forEach(function(plant){
         focus_item_create(FocusConstants.plantTypeLevel0, plant.id, plant);
     });
+
+    // Need to re-create the sprites as they can't be saved
+    PlantData.plants.forEach(function(plant) {
+        plant.waterBar = playSpriteAnim("bars.json", "water4");
+        plant.sunBar = playSpriteAnim("bars.json", "sun4");
+    });
 }
 
 function plant_create(_position, _type)
@@ -118,6 +124,11 @@ function plant_destroy(_plant)
             plantIndex = i;
             break;
         }
+    }
+
+    if (!_plant.dead)
+    {
+        ResourcesData.seeds++;
     }
 
     if(plantIndex != -1)
@@ -327,7 +338,7 @@ function plants_update(dt)
     var handled = false;
     var updateMsSinceLastConsume = true;
     // Consume dropped resource
-    if ((Input.isJustDown(Key.SPACE_BAR) || GamePad.isJustDown(0, Button.A)) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
+    if (input_is_activation_just_down && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
         if(focusItem.seed == PLANT_SEED_MAX)
@@ -371,26 +382,26 @@ function plants_update(dt)
         var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
         if (focus_is_plant_type(currentFocusItem.type))
         {
-            if (Input.isJustDown(Key.SPACE_BAR || GamePad.isDown(0, Button.A)))
+            if (input_is_activation_just_up())
             {
                 PlantMenuData.menuSprite.play("center");
             }
 
-            if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
+            if (input_is_activation_down())
             {
                 PlantMenuData.activeMenuPosition = currentFocusItem.itemData.position;
-                if ((Input.isDown(Key.UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP)) && PlantMenuData.action != "level")
+                if (input_is_up_down() && PlantMenuData.action != "level")
                 {
                     PlantMenuData.menuSprite.play("up");
                     PlantMenuData.action = "level";
                 }
-                else if ((Input.isDown(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN)) && PlantMenuData.action != "destroy")
+                else if (input_is_down_down() && PlantMenuData.action != "destroy")
                 {
                     PlantMenuData.menuSprite.play("bottom");
                     PlantMenuData.action = "destroy";
                 }
 
-                if (!PlantMenuData.menuAborted && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN)))
+                if (!PlantMenuData.menuAborted && input_is_vertical_direction_just_up())
                 {
                     PlantMenuData.menuSprite.play("center");
                     PlantMenuData.menuAborted = true;
@@ -411,7 +422,7 @@ function plants_update(dt)
                 PlantMenuData.action = "none";
             }
 
-            if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
+            if(PlantMenuData.action == "level" && input_is_activation_just_up())
             {
                 if(currentFocusItem.itemData.level < 3 && ResourcesData.biomass > 0 && !currentFocusItem.itemData.dead)
                 {
@@ -422,7 +433,7 @@ function plants_update(dt)
                 PlantMenuData.action = "none";
             }
 
-            if(PlantMenuData.action == "destroy" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
+            if(PlantMenuData.action == "destroy" && input_is_activation_just_up())
             {
                 plant_destroy(currentFocusItem.itemData);
 

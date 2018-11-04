@@ -28,7 +28,7 @@ function main_menu_render()
 
 function main_menu_update(dt)
 {
-    if(Input.isJustDown(Key.ENTER))
+    if(input_is_activation_just_down())
     {
         if (MainMenuData.isGameOver)
         {
