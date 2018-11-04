@@ -3,7 +3,7 @@ var sunRays = [];
 var RAYS_COUNT = 20;
 var RAYS_TIME = 8;
 var STARS_INTENSITY = 2;
-var RAYS_INTENSITY = .5;
+var RAYS_INTENSITY = 1;
 
 function create_ray()
 {
