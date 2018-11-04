@@ -265,6 +265,7 @@ function renderGameUI()
     Renderer.setFilterMode(FilterMode.NEAREST);
     day_render();
     resources_render();
+    iceage_render();
     SpriteBatch.end();
 }
 
