@@ -84,14 +84,14 @@ function day_render()
         SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get(), color.mul(droppingCard.alphaAnim.get()));
     }
 
-    if (DayData.timeScaleFactor >= DayConstants.timeScaleFactorDefault * 4)
-    {
-        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(10, 10));
-    }
-
     if (DayData.timeScaleFactor >= DayConstants.timeScaleFactorDefault * 8)
     {
-        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(22, 10));
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2 - 6, 30));
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2 + 6, 30));
+    }
+    else if (DayData.timeScaleFactor >= DayConstants.timeScaleFactorDefault * 4)
+    {
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2, 30));
     }
 }
 

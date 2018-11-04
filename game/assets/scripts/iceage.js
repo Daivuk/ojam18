@@ -1,3 +1,5 @@
+var iceageTexture = getTexture("iceage.png");
+
 function iceage_reset_data()
 {
     return {
@@ -37,11 +39,14 @@ function iceage_update(dt)
 
 function iceage_render()
 {
-    var xRenderPos = 0;
-    var yRenderpos = 25;
-    var renderWidth = 50;
+    var xRenderPos = 2;
+    var yRenderPos = 30;
+    var renderWidth = 56 - 2;
 
-    SpriteBatch.drawRect(null, new Rect(xRenderPos, yRenderpos + 4.0, renderWidth, 2.0), Color.WHITE);
+    SpriteBatch.drawSprite(iceageTexture, new Vector2(xRenderPos, yRenderPos), Color.WHITE, 0, 2, Vector2.LEFT);
 
-    SpriteBatch.drawRect(null, new Rect(xRenderPos + (renderWidth - (renderWidth * (IceageData.daysToIceage / IceageData.startingDaysToIceage))), yRenderpos, 2.0, 10.0), Color.WHITE);
+    // SpriteBatch.drawRect(null, new Rect(xRenderPos, yRenderPos + 4.0, renderWidth, 2.0), Color.WHITE);
+
+    var percent = (IceageData.daysToIceage / IceageData.startingDaysToIceage);
+    SpriteBatch.drawRect(null, new Rect(4 + xRenderPos + (renderWidth - (renderWidth * percent)), yRenderPos - 4, 2.0, 10.0), Color.WHITE);
 }
