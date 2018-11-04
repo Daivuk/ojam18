@@ -89,6 +89,17 @@ function fertile_ground_update()
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
             seeds--;
             FertileGroundData.selectedPlantType = null;
+
+            var newPosition;
+            if (currentFocusItem.itemData.position > 0)
+            {
+                newPosition = currentFocusItem.itemData.position + distanceBetweenPlants;     
+            }
+            else
+            {
+                newPosition = currentFocusItem.itemData.position - distanceBetweenPlants;
+            }
+            fertile_ground_create(newPosition);
         }
         
     }

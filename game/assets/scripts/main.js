@@ -20,6 +20,7 @@ var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
 var font = getFont("font.fnt");
 var boomSelect = 0.8;
 var boomAmount = 1;
+var distanceBetweenPlants = 30;
 
 // Init some crap
 weather_init();
@@ -35,8 +36,8 @@ weather_init();
 // }
 
 plant_create(0, PlantType.SEED);
-fertile_ground_create(-30)
-fertile_ground_create(30)
+fertile_ground_create(-distanceBetweenPlants)
+fertile_ground_create(distanceBetweenPlants)
 
 function update(dt)
 {
