@@ -47,9 +47,7 @@ music.play();
 weather_init();
 
 var ppp = null;
-plant_create(0, PlantType.SEED);
-fertile_ground_create(-distanceBetweenPlants);
-fertile_ground_create(distanceBetweenPlants);
+init_plants();
 
 var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resource"];
 
@@ -163,6 +161,12 @@ function update(dt)
         {
             day_update(dt);
             plants_update(dt);
+
+            // plant_update can trigger game over
+            if (MainMenuData.isDisplaying)
+            {
+                return;
+            }
         }
         weather_updateActive(dt);
         butterfly_update(dt);
@@ -285,4 +289,25 @@ function render()
 function renderUI()
 {
     debug_renderUI();
+}
+
+function init_plants()
+{
+    plant_create(0, PlantType.SEED);
+    fertile_ground_create(-distanceBetweenPlants);
+    fertile_ground_create(distanceBetweenPlants);
+}
+
+function reset_game()
+{
+    saveLoadTypes.forEach(function(type) {
+        // Custom Save
+        var resetFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_reset_data"];
+        if (typeof resetFunction === "function")
+        {
+            global[type + "Data"] = resetFunction();
+        }
+    });
+    weather_init();
+    init_plants();
 }

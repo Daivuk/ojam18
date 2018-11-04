@@ -25,11 +25,16 @@ var PlantType = {
     SEED: "seed"
 }
 
-var PlantData = {
-    plants : [],
-    globalId: 0,
-    dtMsSinceLastConsume: 0
+function plant_reset_data()
+{
+    return {
+        plants : [],
+        globalId: 0,
+        dtMsSinceLastConsume: 0
+    }
 }
+
+var PlantData = plant_reset_data();
 
 var PlantDataSaveProperties = [
     "plants",
@@ -151,6 +156,7 @@ function plants_update(dt)
     var sunLeeches = [];
     var sunPlantBonus = 0;
 
+    var alivePlantsCount = 0;
     for(var i = 0; i < PlantData.plants.length; ++i)
     {
         var plant = PlantData.plants[i];
@@ -214,6 +220,8 @@ function plants_update(dt)
             plant.sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
             plant.sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
             plant.sun = Math.min(plant.sun, PLANT_SUN_MAX);
+
+            alivePlantsCount++;
         }
 
         // Find all the water and sun plants to apply their global effects
@@ -280,6 +288,11 @@ function plants_update(dt)
             if (sunPercent > 0 && sunLevel === 0) sunLevel = 1;
             plant.sunBar.play("sun" + sunLevel);
         }
+    }
+
+    if (alivePlantsCount == 0 && ResourceData.seeds == 0)
+    {
+        main_menu_show(true);
     }
 
     // Apply water plant bonus

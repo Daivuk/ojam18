@@ -3,12 +3,17 @@ var ResourceConstants = {
     biomassSprite: playSpriteAnim("icons.json", "bio")
 }
 
-var ResourceData = {
-    seeds: 1,
-    biomass: 1,
-    seedsBounceAnim: new NumberAnim(0),
-    biomassBounceAnim: new NumberAnim(0)
+function resources_reset_data()
+{
+    return {
+        seeds: 1,
+        biomass: 1,
+        seedsBounceAnim: new NumberAnim(0),
+        biomassBounceAnim: new NumberAnim(0)
+    }
 }
+
+var ResourceData = resources_reset_data();
 
 var ResourceDataSaveProperties = [
     "seeds",

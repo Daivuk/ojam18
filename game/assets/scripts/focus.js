@@ -17,12 +17,17 @@ var FocusConstants = new (function() {
     this.focusAnim.playSingle(-1, 1, 1, Tween.EASE_BOTH, Loop.PING_PONG_LOOP);
 });
 
-var FocusData = new (function() {
-    this.focusItems = [];
-    this.currentFocusItemIndex = null;
-    this.dtMsSinceLastLeft = 0;
-    this.dtMsSinceLastRight = 0;
-});
+function focus_reset_data()
+{
+    return new (function() {
+        this.focusItems = [];
+        this.currentFocusItemIndex = null;
+        this.dtMsSinceLastLeft = 0;
+        this.dtMsSinceLastRight = 0;
+    });
+}
+
+var FocusData = focus_reset_data();
 
 var FocusDataSaveProperties = [
     "currentFocusItemIndex"

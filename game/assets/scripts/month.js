@@ -15,9 +15,14 @@ var MonthConstants = new (function() {
     this.december = 11;
 });
 
-var MonthData = new (function() {
-    this.currentDay = 20;
-});
+function month_reset_data()
+{
+    return new (function() {
+        this.currentDay = 20;
+    });
+}
+
+var MonthData = month_reset_data();
 
 var MonthDataSaveProperties = [
     "currentDay"

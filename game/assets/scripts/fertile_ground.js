@@ -1,11 +1,16 @@
 
-var FertileGroundData = {
-    grounds: [],
-    globalId: 0,
-    activeMenuPosition: null,
-    selectedPlantType: null,
-    plantingAborted: false
-};
+function fertile_ground_reset_data()
+{
+    return {
+        grounds: [],
+        globalId: 0,
+        activeMenuPosition: null,
+        selectedPlantType: null,
+        plantingAborted: false
+    };
+}
+
+var FertileGroundData = fertile_ground_reset_data();
 
 var FertileGroundDataSaveProperties = [
     "grounds",
