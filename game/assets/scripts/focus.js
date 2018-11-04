@@ -152,12 +152,15 @@ function focus_render()
     }
     currentFocusItem.type = focusType;
 
-    var arrowPosition = new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType] +
-        FocusConstants.focusAnim.get() * 1);
-    SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition);
-    if (focus_is_plant_type(currentFocusItem.type))
+    if (!FertileGroundData.activeMenuPosition)
     {
-        SpriteBatch.drawSpriteAnim(FocusConstants.typeIcon, new Vector2(arrowPosition.x, arrowPosition.y - 10));
+        var arrowPosition = new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType] +
+            FocusConstants.focusAnim.get() * 1);
+        SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition);
+        if (focus_is_plant_type(currentFocusItem.type))
+        {
+            SpriteBatch.drawSpriteAnim(FocusConstants.typeIcon, new Vector2(arrowPosition.x, arrowPosition.y - 10));
+        }
     }
 }
 
