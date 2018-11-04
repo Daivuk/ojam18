@@ -66,7 +66,7 @@ function fertile_ground_destroy(_position)
 function fertile_ground_update()
 {
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
-    if (currentFocusItem.type == FocusConstants.fertileGroundType && ResourceData.seeds > 0)
+    if (currentFocusItem.type == FocusConstants.fertileGroundType && ResourcesData.seeds > 0)
     {
         if (Input.isJustDown(Key.SPACE_BAR || GamePad.isDown(0, Button.A)))
         {
@@ -118,11 +118,11 @@ function fertile_ground_update()
             FertileGroundData.selectedPlantType = null;
         }
 
-        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourceData.seeds > 0)
+        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourcesData.seeds > 0)
         {
             fertile_ground_destroy(currentFocusItem.itemData.position);
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
-            ResourceData.seeds--;
+            ResourcesData.seeds--;
             FertileGroundData.selectedPlantType = null;
             
             var shouldFixFocus = false;
