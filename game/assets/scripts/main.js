@@ -43,18 +43,11 @@ music.play();
 
 // Init some crap
 weather_init();
-// for (var i = 0; i < 10; ++i)
-// {
-//     switch (Random.randInt(0, 4))
-//     {
-//         case 0: plant_create(i * 30, PlantType.SEED); break;
-//         case 1: plant_create(i * 30, PlantType.SOLAR); break;
-//         case 2: plant_create(i * 30, PlantType.WATER); break;
-//         case 3: plant_create(i * 30, PlantType.NORMAL); break;
-//     }
-// }
 
 plant_create(0, PlantType.SEED);
+// plant_create(distanceBetweenPlants, PlantType.SOLAR);
+// plant_create(distanceBetweenPlants * 2, PlantType.WATER);
+// plant_create(distanceBetweenPlants * 3, PlantType.NORMAL);
 fertile_ground_create(-distanceBetweenPlants);
 fertile_ground_create(distanceBetweenPlants);
 
