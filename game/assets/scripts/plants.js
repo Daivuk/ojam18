@@ -15,10 +15,10 @@ var PLANT_WATER_LEECH_PD = 50;
 
 var PLANT_SUN_USAGE_PD = 50;
 var PLANT_SUN_ABSORB_PD = 100;
-var PLANT_SUN_BONUS_PD = 20;
+var PLANT_SUN_BONUS_PD = 25;
 
 var PLANT_SEED_PROGRESS_PD = 50;
-var PLANT_BIOMASS_PROGRESS_PD = 50;
+var PLANT_BIOMASS_PROGRESS_PD = 100;
 
 var PlantType = {
     NORMAL: "normal",
@@ -66,6 +66,8 @@ function plant_age(_plant, _amount)
     {
         return;
     }
+
+    _plant.age += (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
 
     if(_plant.age > PLANT_MAX_LIFE_DAYS)
     {
@@ -127,7 +129,7 @@ function plants_update(dt)
             }
             else
             {
-                if(plants[i].type == PlantType.WATER && plants[i].water > (plants[i].level + 1) * PLANT_WATER_MAX)
+                if(plants[i].type == PlantType.WATER && plants[i].water > PLANT_WATER_MAX)
                 {
                     surplusWaterPlants.push(plants[i]);
                 }
