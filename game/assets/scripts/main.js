@@ -238,6 +238,7 @@ function renderWorld()
 
     SpriteBatch.begin(transform);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+    plants_renderAction();
     butterfly_render();
     SpriteBatch.end();
 
