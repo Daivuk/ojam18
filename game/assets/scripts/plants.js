@@ -6,14 +6,16 @@ var PLANT_BIOMASS_MAX = 100;
 var PLANT_MAX_LIFE_DAYS = 5.0;
 
 // PD = Per Day
+// PL = Per Level
 
 var PLANT_WATER_USAGE_PD = 50;
 var PLANT_WATER_ABSORB_PD = 100;
+var PLANT_WATER_ADDITIONAL_ABSORB_PL_PD = 75;
 var PLANT_WATER_LEECH_PD = 50;
 
 var PLANT_SUN_USAGE_PD = 50;
 var PLANT_SUN_ABSORB_PD = 100;
-var PLANT_SUN_BONUS_PD = 25;
+var PLANT_SUN_BONUS_PD = 40;
 
 var PLANT_SEED_PROGRESS_PD = 50;
 var PLANT_BIOMASS_PROGRESS_PD = 100;
@@ -218,7 +220,7 @@ function plants_update(dt)
             // Water
             if(plant.type == PlantType.WATER && plant.level > 0)
             {
-                plant.water += PLANT_WATER_ABSORB_PD * weather_getWaterMultiplier() * (plant.level + 1) * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
+                plant.water += PLANT_WATER_ADDITIONAL_ABSORB_PL_PD * weather_getWaterMultiplier() * (plant.level + 1) * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
                 plant.water -= PLANT_WATER_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
                 plant.water = Math.min(plant.water, (plant.level + 1) * PLANT_WATER_MAX);
             }
