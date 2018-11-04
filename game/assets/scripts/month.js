@@ -19,6 +19,10 @@ var MonthData = new (function() {
     this.currentDay = 20;
 });
 
+var MonthDataSaveProperties = [
+    "currentDay"
+];
+
 function month_update(dtDays)
 {
     MonthData.currentDay += dtDays;

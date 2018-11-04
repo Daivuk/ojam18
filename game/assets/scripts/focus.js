@@ -22,6 +22,11 @@ var FocusData = new (function() {
     this.dtMsSinceLastRight = 0;
 });
 
+var FocusDataSaveProperties = [
+    "focusItems",
+    "currentFocusItemIndex"
+];
+
 function focus_item_create(_type, _id, _itemData)
 {
     var focusItem = {

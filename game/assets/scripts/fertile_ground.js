@@ -7,6 +7,11 @@ var FertileGroundData = {
     plantingAborted: false
 };
 
+var FertileGroundDataSaveProperties = [
+    "grounds",
+    "globalId"
+];
+
 var FertileGroundConstants = {
     menuSprite: playSpriteAnim("seeding_ui.json", "center")
 }
@@ -90,11 +95,11 @@ function fertile_ground_update()
             FertileGroundData.selectedPlantType = null;
         }
 
-        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && seeds > 0)
+        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourceData.seeds > 0)
         {
             fertile_ground_destroy(currentFocusItem.itemData.position);
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
-            seeds--;
+            ResourceData.seeds--;
             FertileGroundData.selectedPlantType = null;
             
             var shouldFixFocus = false;
