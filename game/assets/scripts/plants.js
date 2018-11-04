@@ -278,6 +278,11 @@ function plants_update(dt)
         var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
         if (focus_is_plant_type(currentFocusItem.type))
         {
+            if (Input.isJustDown(Key.SPACE_BAR || GamePad.isDown(0, Button.A)))
+            {
+                PlantMenuData.menuSprite.play("center");
+            }
+
             if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
             {
                 PlantMenuData.activeMenuPosition = currentFocusItem.itemData.position;
@@ -313,9 +318,9 @@ function plants_update(dt)
                 PlantMenuData.action = "none";
             }
 
-            if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourceData.biomass > 0)
+            if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
             {
-                if(currentFocusItem.itemData.level < 3)
+                if(currentFocusItem.itemData.level < 3 && ResourceData.biomass > 0 && !currentFocusItem.itemData.dead)
                 {
                     currentFocusItem.itemData.level++;
                     ResourceData.biomass--;

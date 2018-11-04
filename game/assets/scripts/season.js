@@ -137,8 +137,3 @@ function season_update(dtMonths)
         SeasonData.currentMonth += dtMonths;
     }
 }
-
-function season_render()
-{
-    SpriteBatch.drawText(font, SeasonConstants.seasons[season_get_current_season_index()], new Vector2(0, 30), new Vector2(), new Color());
-}

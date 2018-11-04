@@ -259,8 +259,6 @@ function renderGameUI()
     SpriteBatch.begin(transformUI);
     Renderer.setFilterMode(FilterMode.NEAREST);
     day_render();
-    month_render();
-    season_render();
     resources_render();
     SpriteBatch.end();
 }

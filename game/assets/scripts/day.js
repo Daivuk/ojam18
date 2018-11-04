@@ -7,12 +7,14 @@ var DayConstants = new (function() {
     this.weatherIconSize = new Vector2(21, 15);
     this.dayArrowSize = new Vector2(7, 4);
     this.daysToDisplay = 5;
+    this.weatherUISize = new Vector2(this.weatherIconSize.x * this.daysToDisplay, this.weatherIconSize.y);
 });
 
 var DayData = new (function() {
     this.currentTimeSeconds = 6 * 60 * 60; // start at 6 am
     this.dtMsSinceLastShift = 0;
     this.timeScaleFactor = 2500;
+    this.weatherUIPosition = new Vector2();
 });
 
 var DayDataSaveProperties = [
@@ -61,6 +63,7 @@ function day_render()
 
     var weatherPositionShift = DayConstants.weatherIconSize.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
     var weatherPosition = new Vector2(arrowPosition.x - weatherPositionShift, arrowPosition.y + DayConstants.dayArrowSize.y + 2);
+    DayData.weatherUIPosition = weatherPosition;
 
     var color = new Color(.75, .75, .75, 1);
 
