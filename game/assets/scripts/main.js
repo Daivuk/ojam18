@@ -25,6 +25,7 @@ var zoomTargetOffset = 0;
 var zoomFast = 0;
 var wind = 0;
 var master_volume = 0.7;
+Input.setMouseVisible(false);
 
 // Resources
 var worldRT = Texture.createScreenRenderTarget();
@@ -165,6 +166,7 @@ function update(dt)
         updateHSV(dt);
 
         debug_update(dt); // Debug menu
+        Input.setMouseVisible(showDebug)
         if (!showDebug)
         {
             day_update(dt);
