@@ -32,8 +32,3 @@ function month_update(dtDays)
        season_update(1);
    }
 }
-
-function month_render()
-{
-    SpriteBatch.drawText(font, MonthConstants.months[SeasonData.currentMonth], new Vector2(0, 15), new Vector2(), new Color());
-}
