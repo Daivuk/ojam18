@@ -98,6 +98,47 @@ function plant_make_dead(_plant)
     focus_set_current_focus_index(FocusData.currentFocusItemIndex);
 }
 
+function plant_destroy(_plant)
+{
+    var plantIndex = -1;
+
+    for(var i = 0; i < PlantData.plants.length; ++i)
+    {
+        if(PlantData.plants[i].id == _plant.id)
+        {
+            plantIndex = i;
+            break;
+        }
+    }
+
+    if(plantIndex != -1)
+    {
+        PlantData.plants.splice(plantIndex, 1);
+
+        var focusType = FocusConstants.plantTypeLevel0;
+
+        switch(_plant.level)
+        {
+            case 1:
+                focusType = FocusConstants.plantTypeLevel1;
+                break;
+
+            case 2:
+                focusType = FocusConstants.plantTypeLevel2;
+                break;
+
+            case 3:
+                focusType = FocusConstants.plantTypeLevel3;
+                break;
+        }
+
+        
+        focus_item_destroy(focusType, _plant.id);
+
+        fertile_ground_create(_plant.position);
+    }
+}
+
 function plants_update(dt)
 {
     var waterLeeches = [];
@@ -294,6 +335,13 @@ function plants_update(dt)
                     currentFocusItem.itemData.level++;
                     ResourceData.biomass--;
                 }
+
+                PlantMenuData.action = "none";
+            }
+
+            if(PlantMenuData.action == "destroy" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
+            {
+                plant_destroy(currentFocusItem.itemData);
 
                 PlantMenuData.action = "none";
             }

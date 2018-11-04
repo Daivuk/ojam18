@@ -121,7 +121,7 @@ function debug_renderUI()
             {
                 var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
 
-                if(focusItem.level < 4)
+                if(focusItem.level < 3)
                 {
                     focusItem.level++;
                 }
