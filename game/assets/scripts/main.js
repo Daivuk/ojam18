@@ -23,6 +23,7 @@ var zoom = 16.0;
 var zoomTarget = 8.0;
 var zoomTargetOffset = 0;
 var zoomFast = 0;
+var wind = 0;
 
 // Resources
 var worldRT = Texture.createScreenRenderTarget();
@@ -30,6 +31,7 @@ var screenRT = Texture.createScreenRenderTarget();
 var bloomRT = Texture.createScreenRenderTarget();
 var worldShader = getShader("world.ps");
 var bloomSelectShader = getShader("bloomSelect.ps");
+var plantVSShader = getShader("plant.vs");
 var whiteData = new Uint32Array(1);
 whiteData[0] = 0xFFFFFFFF;
 var whiteTexture = Texture.createFromData(whiteData, Vector2.ONE);
@@ -105,12 +107,14 @@ function update(dt)
 {
     resolution = Renderer.getResolution();
 
+    wind += dt;
+
     // Move camera...
     cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
     cameraX = cameraX + (cameraTargetX - cameraX) * 3 * dt;
 
     // Update world matrix
-    zoomTarget = 8.6 - FocusData.focusItems.length * 0.2;
+    zoomTarget = Math.max(4.6, 8.6 - FocusData.focusItems.length * 0.2);
     var zoomSpeed = 1;
     if (zoomFast > 0)
     {
@@ -158,6 +162,7 @@ function update(dt)
         plants_update(dt);
     }
     weather_updateActive(dt);
+    butterfly_update(dt);
 }
 
 function postProcess()
@@ -212,15 +217,24 @@ function renderWorld()
 
     // Ground
     var worldWidth = FocusData.focusItems.length * (distanceBetweenPlants + 50);
-    SpriteBatch.drawRect(null, new Rect(-(worldWidth / 2), 0, worldWidth, 2000), new Color(0, 0, 1));
+    SpriteBatch.drawRect(null, new Rect(-(worldWidth / 2) - 1000, 0, worldWidth + 2000, 2000), new Color(0, 0, 1));
 
     fertile_ground_render();
 
     focus_render();
+    SpriteBatch.end();
 
     // Plants
+    SpriteBatch.begin(transform);
+    Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+    plantVSShader.setNumber("wind", wind);
+    Renderer.setVertexShader(plantVSShader);
     plants_render();
+    SpriteBatch.end();
 
+    SpriteBatch.begin(transform);
+    Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+    butterfly_render();
     SpriteBatch.end();
 
     renderGameUI();
