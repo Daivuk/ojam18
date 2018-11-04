@@ -292,9 +292,9 @@ function plants_update(dt)
                 PlantMenuData.action = "none";
             }
 
-            if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourceData.biomass > 0)
+            if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
             {
-                if(currentFocusItem.itemData.level < 3)
+                if(currentFocusItem.itemData.level < 3 && ResourceData.biomass > 0 && !currentFocusItem.itemData.dead)
                 {
                     currentFocusItem.itemData.level++;
                     ResourceData.biomass--;
