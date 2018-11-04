@@ -136,7 +136,7 @@ function plants_update(dt)
             {
                 if(PlantData.plants[i].type == PlantType.WATER && PlantData.plants[i].water > PLANT_WATER_MAX)
                 {
-                    surplusWaterPlants.push(plants[i]);
+                    surplusWaterPlants.push(PlantData.plants[i]);
                 }
 
                 if(PlantData.plants[i].water < PLANT_WATER_MAX)
