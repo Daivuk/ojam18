@@ -3,17 +3,14 @@ var lightning = {
     anim: new NumberAnim(0)
 };
 
-function lightning_init()
-{
+function lightning_init() {
 
 }
 
-function lightning_update(dt)
-{
+function lightning_update(dt) {
     lightning.timeTilNext -= dt;
-    if (lightning.timeTilNext <= 0)
-    {
-        playSound("thunder.wav", master_volume);
+    if (lightning.timeTilNext <= 0) {
+        playSound("thunder.wav", master_volume * 0.4);
         lightning.timeTilNext = Random.randNumber(3, 6);
         lightning.anim.stop();
         lightning.anim.set(0);
@@ -27,13 +24,11 @@ function lightning_update(dt)
     }
 
     var val = lightning.anim.get();
-    if (val > 0)
-    {
+    if (val > 0) {
         RGB.r = new Vector3(val);
     }
 }
 
-function lightning_render()
-{
+function lightning_render() {
 
 }

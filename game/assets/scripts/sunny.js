@@ -45,7 +45,7 @@ function sunny_render()
     var t = day_getLightLevel();
     if (t > 0)
     {
-        PrimitiveBatch.begin(PrimitiveMode.TRIANGLE_LIST, null, transform);
+        PrimitiveBatch.begin(PrimitiveMode.TRIANGLE_LIST, null, transformWeather);
         Renderer.setBlendMode(BlendMode.ADD);
 
         for (var i = 0; i < sunRays.length; ++i)
@@ -70,14 +70,14 @@ function sunny_render()
 
         PrimitiveBatch.end();
         
-        SpriteBatch.begin(transform);
+        SpriteBatch.begin(transformWeather);
         Renderer.setBlendMode(BlendMode.ADD);
         SpriteBatch.end();
     }
     if (t < 1)
     {
         t = 1 - t;
-        SpriteBatch.begin(transform);
+        SpriteBatch.begin(transformWeather);
         Renderer.setBlendMode(BlendMode.ADD);
 
         for (var i = 0; i < sunRays.length; ++i)

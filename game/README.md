@@ -2,10 +2,11 @@
 Game made for the Ottawa Game Jam 2018
 
 ## Credits
-- Mathieu-André Chiasson (Code)
+- Josh Halmo (Code)
 - Pierre Proulx (Music)
 - David St-Louis (Art)
 - Sean Sullivan (Code)
+- Sound Kamera (audio)
 
 ## Tools
 - [onut - Oak Nut Engine](https://github.com/Daivuk/onut)

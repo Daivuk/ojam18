@@ -17,7 +17,7 @@ resizableWindow = true
 fullscreen = false
 
 # Fixed step update. Games where simulation or physic is important should use that
-fixedStep = true
+fixedStep = false
 
 # The number of frames per second to update if fixed step is enabled
 updateFPS = 120
@@ -29,7 +29,7 @@ appID = null
 appSecret = null
 
 # Display FPS in the upper left corner
-showFPS = true
+showFPS = false
 
 # Displays debug log on screen
-onScreenLog = true
+onScreenLog = false

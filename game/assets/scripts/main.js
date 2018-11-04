@@ -14,6 +14,7 @@ if (typeof global === 'undefined') {
 var resolution = Renderer.getResolution(); // Cache this globally
 var cameraX = 0;
 var cameraTargetX = 0;
+var transformWeather;
 var transform; // global camera transform, in case we need it elsewhere
 var invTrasform; // In case we need mouse picking shit
 var transformUI;
@@ -24,7 +25,9 @@ var zoomTarget = 8.0;
 var zoomTargetOffset = 0;
 var zoomFast = 0;
 var wind = 0;
-var master_volume = 0.7;
+var uiFade = 0;
+
+var master_volume = 0.5;
 
 // Resources
 var worldRT = Texture.createScreenRenderTarget();
@@ -42,7 +45,7 @@ var boomAmount = 1;
 var distanceBetweenPlants = 30;
 
 var music = getMusic("Fertile_Ground_Music_v0.1h.ogg");
-music.setVolume(master_volume * 0.7);
+music.setVolume(master_volume);
 music.play(true);
 
 // Init some crap
@@ -110,9 +113,12 @@ function update(dt)
     {
         main_menu_update(dt);
     }
-    else
+    if (!MainMenuData.isDisplaying || MainMenuData.isGameOver)
     {
+        var paused = MainMenuData.isGameOver || showDebug;
+
         wind += dt;
+        uiFade = Math.min(0, uiFade + dt);
 
         // Move camera...
         cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
@@ -129,6 +135,11 @@ function update(dt)
         zoom = zoom + ((zoomTarget + zoomTargetOffset) - zoom) * zoomSpeed * dt;
         var scale = zoom;
 
+        transformWeather = Matrix.IDENTITY;
+        transformWeather = transformWeather.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
+        transformWeather = transformWeather.mul(Matrix.createScale(8));
+        transformWeather = transformWeather.mul(Matrix.createTranslation(new Vector3(resolution.x * 0.5, resolution.y * .8, 0)));
+
         transform = Matrix.IDENTITY;
         transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
         transform = transform.mul(Matrix.createScale(scale));
@@ -141,18 +152,19 @@ function update(dt)
         transformUI = Matrix.createScale(1.0 / uiscale);
         invTransformUI = transformUI.invert();
 
-        if (Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.S))
-        {
-            save();
-        }
-        else if(Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.L))
-        {
-            load();
-        }
+        if (!paused)
+            if (Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.S))
+            {
+                save();
+            }
+            else if(Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.L))
+            {
+                load();
+            }
 
         fertile_ground_update();
         
-        if (!fertile_ground_is_menu_open())
+        if (!fertile_ground_is_menu_open() && !paused)
         {
             focus_update(dt);
         }
@@ -161,6 +173,7 @@ function update(dt)
         updateHSV(dt);
 
         debug_update(dt); // Debug menu
+        Input.setMouseVisible(showDebug)
         if (!showDebug)
         {
             day_update(dt);
@@ -206,15 +219,30 @@ function postProcess()
 
     Renderer.clear(new Color(0, 0, 0));
 
+    var fade = 1;
+    if (MainMenuData.isGameOver)
+    {
+        fade = 1 - MainMenuData.gameOverShownForS / 5;
+    }
+
     SpriteBatch.begin();
     Renderer.setBlendMode(BlendMode.OPAQUE);
-    SpriteBatch.drawRect(screenRT, screenRect);
+    SpriteBatch.drawRect(screenRT, screenRect, new Color(fade));
     SpriteBatch.end();
 
     SpriteBatch.begin();
     Renderer.setBlendMode(BlendMode.ADD);
-    SpriteBatch.drawRect(bloomRT, screenRect, new Color(boomAmount));
+    SpriteBatch.drawRect(bloomRT, screenRect, new Color(boomAmount * fade));
     SpriteBatch.end();
+
+    if (MainMenuData.isGameOver)
+    {
+        SpriteBatch.begin();
+            Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+            Renderer.setFilterMode(FilterMode.PREMULTIPLIED);
+            SpriteBatch.drawSpriteAnim(menuSkullSprite, new Vector2(resolution.x / 2, resolution.y / 2 + menuSkullAnim.get() * 8), Color.WHITE, 0, 16);
+        SpriteBatch.end();
+    }
 }
 
 function renderWorld()
@@ -278,7 +306,7 @@ function render()
     Renderer.clear(Color.fromHexRGB(0x306082));
     Renderer.setFilterMode(FilterMode.NEAREST);
     
-    if (MainMenuData.isDisplaying)
+    if (MainMenuData.isDisplaying && !(MainMenuData.isGameOver && MainMenuData.gameOverShownForS > 0))
     {
         main_menu_render()
     }
@@ -306,6 +334,7 @@ function init_plants()
 
 function reset_game()
 {
+    uiFade = 0;
     saveLoadTypes.forEach(function(type) {
         var resetFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_reset_data"];
         if (typeof resetFunction === "function")
