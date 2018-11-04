@@ -44,7 +44,7 @@ function rain_update(dt) {
 }
 
 function rain_render() {
-    SpriteBatch.begin(transform);
+    SpriteBatch.begin(transformWeather);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
     for (var i = 0; i < rains.length; ++i) {

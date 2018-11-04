@@ -46,7 +46,7 @@ function snow_update(dt)
 function snow_render()
 {
     Renderer.setBlendMode(BlendMode.PREMULIPLIED);
-    SpriteBatch.begin(transform);
+    SpriteBatch.begin(transformWeather);
 
     for (var i = 0; i < snows.length; ++i)
     {

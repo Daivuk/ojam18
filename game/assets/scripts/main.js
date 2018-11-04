@@ -14,6 +14,7 @@ if (typeof global === 'undefined') {
 var resolution = Renderer.getResolution(); // Cache this globally
 var cameraX = 0;
 var cameraTargetX = 0;
+var transformWeather;
 var transform; // global camera transform, in case we need it elsewhere
 var invTrasform; // In case we need mouse picking shit
 var transformUI;
@@ -133,6 +134,11 @@ function update(dt)
         }
         zoom = zoom + ((zoomTarget + zoomTargetOffset) - zoom) * zoomSpeed * dt;
         var scale = zoom;
+
+        transformWeather = Matrix.IDENTITY;
+        transformWeather = transformWeather.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
+        transformWeather = transformWeather.mul(Matrix.createScale(8));
+        transformWeather = transformWeather.mul(Matrix.createTranslation(new Vector3(resolution.x * 0.5, resolution.y * .8, 0)));
 
         transform = Matrix.IDENTITY;
         transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));

@@ -45,7 +45,7 @@ function cloud_update(dt)
 
 function cloud_render()
 {
-    SpriteBatch.begin(transform);
+    SpriteBatch.begin(transformWeather);
     Renderer.setFilterMode(FilterMode.LINEAR);
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
 
