@@ -8,6 +8,7 @@ var DayConstants = new (function() {
     this.dayArrowSize = new Vector2(7, 4);
     this.daysToDisplay = 5;
     this.weatherUISize = new Vector2(this.weatherIconSize.x * this.daysToDisplay, this.weatherIconSize.y);
+    this.fastForwardSprite = playSpriteAnim("icons.json", "fastforward");
 });
 
 var DayData = new (function() {
@@ -81,6 +82,16 @@ function day_render()
     if (droppingCard.weather)
     {
         SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get(), color.mul(droppingCard.alphaAnim.get()));
+    }
+
+    if (DayData.timeScaleFactor >= DayConstants.timeScaleFactorDefault * 4)
+    {
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(10, 10));
+    }
+
+    if (DayData.timeScaleFactor >= DayConstants.timeScaleFactorDefault * 8)
+    {
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(22, 10));
     }
 }
 
