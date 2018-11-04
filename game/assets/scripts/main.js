@@ -110,9 +110,12 @@ function update(dt)
     {
         main_menu_update(dt);
     }
-    else
+    if (!MainMenuData.isDisplaying || MainMenuData.isGameOver)
     {
+        var paused = MainMenuData.isGameOver || showDebug;
+
         wind += dt;
+        uiFade = Math.min(0, uiFade + dt);
 
         // Move camera...
         cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
@@ -141,18 +144,19 @@ function update(dt)
         transformUI = Matrix.createScale(1.0 / uiscale);
         invTransformUI = transformUI.invert();
 
-        if (Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.S))
-        {
-            save();
-        }
-        else if(Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.L))
-        {
-            load();
-        }
+        if (!paused)
+            if (Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.S))
+            {
+                save();
+            }
+            else if(Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.L))
+            {
+                load();
+            }
 
         fertile_ground_update();
         
-        if (!fertile_ground_is_menu_open())
+        if (!fertile_ground_is_menu_open() && !paused)
         {
             focus_update(dt);
         }
@@ -206,15 +210,30 @@ function postProcess()
 
     Renderer.clear(new Color(0, 0, 0));
 
+    var fade = 1;
+    if (MainMenuData.isGameOver)
+    {
+        fade = 1 - MainMenuData.gameOverShownForS / 5;
+    }
+
     SpriteBatch.begin();
     Renderer.setBlendMode(BlendMode.OPAQUE);
-    SpriteBatch.drawRect(screenRT, screenRect);
+    SpriteBatch.drawRect(screenRT, screenRect, new Color(fade));
     SpriteBatch.end();
 
     SpriteBatch.begin();
     Renderer.setBlendMode(BlendMode.ADD);
-    SpriteBatch.drawRect(bloomRT, screenRect, new Color(boomAmount));
+    SpriteBatch.drawRect(bloomRT, screenRect, new Color(boomAmount * fade));
     SpriteBatch.end();
+
+    if (MainMenuData.isGameOver)
+    {
+        SpriteBatch.begin();
+            Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
+            Renderer.setFilterMode(FilterMode.PREMULTIPLIED);
+            SpriteBatch.drawSpriteAnim(menuSkullSprite, new Vector2(resolution.x / 2, resolution.y / 2 + menuSkullAnim.get() * 8), Color.WHITE, 0, 16);
+        SpriteBatch.end();
+    }
 }
 
 function renderWorld()
@@ -278,7 +297,7 @@ function render()
     Renderer.clear(Color.fromHexRGB(0x306082));
     Renderer.setFilterMode(FilterMode.NEAREST);
     
-    if (MainMenuData.isDisplaying)
+    if (MainMenuData.isDisplaying && !(MainMenuData.isGameOver && MainMenuData.gameOverShownForS > 0))
     {
         main_menu_render()
     }
@@ -306,6 +325,7 @@ function init_plants()
 
 function reset_game()
 {
+    uiFade = 0;
     saveLoadTypes.forEach(function(type) {
         var resetFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_reset_data"];
         if (typeof resetFunction === "function")
