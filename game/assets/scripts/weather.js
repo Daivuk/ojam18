@@ -40,7 +40,7 @@ function weather_update(dtDays)
     // Remove old weather and add a new one.
     droppingCard.weather = WeatherData.weathers[WeatherData.activeWeathers.shift()];
 
-    var arrowPosition = new Vector2(resolutionUI.x / 2, 3);
+    var arrowPosition = new Vector2(resolutionUI.x / 3, 3);
     var weatherPosition = new Vector2(arrowPosition.x - DayConstants.weatherIconSize.x, arrowPosition.y + DayConstants.dayArrowSize.y + 2);
 
     droppingCard.anim.stop();
