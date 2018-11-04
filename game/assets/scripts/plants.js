@@ -31,6 +31,13 @@ var PlantData = {
     globalId: 0
 }
 
+var PlantMenuData = {
+    menuSprite: playSpriteAnim("plant_ui.json", "center"),
+    menuAborted: false,
+    action: "none",
+    activeMenuPosition: null
+}
+
 function plant_create(_position, _type)
 {
     var plant = {
@@ -173,21 +180,82 @@ function plants_update(dt)
         }
     }
 
+    var handled = false;
+
     if ((Input.isJustDown(Key.SPACE_BAR) || GamePad.isJustDown(0, Button.A)) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
 
         if(focusItem.seed == PLANT_SEED_MAX)
         {
+            handled = true;
             seeds++;
             focusItem.seed = 0;
         }
 
         if(focusItem.biomass == PLANT_BIOMASS_MAX)
         {
+            handled = true;
             biomass++;
             focusItem.biomass = 0;
         }
+    }
+
+    if(!handled)
+    {
+        var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
+        if (focus_is_plant_type(currentFocusItem.type))
+        {
+            if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
+            {
+                PlantMenuData.activeMenuPosition = currentFocusItem.itemData.position;
+                if (Input.isDown(Key.UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) && PlantMenuData.action != "level")
+                {
+                    PlantMenuData.menuSprite.play("up");
+                    PlantMenuData.action = "level";
+                }
+                else if (Input.isDown(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) && PlantMenuData.action != "destroy")
+                {
+                    PlantMenuData.menuSprite.play("bottom");
+                    PlantMenuData.action = "destroy";
+                }
+
+                if (!PlantMenuData.menuAborted && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN)))
+                {
+                    PlantMenuData.menuSprite.play("center");
+                    PlantMenuData.menuAborted = true;
+                }
+            }
+            else
+            {
+                PlantMenuData.activeMenuPosition = null;
+            }
+
+            if (PlantMenuData.menuAborted && !PlantMenuData.menuSprite.isPlaying())
+            {
+                PlantMenuData.menuAborted = false;
+                PlantMenuData.action = "none";
+            }
+
+            if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && biomass > 0)
+            {
+                if(currentFocusItem.itemData.level < 3)
+                {
+                    currentFocusItem.itemData.level++;
+                    biomass--;
+                }
+
+                PlantMenuData.action = "none";
+            }
+        }
+        else
+        {
+            PlantMenuData.activeMenuPosition = null;
+        }
+    }
+    else
+    {
+        PlantMenuData.activeMenuPosition = null;
     }
 }
 
@@ -204,11 +272,6 @@ function plants_render()
 
         SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", plants[i].type + "_level" + Math.min(plants[i].level, 3)), new Vector2(plants[i].position, 0.0), color);
 
-        /*if(plants[i].type == PlantType.WATER && plants[i].level < 4)
-        {
-            SpriteBatch.drawText(font, "" + Math.floor(plants[i].resources), new Vector2(plants[i].position, -10.0), Vector2.TOP_LEFT, new Color(0.0, 0.5, 1.0, 1.0));
-        }*/
-
         if(!plants[i].dead)
         {
             SpriteBatch.drawRect(null, new Rect(plants[i].position - 8, -plants[i].water / 10, 2, plants[i].water / 10), new Color(0, 0, 1, 1));
@@ -218,6 +281,11 @@ function plants_render()
         if(plants[i].seed == PLANT_SEED_MAX || plants[i].biomass == PLANT_BIOMASS_MAX)
         {
             SpriteBatch.drawRect(null, new Rect(plants[i].position, -2, 2, 2), new Color(1, 1, 1, 1));
+        }
+
+        if (PlantMenuData.activeMenuPosition != null)
+        {
+            SpriteBatch.drawSpriteAnim(PlantMenuData.menuSprite, new Vector2(PlantMenuData.activeMenuPosition, -25));
         }
     }
 }
