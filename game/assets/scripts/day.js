@@ -59,7 +59,7 @@ function day_update(dtSeconds)
 
 function day_render()
 {
-    var arrowPosition = new Vector2(resolution.x / 2, 3);
+    var arrowPosition = new Vector2(resolution.x / 3, 3);
     SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition);
 
     var weatherPositionShift = DayConstants.weatherIconSize.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);

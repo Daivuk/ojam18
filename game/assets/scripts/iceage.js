@@ -39,8 +39,8 @@ function iceage_update(dt)
 
 function iceage_render()
 {
-    var xRenderPos = 2;
-    var yRenderPos = 30;
+    var xRenderPos = resolution.x - 32 * 2 - 2;
+    var yRenderPos = 50;
     var renderWidth = 56 - 2;
 
     SpriteBatch.drawSprite(iceageTexture, new Vector2(xRenderPos, yRenderPos), Color.WHITE, 0, 2, Vector2.LEFT);

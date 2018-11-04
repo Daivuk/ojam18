@@ -22,7 +22,7 @@ var ResourcesDataSaveProperties = [
 
 function resources_render()
 {
-    var resourcesBasePosition = new Vector2(10, resolution.y / 2 - 30);
+    var resourcesBasePosition = new Vector2(10, 45);
     
     if (ResourcesData.seeds > 0)
     {
