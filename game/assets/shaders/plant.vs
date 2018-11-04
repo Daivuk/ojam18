@@ -18,7 +18,7 @@ void main()
     if (inPosition.y < 0.0)
     {
         float windPercent = 1.0 - inUV.y;
-        screenPosition.x += sin(wind + screenPosition.x / 30.0) * 1.0 * windPercent;
+        screenPosition.x += sin(wind + screenPosition.x / 30.0) * 1.5 * windPercent;
     }
 
     // oPosition is the output position of the shader.
