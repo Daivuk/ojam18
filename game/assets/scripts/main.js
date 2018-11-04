@@ -66,7 +66,7 @@ function update(dt)
     
     if (!fertile_ground_is_menu_open())
     {
-        focus_update();
+        focus_update(dt);
     }
     
     // hues, saturation and brightness

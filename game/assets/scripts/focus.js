@@ -18,6 +18,8 @@ var FocusConstants = new (function() {
 var FocusData = new (function() {
     this.focusItems = [];
     this.currentFocusItemIndex = null;
+    this.dtMsSinceLastLeft = 0;
+    this.dtMsSinceLastRight = 0;
 });
 
 function focus_item_create(_type, _id, _itemData)
@@ -35,7 +37,8 @@ function focus_item_create(_type, _id, _itemData)
 
     if (FocusData.currentFocusItemIndex == null)
     {
-        FocusData.currentFocusItemIndex = 0;   
+        // Initially set focus to the first plant which is at index 1.
+        FocusData.currentFocusItemIndex = 1;   
     }
 }
 
@@ -58,15 +61,26 @@ function focus_item_destroy(_type, _id)
     }
 }
 
-function focus_update()
+function focus_update(dt)
 {
-    if (Input.isJustDown(Key.LEFT) || GamePad.isJustDown(0, Button.LEFT_THUMBSTICK_LEFT)) 
+    if ((Input.isDown(Key.LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT)) &&  FocusData.dtMsSinceLastLeft > 100) 
     {
+        FocusData.dtMsSinceLastLeft = 0;
         FocusData.currentFocusItemIndex = Math.max(0, FocusData.currentFocusItemIndex - 1);
-    } 
-    else if (Input.isJustDown(Key.RIGHT) || GamePad.isJustDown(0, Button.LEFT_THUMBSTICK_RIGHT))
+    }
+    else
     {
+        FocusData.dtMsSinceLastLeft += dt * 1000;
+    }
+
+    if ((Input.isDown(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)) &&  FocusData.dtMsSinceLastRight > 100)
+    {
+        FocusData.dtMsSinceLastRight = 0;
         FocusData.currentFocusItemIndex = Math.min(FocusData.currentFocusItemIndex + 1, FocusData.focusItems.length - 1);
+    }
+    else
+    {
+        FocusData.dtMsSinceLastRight += dt * 1000;
     }
 }
 
