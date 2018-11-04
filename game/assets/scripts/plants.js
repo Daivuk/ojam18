@@ -244,10 +244,14 @@ function plants_update(dt)
                     PlantMenuData.menuSprite.play("center");
                     PlantMenuData.menuAborted = true;
                 }
+                
+                zoomFast = 1;
+                zoomTargetOffset = 2;
             }
             else
             {
                 PlantMenuData.activeMenuPosition = null;
+                zoomTargetOffset = 0;
             }
 
             if (PlantMenuData.menuAborted && !PlantMenuData.menuSprite.isPlaying())
@@ -304,7 +308,7 @@ function plants_render()
 
         if (PlantMenuData.activeMenuPosition != null)
         {
-            SpriteBatch.drawSpriteAnim(PlantMenuData.menuSprite, new Vector2(PlantMenuData.activeMenuPosition, -25));
+            SpriteBatch.drawSpriteAnim(PlantMenuData.menuSprite, new Vector2(PlantMenuData.activeMenuPosition, -25), Color.WHITE, 0, 0.5);
         }
     }
 }

@@ -152,7 +152,7 @@ function focus_render()
     }
     currentFocusItem.type = focusType;
 
-    if (!FertileGroundData.activeMenuPosition)
+    if (!FertileGroundData.activeMenuPosition && !PlantMenuData.activeMenuPosition)
     {
         var arrowPosition = new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType] +
             FocusConstants.focusAnim.get() * 1);
