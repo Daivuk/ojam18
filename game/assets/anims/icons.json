@@ -34,6 +34,15 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
+   },
+   {
+    "filename": "icons 4.aseprite",
+    "frame": { "x": 64, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
    }
  ],
  "meta": {
@@ -41,13 +50,14 @@
   "version": "1.2.8",
   "image": "/Users/davidst-louis/github/ojam18/game/assets/textures/icons.png",
   "format": "I8",
-  "size": { "w": 64, "h": 16 },
+  "size": { "w": 80, "h": 16 },
   "scale": "1",
   "frameTags": [
    { "name": "seed", "from": 0, "to": 0, "direction": "forward" },
    { "name": "sun", "from": 1, "to": 1, "direction": "forward" },
    { "name": "water", "from": 2, "to": 2, "direction": "forward" },
-   { "name": "bio", "from": 3, "to": 3, "direction": "forward" }
+   { "name": "bio", "from": 3, "to": 3, "direction": "forward" },
+   { "name": "skull", "from": 4, "to": 4, "direction": "forward" }
   ],
   "layers": [
    { "name": "Layer 1", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=8,8" }] }
