@@ -87,8 +87,15 @@ function plant_age(_plant, _amount)
 
     if(_plant.age > PLANT_MAX_LIFE_DAYS)
     {
-        _plant.dead = true;
+        plant_make_dead(_plant);
     }
+}
+
+function plant_make_dead(_plant)
+{
+    _plant.dead = true;
+    // Update the focus to the same index so that the focus icon will update for the dead state.
+    focus_set_current_focus_index(FocusData.currentFocusItemIndex);
 }
 
 function plants_update(dt)
@@ -141,7 +148,7 @@ function plants_update(dt)
             // Find all the water and sun plants to apply their global effects
             if(PlantData.plants[i].sun <= 0 || PlantData.plants[i].water <= 0)
             {
-                PlantData.plants[i].dead = true;
+                plant_make_dead(PlantData.plants[i]);
             }
             else
             {

@@ -102,20 +102,27 @@ function focus_set_current_focus_index(index)
     var currentItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
     if (focus_is_plant_type(currentItem.type))
     {
-        switch(currentItem.itemData.type)
+        if (currentItem.itemData.dead)
         {
-            case PlantType.NORMAL:
-                FocusConstants.typeIcon.play("bio");
-                break;
-            case PlantType.SEED:
-                FocusConstants.typeIcon.play("seed");
-                break;
-            case PlantType.SOLAR:
-                FocusConstants.typeIcon.play("sun");
-                break;
-            case PlantType.WATER:
-                FocusConstants.typeIcon.play("water");
-                break;
+            FocusConstants.typeIcon.play("skull");
+        }
+        else
+        {
+            switch(currentItem.itemData.type)
+            {
+                case PlantType.NORMAL:
+                    FocusConstants.typeIcon.play("bio");
+                    break;
+                case PlantType.SEED:
+                    FocusConstants.typeIcon.play("seed");
+                    break;
+                case PlantType.SOLAR:
+                    FocusConstants.typeIcon.play("sun");
+                    break;
+                case PlantType.WATER:
+                    FocusConstants.typeIcon.play("water");
+                    break;
+            }
         }
     }
 }
