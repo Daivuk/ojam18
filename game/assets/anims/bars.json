@@ -1,0 +1,208 @@
+{ "frames": [
+   {
+    "filename": "bars 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 100
+   },
+   {
+    "filename": "bars 1.aseprite",
+    "frame": { "x": 30, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 2.aseprite",
+    "frame": { "x": 60, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 3.aseprite",
+    "frame": { "x": 90, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 4.aseprite",
+    "frame": { "x": 120, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 5.aseprite",
+    "frame": { "x": 150, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 6.aseprite",
+    "frame": { "x": 180, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 7.aseprite",
+    "frame": { "x": 210, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 300
+   },
+   {
+    "filename": "bars 8.aseprite",
+    "frame": { "x": 240, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 300
+   },
+   {
+    "filename": "bars 9.aseprite",
+    "frame": { "x": 270, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 300
+   },
+   {
+    "filename": "bars 10.aseprite",
+    "frame": { "x": 300, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 100
+   },
+   {
+    "filename": "bars 11.aseprite",
+    "frame": { "x": 330, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 12.aseprite",
+    "frame": { "x": 360, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 13.aseprite",
+    "frame": { "x": 390, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 14.aseprite",
+    "frame": { "x": 420, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 15.aseprite",
+    "frame": { "x": 450, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 16.aseprite",
+    "frame": { "x": 480, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 150
+   },
+   {
+    "filename": "bars 17.aseprite",
+    "frame": { "x": 510, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 300
+   },
+   {
+    "filename": "bars 18.aseprite",
+    "frame": { "x": 540, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 300
+   },
+   {
+    "filename": "bars 19.aseprite",
+    "frame": { "x": 570, "y": 0, "w": 30, "h": 15 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 30, "h": 15 },
+    "sourceSize": { "w": 30, "h": 15 },
+    "duration": 300
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.8",
+  "image": "/Users/davidst-louis/github/ojam18/game/assets/textures/bars.png",
+  "format": "I8",
+  "size": { "w": 600, "h": 15 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "water0", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "water1", "from": 1, "to": 6, "direction": "forward" },
+   { "name": "water2", "from": 7, "to": 7, "direction": "forward" },
+   { "name": "water3", "from": 8, "to": 8, "direction": "forward" },
+   { "name": "water4", "from": 9, "to": 9, "direction": "forward" },
+   { "name": "sun0", "from": 10, "to": 10, "direction": "forward" },
+   { "name": "sun1", "from": 11, "to": 16, "direction": "forward" },
+   { "name": "sun2", "from": 17, "to": 17, "direction": "forward" },
+   { "name": "sun3", "from": 18, "to": 18, "direction": "forward" },
+   { "name": "sun4", "from": 19, "to": 19, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=15,-1" }, { "frame": 10, "data": "origin=15,-10" }] }
+  ],
+  "slices": [
+  ]
+ }
+}

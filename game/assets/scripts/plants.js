@@ -55,7 +55,9 @@ function plant_create(_position, _type)
         seed: 0,
         biomass: 0,
         dead: false,
-        id: PlantData.globalId
+        id: PlantData.globalId,
+        waterBar: playSpriteAnim("bars.json", "water4"),
+        sunBar: playSpriteAnim("bars.json", "sun4")
     };
 
     PlantData.plants.push(plant);
@@ -155,6 +157,16 @@ function plants_update(dt)
                     sunLeeches.push(PlantData.plants[i]);
                 }
             }
+
+            var waterPercent = PlantData.plants[i].water / PLANT_WATER_MAX;
+            var waterLevel = Math.min(4, Math.round(waterPercent * 4));
+            if (waterPercent > 0 && waterLevel === 0) waterLevel = 1;
+            PlantData.plants[i].waterBar.play("water" + waterLevel);
+
+            var sunPercent = PlantData.plants[i].sun / PLANT_SUN_MAX;
+            var sunLevel = Math.min(4, Math.round(sunPercent * 4));
+            if (sunPercent > 0 && sunLevel === 0) sunLevel = 1;
+            PlantData.plants[i].sunBar.play("sun" + sunLevel);
         }
     }
 
@@ -297,8 +309,12 @@ function plants_render()
 
         if(!PlantData.plants[i].dead)
         {
-            SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 8, -PlantData.plants[i].water / 10, 2, PlantData.plants[i].water / 10), new Color(0, 0, 1, 1));
-            SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 11, -PlantData.plants[i].sun / 10, 2, PlantData.plants[i].sun / 10), new Color(0, 1, 0, 1));
+            SpriteBatch.drawSpriteAnim(PlantData.plants[i].waterBar, 
+                new Vector2(PlantData.plants[i].position, 0), Color.WHITE, 0, 0.75);
+            SpriteBatch.drawSpriteAnim(PlantData.plants[i].sunBar, 
+                new Vector2(PlantData.plants[i].position, 0), Color.WHITE, 0, 0.75);
+            // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 8, -PlantData.plants[i].water / 10, 2, PlantData.plants[i].water / 10), new Color(0, 0, 1, 1));
+            // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 11, -PlantData.plants[i].sun / 10, 2, PlantData.plants[i].sun / 10), new Color(0, 1, 0, 1));
         }
 
         if(PlantData.plants[i].seed == PLANT_SEED_MAX || PlantData.plants[i].biomass == PLANT_BIOMASS_MAX)
