@@ -127,6 +127,21 @@ function debug_renderUI()
                 }
             }
         }
+
+        if(GUI.button("Kill"))
+        {
+            if(focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
+            {
+                var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
+
+                plant_make_dead(focusItem);
+            }
+        }
+
+        if(GUI.button("Add Seed"))
+        {
+            ResourceData.seeds++;
+        }
     }
     GUI.end();
 }
