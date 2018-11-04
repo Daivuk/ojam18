@@ -35,8 +35,6 @@ function season_get_season_for_day_offset(dayOffset)
         }
     }
 
-    print("month: " + newMonth + " day: " + newDay);
-
     return season_get_season_for_date(newDay, newMonth);
 }
 
