@@ -261,7 +261,7 @@ function weather_init()
         WeatherData.activeWeathers.push(possibleWeathers[getRandomInt(0, possibleWeathers.length - 1)]);
     }
 
-    // Always start with 1 day of sun and 1 day of rain
+    // Always start with 2 days of sunny
     WeatherData.activeWeathers[0] = WeatherConstants.sunny;
-    WeatherData.activeWeathers[1] = WeatherConstants.rainy;
+    WeatherData.activeWeathers[1] = WeatherConstants.sunny;
 }
