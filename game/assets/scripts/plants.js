@@ -331,6 +331,8 @@ function plants_update(dt)
     // Consume dropped resource
     if ((Input.isJustDown(Key.SPACE_BAR) || GamePad.isJustDown(0, Button.A)) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
+        playSound("pickup.wav", master_volume);
+
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
         if(focusItem.seed == PLANT_SEED_MAX)
         {
@@ -419,6 +421,7 @@ function plants_update(dt)
                 {
                     currentFocusItem.itemData.level++;
                     ResourcesData.biomass--;
+                    playSound("levelup.wav", master_volume, 0, 2);
                 }
 
                 PlantMenuData.action = "none";

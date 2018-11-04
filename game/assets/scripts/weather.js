@@ -59,14 +59,30 @@ function weather_update(dtDays)
     WeatherData.activeWeathers.push(possibleWeathers[getRandomInt(0, possibleWeathers.length - 1)]);
 }
 
+var birdsSound = createSoundInstance("birds.wav");
+birdsSound.setLoop(true);
+var cricketsSound = createSoundInstance("crickets.wav");
+cricketsSound.setLoop(true);
+var ambientVolume = 0.5;
+
 function weather_updateActive(dt)
 {
     var activeWeather = WeatherData.activeWeathers[0];
+    var playRain = false;
+    var playBirds = false;
+    var playCrickets = false;
     switch (activeWeather)
     {
         case WeatherConstants.sunny:
         {
             sunny_update(dt);
+            playBirds = 
+                season_get_current_season_index() == SeasonConstants.summer ||
+                season_get_current_season_index() == SeasonConstants.spring;
+            playCrickets = 
+                season_get_current_season_index() == SeasonConstants.summer ||
+                season_get_current_season_index() == SeasonConstants.spring ||
+                season_get_current_season_index() == SeasonConstants.fall;
             break;
         }
         case WeatherConstants.cloudy:
@@ -78,6 +94,7 @@ function weather_updateActive(dt)
         {
             cloud_update(dt);
             rain_update(dt);
+            playRain = true;
             break;
         }
         case WeatherConstants.stormy:
@@ -85,6 +102,7 @@ function weather_updateActive(dt)
             lightning_update(dt);
             cloud_update(dt);
             rain_update(dt);
+            playRain = true;
             break;
         }
         case WeatherConstants.snowy:
@@ -94,6 +112,23 @@ function weather_updateActive(dt)
             break;
         }
     }
+
+    if (playRain) rainSound.play();
+    else rainSound.stop();
+
+    if (playBirds)
+    {
+        birdsSound.setVolume(day_getLightLevel() * master_volume * ambientVolume);
+        birdsSound.play();
+    }
+    else birdsSound.stop();
+
+    if (playCrickets)
+    {
+        cricketsSound.setVolume(1 - day_getLightLevel() * master_volume * ambientVolume);
+        cricketsSound.play();
+    }
+    else cricketsSound.stop();
 }
 
 function weather_render()

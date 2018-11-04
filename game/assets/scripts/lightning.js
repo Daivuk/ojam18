@@ -13,7 +13,8 @@ function lightning_update(dt)
     lightning.timeTilNext -= dt;
     if (lightning.timeTilNext <= 0)
     {
-        lightning.timeTilNext = Random.randNumber(2, 4);
+        playSound("thunder.wav", master_volume);
+        lightning.timeTilNext = Random.randNumber(3, 6);
         lightning.anim.stop();
         lightning.anim.set(0);
         lightning.anim.queue(2, .1, Tween.LINEAR);

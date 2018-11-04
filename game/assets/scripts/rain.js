@@ -6,6 +6,7 @@ var rain_INTENSITY = 0.15;
 var rain_SPEED = 200;
 
 var rainTexture = getTexture("rain.png");
+var rainSound = createSoundInstance("rain.wav");
 
 function create_rain() 
 {
@@ -20,6 +21,8 @@ function create_rain()
 
 function rain_init()
 {
+    rainSound.setLoop(true);
+
     for (var i = 0; i < rainS_COUNT; ++i)
     {
         rains.push(create_rain());

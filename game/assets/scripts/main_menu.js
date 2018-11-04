@@ -95,7 +95,7 @@ function main_menu_update(dt)
     sunny_update(dt);
     if(Input.isJustDown(Key.ENTER))
     {
-        playSound("levelup.wav");
+        playSound("pickup.wav", master_volume, 0, 1.5);
         if (MainMenuData.isGameOver)
         {
             MainMenuData.gameOverShownForS = 0;

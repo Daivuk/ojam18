@@ -120,6 +120,8 @@ function fertile_ground_update()
 
         if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourcesData.seeds > 0)
         {
+            // playSound("");
+
             fertile_ground_destroy(currentFocusItem.itemData.position);
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
             ResourcesData.seeds--;

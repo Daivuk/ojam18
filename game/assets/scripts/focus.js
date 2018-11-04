@@ -83,6 +83,10 @@ function focus_update(dt)
     if ((Input.isDown(Key.LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT)) &&  FocusData.dtMsSinceLastLeft > 150) 
     {
         FocusData.dtMsSinceLastLeft = 0;
+        if (FocusData.currentFocusItemIndex > 0)
+        {
+            playSound("swipe.wav", master_volume * .5, 0, 1.25);
+        }
         focus_set_current_focus_index(Math.max(0, FocusData.currentFocusItemIndex - 1));
     }
     else
@@ -92,6 +96,10 @@ function focus_update(dt)
 
     if ((Input.isDown(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)) &&  FocusData.dtMsSinceLastRight > 150)
     {
+        if (FocusData.currentFocusItemIndex < FocusData.focusItems.length - 1)
+        {
+            playSound("swipe.wav", master_volume * .5, 0, 1.25);
+        }
         FocusData.dtMsSinceLastRight = 0;
         focus_set_current_focus_index(Math.min(FocusData.currentFocusItemIndex + 1, FocusData.focusItems.length - 1));
     }
