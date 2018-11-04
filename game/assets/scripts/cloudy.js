@@ -27,7 +27,7 @@ function cloud_init()
 
 function cloud_update(dt)
 {
-    RGB.r = RGB.r.mul(0.5);
+    RGB.r = RGB.r.mul(0.75);
     boomSelect = 0.95;
     for (var i = 0; i < clouds.length; ++i)
     {

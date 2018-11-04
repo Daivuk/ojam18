@@ -104,63 +104,69 @@ function load()
 function update(dt)
 {
     resolution = Renderer.getResolution();
-
-    wind += dt;
-
-    // Move camera...
-    cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
-    cameraX = cameraX + (cameraTargetX - cameraX) * 3 * dt;
-
-    // Update world matrix
-    zoomTarget = Math.max(4.6, 8.6 - FocusData.focusItems.length * 0.2);
-    var zoomSpeed = 1;
-    if (zoomFast > 0)
+    if (MainMenuData.isDisplaying)
     {
-        zoomFast -= dt;
-        zoomSpeed = 4;
+        main_menu_update(dt);
     }
-    zoom = zoom + ((zoomTarget + zoomTargetOffset) - zoom) * zoomSpeed * dt;
-    var scale = zoom;
-
-    transform = Matrix.IDENTITY;
-    transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
-    transform = transform.mul(Matrix.createScale(scale));
-    transform = transform.mul(Matrix.createTranslation(new Vector3(resolution.x * 0.5, resolution.y * .8, 0)));
-    invTrasform = transform.invert();
-
-    // Update UI matrix
-    var uiscale = 180.0 / resolution.y;
-    resolutionUI = new Vector2(resolution.x * uiscale, resolution.y * uiscale);
-    transformUI = Matrix.createScale(1.0 / uiscale);
-    invTransformUI = transformUI.invert();
-
-    if (Input.isJustDown(Key.S))
+    else
     {
-        save();
-    }
-    else if(Input.isJustDown(Key.L))
-    {
-        load();
-    }
+        wind += dt;
 
-    fertile_ground_update();
-    
-    if (!fertile_ground_is_menu_open())
-    {
-        focus_update(dt);
-    }
-    
-    // hues, saturation and brightness
-    updateHSV(dt);
+        // Move camera...
+        cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
+        cameraX = cameraX + (cameraTargetX - cameraX) * 3 * dt;
 
-    debug_update(dt); // Debug menu
-    if (!showDebug)
-    {
-        day_update(dt);
-        plants_update(dt);
+        // Update world matrix
+        zoomTarget = Math.max(4.6, 8.6 - FocusData.focusItems.length * 0.2);
+        var zoomSpeed = 1;
+        if (zoomFast > 0)
+        {
+            zoomFast -= dt;
+            zoomSpeed = 4;
+        }
+        zoom = zoom + ((zoomTarget + zoomTargetOffset) - zoom) * zoomSpeed * dt;
+        var scale = zoom;
+
+        transform = Matrix.IDENTITY;
+        transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
+        transform = transform.mul(Matrix.createScale(scale));
+        transform = transform.mul(Matrix.createTranslation(new Vector3(resolution.x * 0.5, resolution.y * .8, 0)));
+        invTrasform = transform.invert();
+
+        // Update UI matrix
+        var uiscale = 180.0 / resolution.y;
+        resolutionUI = new Vector2(resolution.x * uiscale, resolution.y * uiscale);
+        transformUI = Matrix.createScale(1.0 / uiscale);
+        invTransformUI = transformUI.invert();
+
+        if (Input.isJustDown(Key.S))
+        {
+            save();
+        }
+        else if(Input.isJustDown(Key.L))
+        {
+            load();
+        }
+
+        fertile_ground_update();
+        
+        if (!fertile_ground_is_menu_open())
+        {
+            focus_update(dt);
+        }
+        
+        // hues, saturation and brightness
+        updateHSV(dt);
+
+        debug_update(dt); // Debug menu
+        if (!showDebug)
+        {
+            day_update(dt);
+            plants_update(dt);
+        }
+        weather_updateActive(dt);
+        butterfly_update(dt);
     }
-    weather_updateActive(dt);
-    butterfly_update(dt);
 }
 
 function postProcess()
@@ -260,9 +266,15 @@ function render()
 
     Renderer.clear(Color.fromHexRGB(0x306082));
     Renderer.setFilterMode(FilterMode.NEAREST);
-
-    // World
-    renderWorld();
+    
+    if (MainMenuData.isDisplaying)
+    {
+        main_menu_render()
+    }
+    else
+    {
+        renderWorld();
+    }
 
     // In-game UI
     // renderGameUI();
