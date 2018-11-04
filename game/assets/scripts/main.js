@@ -46,10 +46,8 @@ music.play();
 // Init some crap
 weather_init();
 
+var ppp = null;
 plant_create(0, PlantType.SEED);
-// plant_create(distanceBetweenPlants, PlantType.SOLAR);
-// plant_create(distanceBetweenPlants * 2, PlantType.WATER);
-// plant_create(distanceBetweenPlants * 3, PlantType.NORMAL);
 fertile_ground_create(-distanceBetweenPlants);
 fertile_ground_create(distanceBetweenPlants);
 

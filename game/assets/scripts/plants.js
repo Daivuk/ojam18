@@ -73,6 +73,8 @@ function plant_create(_position, _type)
     focus_item_create(FocusConstants.plantTypeLevel0, PlantData.globalId, plant);
 
     PlantData.globalId++;
+
+    return plant;
 }
 
 function plant_age(_plant, _amount)
@@ -96,6 +98,47 @@ function plant_make_dead(_plant)
     _plant.dead = true;
     // Update the focus to the same index so that the focus icon will update for the dead state.
     focus_set_current_focus_index(FocusData.currentFocusItemIndex);
+}
+
+function plant_destroy(_plant)
+{
+    var plantIndex = -1;
+
+    for(var i = 0; i < PlantData.plants.length; ++i)
+    {
+        if(PlantData.plants[i].id == _plant.id)
+        {
+            plantIndex = i;
+            break;
+        }
+    }
+
+    if(plantIndex != -1)
+    {
+        PlantData.plants.splice(plantIndex, 1);
+
+        var focusType = FocusConstants.plantTypeLevel0;
+
+        switch(_plant.level)
+        {
+            case 1:
+                focusType = FocusConstants.plantTypeLevel1;
+                break;
+
+            case 2:
+                focusType = FocusConstants.plantTypeLevel2;
+                break;
+
+            case 3:
+                focusType = FocusConstants.plantTypeLevel3;
+                break;
+        }
+
+        
+        focus_item_destroy(focusType, _plant.id);
+
+        fertile_ground_create(_plant.position);
+    }
 }
 
 function plants_update(dt)
@@ -174,10 +217,34 @@ function plants_update(dt)
                 }
             }
 
-            var waterPercent = PlantData.plants[i].water / PLANT_WATER_MAX;
-            var waterLevel = Math.min(4, Math.round(waterPercent * 4));
-            if (waterPercent > 0 && waterLevel === 0) waterLevel = 1;
-            PlantData.plants[i].waterBar.play("water" + waterLevel);
+            var waterCap = PLANT_WATER_MAX;
+            if (PlantData.plants[i].type == PlantType.WATER && PlantData.plants[i].level > 0)
+            {
+                waterCap = (PlantData.plants[i].level + 1) * PLANT_WATER_MAX;
+            }
+            if (waterCap > PLANT_WATER_MAX)
+            {
+                if (PlantData.plants[i].water <= PLANT_WATER_MAX + 5)
+                {
+                    var waterPercent = PlantData.plants[i].water / PLANT_WATER_MAX;
+                    var waterLevel = Math.min(4, Math.round(waterPercent * 4));
+                    if (waterPercent > 0 && waterLevel === 0) waterLevel = 1;
+                    PlantData.plants[i].waterBar.play("watertank" + waterLevel + "_" + PlantData.plants[i].level);
+                }
+                else
+                {
+                    var waterPercent = (PlantData.plants[i].water - PLANT_WATER_MAX + 5) / (320);
+                    var waterLevel = Math.max(0, Math.min(5, Math.floor(waterPercent * 6)));
+                    PlantData.plants[i].waterBar.play("watertank" + (5 + waterLevel) + "_" + PlantData.plants[i].level);
+                }
+            }
+            else
+            {
+                var waterPercent = PlantData.plants[i].water / PLANT_WATER_MAX;
+                var waterLevel = Math.min(4, Math.round(waterPercent * 4));
+                if (waterPercent > 0 && waterLevel === 0) waterLevel = 1;
+                PlantData.plants[i].waterBar.play("water" + waterLevel);
+            }
 
             var sunPercent = PlantData.plants[i].sun / PLANT_SUN_MAX;
             var sunLevel = Math.min(4, Math.round(sunPercent * 4));
@@ -302,6 +369,13 @@ function plants_update(dt)
 
                 PlantMenuData.action = "none";
             }
+
+            if(PlantMenuData.action == "destroy" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
+            {
+                plant_destroy(currentFocusItem.itemData);
+
+                PlantMenuData.action = "none";
+            }
         }
         else
         {
@@ -333,6 +407,7 @@ function plants_render()
                 new Vector2(PlantData.plants[i].position, 0), Color.WHITE, 0, 0.75);
             SpriteBatch.drawSpriteAnim(PlantData.plants[i].sunBar, 
                 new Vector2(PlantData.plants[i].position, 0), Color.WHITE, 0, 0.75);
+            // SpriteBatch.drawText(font, "" + Math.floor(PlantData.plants[i].water), new Vector2(PlantData.plants[i].position, -32));
             // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 8, -PlantData.plants[i].water / 10, 2, PlantData.plants[i].water / 10), new Color(0, 0, 1, 1));
             // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 11, -PlantData.plants[i].sun / 10, 2, PlantData.plants[i].sun / 10), new Color(0, 1, 0, 1));
         }

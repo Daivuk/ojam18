@@ -121,18 +121,22 @@ function fertile_ground_update()
             FertileGroundData.selectedPlantType = null;
             
             var shouldFixFocus = false;
-            var newPosition;
-            if (currentFocusItem.itemData.position > 0)
+
+            if(FocusData.currentFocusItemIndex == FocusData.focusItems.length - 1 || FocusData.currentFocusItemIndex == 0)
             {
-                newPosition = currentFocusItem.itemData.position + distanceBetweenPlants;     
+                var newPosition;
+                if (currentFocusItem.itemData.position > 0)
+                {
+                    newPosition = currentFocusItem.itemData.position + distanceBetweenPlants;     
+                }
+                else
+                {
+                    shouldFixFocus = true;
+                    newPosition = currentFocusItem.itemData.position - distanceBetweenPlants;
+                }
+                
+                fertile_ground_create(newPosition);
             }
-            else
-            {
-                shouldFixFocus = true;
-                newPosition = currentFocusItem.itemData.position - distanceBetweenPlants;
-            }
-            
-            fertile_ground_create(newPosition);
             
             // If we added an item on the left we need to set focus to index 1 so it remains at the original position
             // Index 0 will now be the new fertile ground.
