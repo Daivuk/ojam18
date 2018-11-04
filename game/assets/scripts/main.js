@@ -24,6 +24,7 @@ var zoomTarget = 8.0;
 var zoomTargetOffset = 0;
 var zoomFast = 0;
 var wind = 0;
+var master_volume = 0.7;
 
 // Resources
 var worldRT = Texture.createScreenRenderTarget();
@@ -41,7 +42,8 @@ var boomAmount = 1;
 var distanceBetweenPlants = 30;
 
 var music = getMusic("Fertile_Ground_Music_v0.1h.ogg");
-music.play();
+music.setVolume(master_volume * 0.7);
+music.play(true);
 
 // Init some crap
 weather_init();
@@ -137,11 +139,11 @@ function update(dt)
         transformUI = Matrix.createScale(1.0 / uiscale);
         invTransformUI = transformUI.invert();
 
-        if (Input.isJustDown(Key.S))
+        if (Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.S))
         {
             save();
         }
-        else if(Input.isJustDown(Key.L))
+        else if(Input.isDown(Key.LEFT_CONTROL) && Input.isJustDown(Key.L))
         {
             load();
         }
