@@ -12,9 +12,14 @@ var SeasonConstants = new (function() {
     this.winter = 3;
 });
 
-var SeasonData = new (function() {
-    this.currentMonth = MonthConstants.march;
-});
+function season_reset_data()
+{
+    return new (function() {
+        this.currentMonth = MonthConstants.march;
+    });
+}
+
+var SeasonData = season_reset_data();
 
 var SeasonDataSaveProperties = [
     "currentMonth"
@@ -129,7 +134,6 @@ function season_update(dtMonths)
 {
     if (SeasonData.currentMonth == MonthConstants.december)
     {
-        print("" + SeasonData.currentMonth);
         SeasonData.currentMonth = MonthConstants.january;
     }
     else

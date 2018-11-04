@@ -140,7 +140,7 @@ function debug_renderUI()
 
         if(GUI.button("Add Seed"))
         {
-            ResourceData.seeds++;
+            ResourcesData.seeds++;
         }
     }
     GUI.end();

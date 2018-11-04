@@ -7,10 +7,15 @@ var WeatherConstants = {
     snowy: 4
 }
 
-var WeatherData = {
-    activeWeathers: [],
-    weathers: []
+function weather_reset_data()
+{
+    return {
+        activeWeathers: [],
+        weathers: []
+    }
 }
+
+var WeatherData = weather_reset_data();
 
 var WeatherDataSaveProperties = [
     "activeWeathers"

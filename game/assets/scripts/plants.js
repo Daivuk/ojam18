@@ -25,11 +25,16 @@ var PlantType = {
     SEED: "seed"
 }
 
-var PlantData = {
-    plants : [],
-    globalId: 0,
-    dtMsSinceLastConsume: 0
+function plant_reset_data()
+{
+    return {
+        plants : [],
+        globalId: 0,
+        dtMsSinceLastConsume: 0
+    }
 }
+
+var PlantData = plant_reset_data();
 
 var PlantDataSaveProperties = [
     "plants",
@@ -98,6 +103,8 @@ function plant_age(_plant, _amount)
 function plant_make_dead(_plant)
 {
     _plant.dead = true;
+    _plant.seed = 0;
+    _plant.biomass = 0;
     // Update the focus to the same index so that the focus icon will update for the dead state.
     focus_set_current_focus_index(FocusData.currentFocusItemIndex);
 }
@@ -151,6 +158,7 @@ function plants_update(dt)
     var sunLeeches = [];
     var sunPlantBonus = 0;
 
+    var alivePlantsCount = 0;
     for(var i = 0; i < PlantData.plants.length; ++i)
     {
         var plant = PlantData.plants[i];
@@ -214,6 +222,8 @@ function plants_update(dt)
             plant.sun += PLANT_SUN_ABSORB_PD * day_getLightLevel() * weather_getSunMultiplier() * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
             plant.sun -= PLANT_SUN_USAGE_PD * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
             plant.sun = Math.min(plant.sun, PLANT_SUN_MAX);
+
+            alivePlantsCount++;
         }
 
         // Find all the water and sun plants to apply their global effects
@@ -282,6 +292,11 @@ function plants_update(dt)
         }
     }
 
+    if (alivePlantsCount == 0 && ResourcesData.seeds == 0)
+    {
+        main_menu_show(true);
+    }
+
     // Apply water plant bonus
     if(surplusWaterPlants.length > 0 && waterLeeches.length > 0)
     {
@@ -321,12 +336,12 @@ function plants_update(dt)
         {
             updateMsSinceLastConsume = false;
             handled = true;
-            ResourceData.seeds++;
-            ResourceData.seedsBounceAnim.stop();
-            ResourceData.seedsBounceAnim.set(0);
-            ResourceData.seedsBounceAnim.queue(1, .2, Tween.EASE_OUT);
-            ResourceData.seedsBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
-            ResourceData.seedsBounceAnim.play();
+            ResourcesData.seeds++;
+            ResourcesData.seedsBounceAnim.stop();
+            ResourcesData.seedsBounceAnim.set(0);
+            ResourcesData.seedsBounceAnim.queue(1, .2, Tween.EASE_OUT);
+            ResourcesData.seedsBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
+            ResourcesData.seedsBounceAnim.play();
             focusItem.seed = 0;
             PlantData.dtMsSinceLastConsume = 0;
         }
@@ -335,12 +350,12 @@ function plants_update(dt)
         {
             updateMsSinceLastConsume = false;
             handled = true;
-            ResourceData.biomass++;
-            ResourceData.biomassBounceAnim.stop();
-            ResourceData.biomassBounceAnim.set(0);
-            ResourceData.biomassBounceAnim.queue(1, .2, Tween.EASE_OUT);
-            ResourceData.biomassBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
-            ResourceData.biomassBounceAnim.play();
+            ResourcesData.biomass++;
+            ResourcesData.biomassBounceAnim.stop();
+            ResourcesData.biomassBounceAnim.set(0);
+            ResourcesData.biomassBounceAnim.queue(1, .2, Tween.EASE_OUT);
+            ResourcesData.biomassBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
+            ResourcesData.biomassBounceAnim.play();
             focusItem.biomass = 0;
             PlantData.dtMsSinceLastConsume = 0;
         }
@@ -400,10 +415,10 @@ function plants_update(dt)
 
             if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
             {
-                if(currentFocusItem.itemData.level < 3 && ResourceData.biomass > 0 && !currentFocusItem.itemData.dead)
+                if(currentFocusItem.itemData.level < 3 && ResourcesData.biomass > 0 && !currentFocusItem.itemData.dead)
                 {
                     currentFocusItem.itemData.level++;
-                    ResourceData.biomass--;
+                    ResourcesData.biomass--;
                 }
 
                 PlantMenuData.action = "none";
