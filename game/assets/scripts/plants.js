@@ -295,6 +295,11 @@ function plants_update(dt)
             updateMsSinceLastConsume = false;
             handled = true;
             ResourceData.seeds++;
+            ResourceData.seedsBounceAnim.stop();
+            ResourceData.seedsBounceAnim.set(0);
+            ResourceData.seedsBounceAnim.queue(1, .2, Tween.EASE_OUT);
+            ResourceData.seedsBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
+            ResourceData.seedsBounceAnim.play();
             focusItem.seed = 0;
             PlantData.dtMsSinceLastConsume = 0;
         }
@@ -304,6 +309,11 @@ function plants_update(dt)
             updateMsSinceLastConsume = false;
             handled = true;
             ResourceData.biomass++;
+            ResourceData.biomassBounceAnim.stop();
+            ResourceData.biomassBounceAnim.set(0);
+            ResourceData.biomassBounceAnim.queue(1, .2, Tween.EASE_OUT);
+            ResourceData.biomassBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
+            ResourceData.biomassBounceAnim.play();
             focusItem.biomass = 0;
             PlantData.dtMsSinceLastConsume = 0;
         }
