@@ -3,7 +3,8 @@ var FertileGroundData = {
     grounds: [],
     globalId: 0,
     activeMenuPosition: null,
-    selectedPlantType: null
+    selectedPlantType: null,
+    plantingAborted: false
 };
 
 var FertileGroundConstants = {
@@ -72,15 +73,21 @@ function fertile_ground_update()
                 FertileGroundData.selectedPlantType = PlantType.SOLAR;
             }
 
-            if (FertileGroundData.selectedPlantType != null && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || Input.isJustUp(Key.LEFT) || Input.isJustUp(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)))
+            if (!FertileGroundData.plantingAborted && (Input.isJustUp(Key.UP) || Input.isJustUp(Key.DOWN) || Input.isJustUp(Key.LEFT) || Input.isJustUp(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)))
             {
                 FertileGroundConstants.menuSprite.play("center");
-                FertileGroundData.selectedPlantType = null;
+                FertileGroundData.plantingAborted = true;
             }
         }
         else
         {
             FertileGroundData.activeMenuPosition = null;
+        }
+
+        if (FertileGroundData.plantingAborted && !FertileGroundConstants.menuSprite.isPlaying())
+        {
+            FertileGroundData.plantingAborted = false;
+            FertileGroundData.selectedPlantType = null;
         }
 
         if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && seeds > 0)
