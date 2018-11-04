@@ -16,15 +16,42 @@ var SeasonData = new (function() {
     this.currentMonth = MonthConstants.march;
 });
 
+function season_get_season_for_day_offset(dayOffset)
+{
+    var newDay = MonthData.currentDay + dayOffset;
+    var newMonth = SeasonData.currentMonth;
+    
+    while (newDay >= (MonthConstants.daysPerMonth[newMonth] - 1))
+    {
+        newDay -= MonthConstants.daysPerMonth[newMonth] - 1;
+
+        if (newMonth == MonthConstants.december)
+        {
+            newMonth = MonthConstants.january;
+        }
+        else
+        {
+            newMonth++;
+        }
+    }
+
+    return season_get_season_for_date(newDay, newMonth);
+}
+
 function season_get_current_season_index()
 {
-    switch(SeasonData.currentMonth)
+    return season_get_season_for_date(MonthData.currentDay, SeasonData.currentMonth);
+}
+
+function season_get_season_for_date(day, month)
+{
+    switch(month)
     {
         case MonthConstants.january:
         case MonthConstants.february:
             return SeasonConstants.winter;
         case MonthConstants.march:
-            if (MonthData.currentDay >= 20) 
+            if (day >= 20) 
             {
                 return SeasonConstants.spring;
             }
@@ -36,7 +63,7 @@ function season_get_current_season_index()
         case MonthConstants.may:
             return SeasonConstants.spring;
         case MonthConstants.june:
-            if (MonthData.currentDay >= 21)
+            if (day >= 21)
             {
                 return SeasonConstants.summer;
             }
@@ -48,7 +75,7 @@ function season_get_current_season_index()
         case MonthConstants.august:
             return SeasonConstants.summer;
         case MonthConstants.september:
-            if (MonthData.currentDay >= 21)
+            if (day >= 21)
             {
                 return SeasonConstants.fall;
             }
@@ -60,7 +87,7 @@ function season_get_current_season_index()
         case MonthConstants.november:
             return SeasonConstants.fall;
         case MonthConstants.december:
-            if (MonthConstants.currentDay >= 21)
+            if (day >= 21)
             {
                 return SeasonConstants.winter;
             }
@@ -69,6 +96,29 @@ function season_get_current_season_index()
                 return SeasonConstants.fall;
             }        
     }
+}
+
+function season_get_weathers_for_season(season)
+{
+    var weathers = [];
+    weathers.push(WeatherConstants.sunny);
+    weathers.push(WeatherConstants.cloudy);
+
+    switch(season)
+    {
+        case SeasonConstants.fall:
+        case SeasonConstants.spring:
+        case SeasonConstants.summer:
+            weathers.push(WeatherConstants.rainy);
+            weathers.push(WeatherConstants.stormy);
+            break;
+
+        case SeasonConstants.winter:
+            weathers.push(WeatherConstants.snowy);
+            break;
+    }
+
+    return weathers;
 }
 
 function season_update(dtMonths)
