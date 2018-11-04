@@ -115,7 +115,7 @@ function fertile_ground_update()
             // Index 0 will now be the new fertile ground.
             if (shouldFixFocus)
             {
-                FocusData.currentFocusItemIndex = 1;
+                focus_set_current_focus_index(1);
             }
         }
         

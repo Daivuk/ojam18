@@ -5,7 +5,7 @@ var FocusConstants = new (function() {
     this.plantTypeLevel3 = 3;
     this.fertileGroundType = 4;
     // TODO: Change to a different asset?
-    this.focusArrow = playSpriteAnim("day_arrow.json", "idle");
+    this.typeIcon = playSpriteAnim("icons.json", "seed");
     this.focusArrowYPositions = [
         -15, // plantTypeLevel0
         -22, // plantTypeLevel1
@@ -35,10 +35,10 @@ function focus_item_create(_type, _id, _itemData)
         return a.itemData.position - b.itemData.position;
     });
 
-    if (FocusData.currentFocusItemIndex == null)
+    if (FocusData.currentFocusItemIndex == null && FocusData.focusItems.length > 1)
     {
         // Initially set focus to the first plant which is at index 1.
-        FocusData.currentFocusItemIndex = 1;   
+        focus_set_current_focus_index(1);   
     }
 }
 
@@ -66,7 +66,7 @@ function focus_update(dt)
     if ((Input.isDown(Key.LEFT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_LEFT)) &&  FocusData.dtMsSinceLastLeft > 100) 
     {
         FocusData.dtMsSinceLastLeft = 0;
-        FocusData.currentFocusItemIndex = Math.max(0, FocusData.currentFocusItemIndex - 1);
+        focus_set_current_focus_index(Math.max(0, FocusData.currentFocusItemIndex - 1));
     }
     else
     {
@@ -76,11 +76,35 @@ function focus_update(dt)
     if ((Input.isDown(Key.RIGHT) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_RIGHT)) &&  FocusData.dtMsSinceLastRight > 100)
     {
         FocusData.dtMsSinceLastRight = 0;
-        FocusData.currentFocusItemIndex = Math.min(FocusData.currentFocusItemIndex + 1, FocusData.focusItems.length - 1);
+        focus_set_current_focus_index(Math.min(FocusData.currentFocusItemIndex + 1, FocusData.focusItems.length - 1));
     }
     else
     {
         FocusData.dtMsSinceLastRight += dt * 1000;
+    }
+}
+
+function focus_set_current_focus_index(index)
+{
+    FocusData.currentFocusItemIndex = index;
+    var currentItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
+    if (focus_is_plant_type(currentItem.type))
+    {
+        switch(currentItem.itemData.type)
+        {
+            case PlantType.NORMAL:
+                FocusConstants.typeIcon.play("bio");
+                break;
+            case PlantType.SEED:
+                FocusConstants.typeIcon.play("seed");
+                break;
+            case PlantType.SOLAR:
+                FocusConstants.typeIcon.play("sun");
+                break;
+            case PlantType.WATER:
+                FocusConstants.typeIcon.play("water");
+                break;
+        }
     }
 }
 
@@ -120,7 +144,13 @@ function focus_render()
 
     }
     currentFocusItem.type = focusType;
-    SpriteBatch.drawSpriteAnim(dayArrow, new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType]));
+
+    var arrowPosition = new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType]);
+    SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition);
+    if (focus_is_plant_type(currentFocusItem.type))
+    {
+        SpriteBatch.drawSpriteAnim(FocusConstants.typeIcon, new Vector2(arrowPosition.x, arrowPosition.y - 15));
+    }
 }
 
 function focus_is_plant_type(type)
