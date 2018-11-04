@@ -46,12 +46,19 @@ music.play();
 // Init some crap
 weather_init();
 
+var ppp = null;
 plant_create(0, PlantType.SEED);
-// plant_create(distanceBetweenPlants, PlantType.SOLAR);
-// plant_create(distanceBetweenPlants * 2, PlantType.WATER);
-// plant_create(distanceBetweenPlants * 3, PlantType.NORMAL);
+plant_create(distanceBetweenPlants, PlantType.WATER);
+
+ppp = plant_create(distanceBetweenPlants * 2, PlantType.WATER);
+ppp.level = 1;
+ppp = plant_create(distanceBetweenPlants * 3, PlantType.WATER);
+ppp.level = 2;
+ppp = plant_create(distanceBetweenPlants * 4, PlantType.WATER);
+ppp.level = 3;
+
 fertile_ground_create(-distanceBetweenPlants);
-fertile_ground_create(distanceBetweenPlants);
+fertile_ground_create(distanceBetweenPlants * 5);
 
 var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resource"];
 
