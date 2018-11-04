@@ -61,7 +61,7 @@ function fertile_ground_destroy(_position)
 function fertile_ground_update()
 {
     var currentFocusItem = FocusData.focusItems[FocusData.currentFocusItemIndex];
-    if (currentFocusItem.type == FocusConstants.fertileGroundType)
+    if (currentFocusItem.type == FocusConstants.fertileGroundType && ResourceData.seeds > 0)
     {
         if (Input.isJustDown(Key.SPACE_BAR || GamePad.isDown(0, Button.A)))
         {
