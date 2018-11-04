@@ -10,6 +10,7 @@ var menuSkullSprite = playSpriteAnim("icons.json", "skull");
 var menuSkullAnim = new NumberAnim(-1);
 menuSkullAnim.playSingle(-1, 1, 1, Tween.EASE_BOTH, Loop.PING_PONG_LOOP);
 
+var uiFade = 0;
 
 function main_menu_render()
 {

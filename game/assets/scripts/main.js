@@ -115,6 +115,7 @@ function update(dt)
         var paused = MainMenuData.isGameOver || showDebug;
 
         wind += dt;
+        uiFade = Math.min(0, uiFade + dt);
 
         // Move camera...
         cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
@@ -324,6 +325,7 @@ function init_plants()
 
 function reset_game()
 {
+    uiFade = 0;
     saveLoadTypes.forEach(function(type) {
         var resetFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_reset_data"];
         if (typeof resetFunction === "function")
