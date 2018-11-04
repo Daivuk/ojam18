@@ -228,12 +228,12 @@ function plants_update(dt)
             if (Input.isDown(Key.SPACE_BAR) || GamePad.isDown(0, Button.A))
             {
                 PlantMenuData.activeMenuPosition = currentFocusItem.itemData.position;
-                if (Input.isDown(Key.UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP) && PlantMenuData.action != "level")
+                if ((Input.isDown(Key.UP) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_UP)) && PlantMenuData.action != "level")
                 {
                     PlantMenuData.menuSprite.play("up");
                     PlantMenuData.action = "level";
                 }
-                else if (Input.isDown(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN) && PlantMenuData.action != "destroy")
+                else if ((Input.isDown(Key.DOWN) || GamePad.isDown(0, Button.LEFT_THUMBSTICK_DOWN)) && PlantMenuData.action != "destroy")
                 {
                     PlantMenuData.menuSprite.play("bottom");
                     PlantMenuData.action = "destroy";
