@@ -50,7 +50,7 @@ function input_is_right_just_down()
 
 function input_is_right_down()
 {
-    return Input.isDown(Key.RIGHT) || Input.isJustDown(Key.D) || GamePad.isJustDown(0, Button.DPAD_RIGHT);
+    return Input.isDown(Key.RIGHT) || Input.isDown(Key.D) || GamePad.isDown(0, Button.DPAD_RIGHT);
 }
 
 function input_is_any_direction_just_up()
