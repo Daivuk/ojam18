@@ -15,7 +15,11 @@ var DayData = new (function() {
     this.timeScaleFactor = 2500;
 });
 
-var dayArrow = playSpriteAnim("day_arrow.json", "idle")
+var DayDataSaveProperties = [
+    "currentTimeSeconds"
+];
+
+var dayArrow = playSpriteAnim("day_arrow.json", "idle");
 
 function day_update(dtSeconds)
 {

@@ -1,4 +1,16 @@
 // Globals
+if (typeof global === 'undefined') {
+    (function () {
+        var global = new Function('return this;')();
+        Object.defineProperty(global, 'global', {
+            value: global,
+            writable: true,
+            enumerable: false,
+            configurable: true
+        });
+    })();
+}
+
 var resolution = Renderer.getResolution(); // Cache this globally
 var cameraX = 0;
 var cameraTargetX = 0;
@@ -7,6 +19,10 @@ var invTrasform; // In case we need mouse picking shit
 var transformUI;
 var invTransformUI;
 var resolutionUI;
+var zoom = 16.0;
+var zoomTarget = 8.0;
+var zoomTargetOffset = 0;
+var zoomFast = 0;
 
 // Resources
 var worldRT = Texture.createScreenRenderTarget();
@@ -22,6 +38,9 @@ var boomSelect = 0.8;
 var boomAmount = 1;
 var distanceBetweenPlants = 30;
 
+var music = getMusic("Fertile_Ground_Music_v0.1h.ogg");
+music.play();
+
 // Init some crap
 weather_init();
 // for (var i = 0; i < 10; ++i)
@@ -36,8 +55,79 @@ weather_init();
 // }
 
 plant_create(0, PlantType.SEED);
-fertile_ground_create(-distanceBetweenPlants)
-fertile_ground_create(distanceBetweenPlants)
+fertile_ground_create(-distanceBetweenPlants);
+fertile_ground_create(distanceBetweenPlants);
+
+var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resource"];
+
+// TODO: Write to a file. Does this even exist?
+var saveDataJSON = null;
+function save()
+{
+    var saveObject = new Object();
+    saveLoadTypes.forEach(function(type) {
+        // Generic Save from TypeDataSaveProperties
+        var saveObjectForType = new Object();
+        var currentData = global[type + "Data"];
+        if (currentData !== undefined)
+        {
+            global[type + "DataSaveProperties"].forEach(function(saveProperty) {
+                saveObjectForType[saveProperty] = currentData[saveProperty];
+            });
+            saveObject[type] = saveObjectForType;
+        }
+
+        // Custom Save
+        var customSaveFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_save"];
+        if (typeof customSaveFunction === "function")
+        {
+            customSaveFunction();
+        }
+    });
+
+    saveDataJSON = JSON.stringify(saveObject);
+}
+
+function load()
+{
+    if (saveDataJSON == null) 
+    {
+        return;
+    }
+
+    var loadObject = JSON.parse(saveDataJSON);
+    saveLoadTypes.forEach(function(type) {
+        // Generic Load
+        var currentloadObject = loadObject[type];
+        var currentData = global[type + "Data"];
+        Object.getOwnPropertyNames(loadObject[type]).forEach(function (functionloadDataProperty) {
+            currentData[functionloadDataProperty] = currentloadObject[functionloadDataProperty];
+        });
+
+        // Custom Load
+        var customLoadFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_load"];
+        if (typeof customLoadFunction === "function")
+        {
+            customLoadFunction(currentloadObject);
+        }
+    });
+}
+
+function focus_save()
+{
+    var saveData = new Object();
+    FocusDataSaveProperties.forEach(function(saveProperty) {
+        saveData[saveProperty] = FocusData[saveProperty];
+    });
+    return saveData;
+}
+
+function focus_load(loadData)
+{
+    Object.getOwnPropertyNames(loadData).forEach(function (functionloadDataProperty) {
+        FocusData[functionloadDataProperty] = loadData[functionloadDataProperty];
+    });
+}
 
 function update(dt)
 {
@@ -45,10 +135,17 @@ function update(dt)
 
     // Move camera...
     cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
-    cameraX = cameraX + (cameraTargetX - cameraX) * 10 * dt;
+    cameraX = cameraX + (cameraTargetX - cameraX) * 5 * dt;
 
     // Update world matrix
-    var scale = 8.0;
+    var zoomSpeed = 1;
+    if (zoomFast > 0)
+    {
+        zoomFast -= dt;
+        zoomSpeed = 4;
+    }
+    zoom = zoom + ((zoomTarget + zoomTargetOffset) - zoom) * zoomSpeed * dt;
+    var scale = zoom;
 
     transform = Matrix.IDENTITY;
     transform = transform.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
@@ -61,6 +158,15 @@ function update(dt)
     resolutionUI = new Vector2(resolution.x * uiscale, resolution.y * uiscale);
     transformUI = Matrix.createScale(1.0 / uiscale);
     invTransformUI = transformUI.invert();
+
+    if (Input.isJustDown(Key.S))
+    {
+        save();
+    }
+    else if(Input.isJustDown(Key.L))
+    {
+        load();
+    }
 
     fertile_ground_update();
     

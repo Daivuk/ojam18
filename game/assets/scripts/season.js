@@ -16,6 +16,10 @@ var SeasonData = new (function() {
     this.currentMonth = MonthConstants.march;
 });
 
+var SeasonDataSaveProperties = [
+    "currentMonth"
+];
+
 function season_get_season_for_day_offset(dayOffset)
 {
     var newDay = MonthData.currentDay + dayOffset;

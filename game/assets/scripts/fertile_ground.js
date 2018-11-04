@@ -7,6 +7,11 @@ var FertileGroundData = {
     plantingAborted: false
 };
 
+var FertileGroundDataSaveProperties = [
+    "grounds",
+    "globalId"
+];
+
 var FertileGroundConstants = {
     menuSprite: playSpriteAnim("seeding_ui.json", "center")
 }
@@ -78,10 +83,14 @@ function fertile_ground_update()
                 FertileGroundConstants.menuSprite.play("center");
                 FertileGroundData.plantingAborted = true;
             }
+
+            zoomFast = 1;
+            zoomTargetOffset = 2;
         }
         else
         {
             FertileGroundData.activeMenuPosition = null;
+            zoomTargetOffset = 0;
         }
 
         if (FertileGroundData.plantingAborted && !FertileGroundConstants.menuSprite.isPlaying())
@@ -90,11 +99,11 @@ function fertile_ground_update()
             FertileGroundData.selectedPlantType = null;
         }
 
-        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && seeds > 0)
+        if(FertileGroundData.selectedPlantType && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)) && ResourceData.seeds > 0)
         {
             fertile_ground_destroy(currentFocusItem.itemData.position);
             plant_create(currentFocusItem.itemData.position, FertileGroundData.selectedPlantType);
-            seeds--;
+            ResourceData.seeds--;
             FertileGroundData.selectedPlantType = null;
             
             var shouldFixFocus = false;
@@ -140,6 +149,6 @@ function fertile_ground_render()
 
     if (FertileGroundData.activeMenuPosition != null)
     {
-        SpriteBatch.drawSpriteAnim(FertileGroundConstants.menuSprite, new Vector2(FertileGroundData.activeMenuPosition, -25));
+        SpriteBatch.drawSpriteAnim(FertileGroundConstants.menuSprite, new Vector2(FertileGroundData.activeMenuPosition, -15), Color.WHITE, 0, 0.5);
     }
 }

@@ -12,11 +12,22 @@ var WeatherData = {
     weathers: []
 }
 
+var WeatherDataSaveProperties = [
+    "activeWeathers"
+];
+
+
 var droppingCard = {
     weather: null,
     anim: new Vector2Anim()
 };
 var incomingCardAnim = new Vector2Anim();
+
+function weather_load(loadData)
+{
+    droppingCard.anim.stopAndGoToEnd();
+    incomingCardAnim.stopAndGoToEnd();
+}
 
 function weather_update(dtDays)
 {

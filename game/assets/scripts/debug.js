@@ -14,7 +14,7 @@ function debug_renderUI()
     
     if (GUI.begin("Debug Menu"))
     {
-        if (GUI.button("save"))
+        if (GUI.button("save palette"))
         {
             var file = new BinaryFileWriter("hsv.json");
             file.writeString(JSON.stringify(rgbTable));

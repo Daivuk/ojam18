@@ -7,12 +7,14 @@ var FocusConstants = new (function() {
     // TODO: Change to a different asset?
     this.typeIcon = playSpriteAnim("icons.json", "seed");
     this.focusArrowYPositions = [
-        -15, // plantTypeLevel0
-        -22, // plantTypeLevel1
-        -35, // plantTypeLevel2
-        -45, // plantTypeLevel3
-        -5, // fertileGroundType
+        -20, // plantTypeLevel0
+        -29, // plantTypeLevel1
+        -39, // plantTypeLevel2
+        -48, // plantTypeLevel3
+        -6, // fertileGroundType
     ];
+    this.focusAnim = new NumberAnim(-1);
+    this.focusAnim.playSingle(-1, 1, 1, Tween.EASE_BOTH, Loop.PING_PONG_LOOP);
 });
 
 var FocusData = new (function() {
@@ -21,6 +23,11 @@ var FocusData = new (function() {
     this.dtMsSinceLastLeft = 0;
     this.dtMsSinceLastRight = 0;
 });
+
+var FocusDataSaveProperties = [
+    "focusItems",
+    "currentFocusItemIndex"
+];
 
 function focus_item_create(_type, _id, _itemData)
 {
@@ -145,7 +152,8 @@ function focus_render()
     }
     currentFocusItem.type = focusType;
 
-    var arrowPosition = new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType]);
+    var arrowPosition = new Vector2(currentFocusItem.itemData.position, FocusConstants.focusArrowYPositions[focusType] +
+        FocusConstants.focusAnim.get() * 1);
     SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition);
     if (focus_is_plant_type(currentFocusItem.type))
     {
