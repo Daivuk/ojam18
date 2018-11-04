@@ -25,9 +25,14 @@ var FocusData = new (function() {
 });
 
 var FocusDataSaveProperties = [
-    "focusItems",
     "currentFocusItemIndex"
 ];
+
+function focus_load(loadData)
+{
+    // We do not store the focus items because they need to be references. Reset and they will be loaded by their origin.
+    FocusData.focusItems = [];
+}
 
 function focus_item_create(_type, _id, _itemData)
 {

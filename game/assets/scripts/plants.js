@@ -43,6 +43,15 @@ var PlantMenuData = {
     activeMenuPosition: null,
 }
 
+function plant_load()
+{
+    // Focus items needs to be a reference to the actual plant items, so they are not saved.
+    // Reload here.
+    PlantData.plants.forEach(function(plant){
+        focus_item_create(FocusConstants.plantTypeLevel0, plant.id, plant);
+    });
+}
+
 function plant_create(_position, _type)
 {
     var plant = {
@@ -193,7 +202,6 @@ function plants_update(dt)
     if ((Input.isJustDown(Key.SPACE_BAR) || GamePad.isJustDown(0, Button.A)) && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
-
         if(focusItem.seed == PLANT_SEED_MAX)
         {
             updateMsSinceLastConsume = false;

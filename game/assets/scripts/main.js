@@ -60,8 +60,6 @@ fertile_ground_create(distanceBetweenPlants);
 
 var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resource"];
 
-// TODO: Write to a file. Does this even exist?
-var saveDataJSON = null;
 function save()
 {
     var saveObject = new Object();
@@ -85,17 +83,14 @@ function save()
         }
     });
 
-    saveDataJSON = JSON.stringify(saveObject);
+    var saveJSON = JSON.stringify(saveObject);
+    new BinaryFileWriter("save.json").writeString(saveJSON);
 }
 
 function load()
 {
-    if (saveDataJSON == null) 
-    {
-        return;
-    }
-
-    var loadObject = JSON.parse(saveDataJSON);
+    var file = new BinaryFileReader("save.json");
+    var loadObject = JSON.parse(file.readString());
     saveLoadTypes.forEach(function(type) {
         // Generic Load
         var currentloadObject = loadObject[type];
@@ -110,22 +105,6 @@ function load()
         {
             customLoadFunction(currentloadObject);
         }
-    });
-}
-
-function focus_save()
-{
-    var saveData = new Object();
-    FocusDataSaveProperties.forEach(function(saveProperty) {
-        saveData[saveProperty] = FocusData[saveProperty];
-    });
-    return saveData;
-}
-
-function focus_load(loadData)
-{
-    Object.getOwnPropertyNames(loadData).forEach(function (functionloadDataProperty) {
-        FocusData[functionloadDataProperty] = loadData[functionloadDataProperty];
     });
 }
 
