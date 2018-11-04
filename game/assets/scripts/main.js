@@ -103,6 +103,8 @@ function load()
 
 function update(dt)
 {
+    if (Input.isJustDown(Key.ESCAPE)) quit();
+
     resolution = Renderer.getResolution();
     if (MainMenuData.isDisplaying)
     {
