@@ -157,7 +157,7 @@ function focus_render()
     SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition);
     if (focus_is_plant_type(currentFocusItem.type))
     {
-        SpriteBatch.drawSpriteAnim(FocusConstants.typeIcon, new Vector2(arrowPosition.x, arrowPosition.y - 15));
+        SpriteBatch.drawSpriteAnim(FocusConstants.typeIcon, new Vector2(arrowPosition.x, arrowPosition.y - 10));
     }
 }
 

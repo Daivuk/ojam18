@@ -50,7 +50,7 @@
    { "name": "bio", "from": 3, "to": 3, "direction": "forward" }
   ],
   "layers": [
-   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 0, "data": "origin=8,8" }] }
   ],
   "slices": [
   ]

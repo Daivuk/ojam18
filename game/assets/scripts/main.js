@@ -135,9 +135,10 @@ function update(dt)
 
     // Move camera...
     cameraTargetX = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData.position;
-    cameraX = cameraX + (cameraTargetX - cameraX) * 5 * dt;
+    cameraX = cameraX + (cameraTargetX - cameraX) * 3 * dt;
 
     // Update world matrix
+    zoomTarget = 8.6 - FocusData.focusItems.length * 0.2;
     var zoomSpeed = 1;
     if (zoomFast > 0)
     {
@@ -200,6 +201,8 @@ function postProcess()
     SpriteBatch.drawRect(worldRT, screenRect);
     SpriteBatch.end();
     Renderer.popRenderTarget();
+    screenRT.vignette(.5);
+    // screenRT.sepia();
 
     Renderer.pushRenderTarget(bloomRT);
     bloomSelectShader.setNumber("select", boomSelect);
