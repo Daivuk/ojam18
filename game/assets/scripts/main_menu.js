@@ -2,6 +2,7 @@ var MainMenuData = {
     isDisplaying: true,
     isGameOver: false,
     gameOverShownForS: 0,
+    infoScreenVisible: false
 };
 
 var titleTexture = getTexture("title.png");
@@ -12,7 +13,13 @@ menuSkullAnim.playSingle(-1, 1, 1, Tween.EASE_BOTH, Loop.PING_PONG_LOOP);
 
 
 function main_menu_render()
-{
+{    
+    if (MainMenuData.infoScreenVisible)
+    {
+        info_screen_render();
+        return;
+    }
+    
     Renderer.pushRenderTarget(worldRT);
     Renderer.clear(new Color(0, 0, 0));
 
@@ -36,6 +43,10 @@ function main_menu_render()
     if (MainMenuData.isGameOver)
     {
         SpriteBatch.drawSpriteAnim(menuSkullSprite, new Vector2((scaledRes.x / 2), textPosition.y + 30 + menuSkullAnim.get()));
+    }
+    else
+    {
+        SpriteBatch.drawText(font, "Hold Tab for Instructions", new Vector2(textPosition.x - 35, textPosition.y + 20), new Color());
     }
     SpriteBatch.end();
 
@@ -122,6 +133,15 @@ function main_menu_update(dt)
     {
         MainMenuData.gameOverShownForS = 0;
         MainMenuData.isGameOver = false;
+    }
+
+    if (Input.isDown(Key.TAB))
+    {
+        MainMenuData.infoScreenVisible = true;
+    }
+    else
+    {
+        MainMenuData.infoScreenVisible = false;
     }
 }
 
