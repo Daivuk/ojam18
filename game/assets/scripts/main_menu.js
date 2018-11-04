@@ -9,7 +9,7 @@ var titleTexture = getTexture("title.png");
 function main_menu_render()
 {
     Renderer.pushRenderTarget(worldRT);
-    Renderer.clear(new Color(1, 0, 0.5));
+    Renderer.clear(new Color(0, 0, 0));
 
     var scale = resolution.y / 240;
     var scaledRes = new Vector2(resolution.x / scale, resolution.y / scale);

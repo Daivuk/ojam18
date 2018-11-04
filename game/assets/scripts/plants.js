@@ -340,7 +340,7 @@ function plants_update(dt)
     var handled = false;
     var updateMsSinceLastConsume = true;
     // Consume dropped resource
-    if (input_is_activation_just_down && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
+    if (input_is_activation_just_down() && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
         playSound("pickup.wav", master_volume);
 
