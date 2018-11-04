@@ -19,7 +19,8 @@ var WeatherDataSaveProperties = [
 
 var droppingCard = {
     weather: null,
-    anim: new Vector2Anim()
+    anim: new Vector2Anim(),
+    alphaAnim: new NumberAnim()
 };
 var incomingCardAnim = new Vector2Anim();
 
@@ -44,6 +45,7 @@ function weather_update(dtDays)
         droppingCard.weather = null;
     });
     droppingCard.anim.play();
+    droppingCard.alphaAnim.playSingle(1, 0, 1, Tween.EASE_OUT);
 
     incomingCardAnim.stop();
     incomingCardAnim.playSingle(new Vector2(resolutionUI.x / 2, 0), Vector2.ZERO, 3, Tween.EASE_OUT);
