@@ -290,7 +290,7 @@ function plants_update(dt)
         }
     }
 
-    if (alivePlantsCount == 0 && ResourceData.seeds == 0)
+    if (alivePlantsCount == 0 && ResourcesData.seeds == 0)
     {
         main_menu_show(true);
     }
@@ -334,12 +334,12 @@ function plants_update(dt)
         {
             updateMsSinceLastConsume = false;
             handled = true;
-            ResourceData.seeds++;
-            ResourceData.seedsBounceAnim.stop();
-            ResourceData.seedsBounceAnim.set(0);
-            ResourceData.seedsBounceAnim.queue(1, .2, Tween.EASE_OUT);
-            ResourceData.seedsBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
-            ResourceData.seedsBounceAnim.play();
+            ResourcesData.seeds++;
+            ResourcesData.seedsBounceAnim.stop();
+            ResourcesData.seedsBounceAnim.set(0);
+            ResourcesData.seedsBounceAnim.queue(1, .2, Tween.EASE_OUT);
+            ResourcesData.seedsBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
+            ResourcesData.seedsBounceAnim.play();
             focusItem.seed = 0;
             PlantData.dtMsSinceLastConsume = 0;
         }
@@ -348,12 +348,12 @@ function plants_update(dt)
         {
             updateMsSinceLastConsume = false;
             handled = true;
-            ResourceData.biomass++;
-            ResourceData.biomassBounceAnim.stop();
-            ResourceData.biomassBounceAnim.set(0);
-            ResourceData.biomassBounceAnim.queue(1, .2, Tween.EASE_OUT);
-            ResourceData.biomassBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
-            ResourceData.biomassBounceAnim.play();
+            ResourcesData.biomass++;
+            ResourcesData.biomassBounceAnim.stop();
+            ResourcesData.biomassBounceAnim.set(0);
+            ResourcesData.biomassBounceAnim.queue(1, .2, Tween.EASE_OUT);
+            ResourcesData.biomassBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
+            ResourcesData.biomassBounceAnim.play();
             focusItem.biomass = 0;
             PlantData.dtMsSinceLastConsume = 0;
         }
@@ -413,10 +413,10 @@ function plants_update(dt)
 
             if(PlantMenuData.action == "level" && (Input.isJustUp(Key.SPACE_BAR) || GamePad.isJustUp(0, Button.A)))
             {
-                if(currentFocusItem.itemData.level < 3 && ResourceData.biomass > 0 && !currentFocusItem.itemData.dead)
+                if(currentFocusItem.itemData.level < 3 && ResourcesData.biomass > 0 && !currentFocusItem.itemData.dead)
                 {
                     currentFocusItem.itemData.level++;
-                    ResourceData.biomass--;
+                    ResourcesData.biomass--;
                 }
 
                 PlantMenuData.action = "none";

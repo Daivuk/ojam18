@@ -49,7 +49,7 @@ weather_init();
 var ppp = null;
 init_plants();
 
-var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resource"];
+var saveLoadTypes = ["Day", "Focus", "FertileGround", "Month", "Plant", "Season", "Weather", "Resources"];
 
 function save()
 {
@@ -301,7 +301,6 @@ function init_plants()
 function reset_game()
 {
     saveLoadTypes.forEach(function(type) {
-        // Custom Save
         var resetFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_reset_data"];
         if (typeof resetFunction === "function")
         {
