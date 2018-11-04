@@ -103,6 +103,8 @@ function plant_age(_plant, _amount)
 function plant_make_dead(_plant)
 {
     _plant.dead = true;
+    _plant.seed = 0;
+    _plant.biomass = 0;
     // Update the focus to the same index so that the focus icon will update for the dead state.
     focus_set_current_focus_index(FocusData.currentFocusItemIndex);
 }

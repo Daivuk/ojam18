@@ -1,7 +1,7 @@
 function iceage_reset_data()
 {
     return {
-        daysToIceage: 50.0
+        daysToIceage: 20.0
     }
 }
 
