@@ -5,10 +5,10 @@
             "label": "OJam18",
             "type": "shell",
             "windows": {
-                "command": ".\\game\\ojam18_win32.exe .\\game\\"
+                "command": ".\\game\\FertileGroundWIN32.exe .\\game\\"
             },
             "osx": {
-                "command": "./game/ojam18_osx ./game/"
+                "command": "./game/FertileGroundOSX ./game/"
             },
             "linux": {
                 "command": "./game/ojam18_linux ./game/"
