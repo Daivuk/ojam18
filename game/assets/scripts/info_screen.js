@@ -36,6 +36,8 @@ function info_screen_render()
     yPosition += textSize.y;
     SpriteBatch.drawText(font, "Move between plants with A/Left Arrow and D/Right Arrow. ", new Vector2(0, yPosition));
     yPosition += textSize.y;
+    SpriteBatch.drawText(font, "Hold shift to speed up time. Double tap and hold for even faster time. ", new Vector2(0, yPosition));
+    yPosition += textSize.y;
     SpriteBatch.drawText(font, "Open the interacation menu by holding Space/Enter. Select an option by holding W,A,S,D or Up, Down, Left, Right arrows.", new Vector2(0, yPosition));
     yPosition += textSize.y;
     SpriteBatch.drawText(font, "Release to confirm the selection. ", new Vector2(0, yPosition));
