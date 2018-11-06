@@ -32,7 +32,7 @@ var master_volume = 0.5;
 // Resources
 var worldRT = Texture.createScreenRenderTarget();
 var screenRT = Texture.createScreenRenderTarget();
-var bloomRT = Texture.createScreenRenderTarget();
+var bloomRT = Texture.createRenderTarget(new Vector2(256, 256));
 var worldShader = getShader("world.ps");
 var bloomSelectShader = getShader("bloomSelect.ps");
 var plantVSShader = getShader("plant.vs");
@@ -211,13 +211,12 @@ function postProcess()
     bloomSelectShader.setNumber("select", boomSelect);
     SpriteBatch.begin(Matrix.IDENTITY, bloomSelectShader);
     Renderer.setBlendMode(BlendMode.OPAQUE);
-    SpriteBatch.drawRect(screenRT, screenRect);
+    // SpriteBatch.drawRect(screenRT, screenRect);
+    SpriteBatch.drawRect(screenRT, new Rect(0, 0, bloomRT.getSize().x, bloomRT.getSize().y));
     SpriteBatch.end();
     Renderer.popRenderTarget();
     bloomRT.sepia();
-    bloomRT.blur(32);
-
-    Renderer.clear(new Color(0, 0, 0));
+    bloomRT.blur(6.4);
 
     var fade = 1;
     if (MainMenuData.isGameOver)
@@ -302,8 +301,6 @@ function renderGameUI()
 function render()
 {
     resolution = Renderer.getResolution();
-
-    Renderer.clear(Color.fromHexRGB(0x306082));
     Renderer.setFilterMode(FilterMode.NEAREST);
     
     if (MainMenuData.isDisplaying && !(MainMenuData.isGameOver && MainMenuData.gameOverShownForS > 0))

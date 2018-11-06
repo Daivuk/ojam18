@@ -14,7 +14,6 @@ menuSkullAnim.playSingle(-1, 1, 1, Tween.EASE_BOTH, Loop.PING_PONG_LOOP);
 
 function main_menu_render()
 {
-    Renderer.clear(new Color(0, 0, 0));
     if (uiFade < 1)
     {
         Renderer.pushRenderTarget(worldRT);
@@ -89,13 +88,11 @@ function main_menu_render()
         bloomSelectShader.setNumber("select", 0.25);
         SpriteBatch.begin(Matrix.IDENTITY, bloomSelectShader);
         Renderer.setBlendMode(BlendMode.OPAQUE);
-        SpriteBatch.drawRect(worldRT, screenRect);
+        SpriteBatch.drawRect(worldRT, new Rect(0, 0, bloomRT.getSize().x, bloomRT.getSize().y));
         SpriteBatch.end();
         Renderer.popRenderTarget();
         bloomRT.sepia();
-        bloomRT.blur(32);
-
-        Renderer.clear(new Color(0, 0, 0));
+        bloomRT.blur(6.4);
 
         SpriteBatch.begin();
         Renderer.setBlendMode(BlendMode.OPAQUE);
