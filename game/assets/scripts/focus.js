@@ -80,6 +80,8 @@ function focus_item_destroy(_type, _id)
 
 function focus_update(dt)
 {
+    if (zoomFadePercent < .5) return;
+
     if (input_is_left_down() &&  FocusData.dtMsSinceLastLeft > 150) 
     {
         FocusData.dtMsSinceLastLeft = 0;
