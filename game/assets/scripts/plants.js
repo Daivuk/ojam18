@@ -79,7 +79,8 @@ function plant_create(_position, _type)
         dead: false,
         id: PlantData.globalId,
         waterBar: playSpriteAnim("bars.json", "water4"),
-        sunBar: playSpriteAnim("bars.json", "sun4")
+        sunBar: playSpriteAnim("bars.json", "sun4"),
+        sprite: playSpriteAnim("tree.json", "seed_level0")
     };
 
     PlantData.plants.push(plant);
@@ -461,30 +462,32 @@ function plants_render()
     for(var i = 0; i < PlantData.plants.length; ++i)
     {
         var color = Color.WHITE;
+        var plant = PlantData.plants[i];
 
-        if(PlantData.plants[i].dead)
+        if(plant.dead)
         {
             color = new Color(0.2, 0.2, 0.2, 1.0);
         }
 
-        SpriteBatch.drawSpriteAnim(playSpriteAnim("tree.json", PlantData.plants[i].type + "_level" + Math.min(PlantData.plants[i].level, 3)), new Vector2(PlantData.plants[i].position, 0.0), color);
+        plant.sprite.play(plant.type + "_level" + Math.min(plant.level, 3));
+        SpriteBatch.drawSpriteAnim(plant.sprite, new Vector2(plant.position, 0.0), color);
 
-        if(!PlantData.plants[i].dead)
+        if(!plant.dead)
         {
             var invP = 1 - zoomFadePercent;
             invP *= invP;
-            SpriteBatch.drawSpriteAnim(PlantData.plants[i].waterBar, 
-                new Vector2(PlantData.plants[i].position, invP * 30), zoomFadeColor, 0, 0.6);
-            SpriteBatch.drawSpriteAnim(PlantData.plants[i].sunBar, 
-                new Vector2(PlantData.plants[i].position, invP * 30), zoomFadeColor, 0, 0.6);
-            // SpriteBatch.drawText(font, "" + Math.floor(PlantData.plants[i].water), new Vector2(PlantData.plants[i].position, -32));
-            // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 8, -PlantData.plants[i].water / 10, 2, PlantData.plants[i].water / 10), new Color(0, 0, 1, 1));
-            // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 11, -PlantData.plants[i].sun / 10, 2, PlantData.plants[i].sun / 10), new Color(0, 1, 0, 1));
+            SpriteBatch.drawSpriteAnim(plant.waterBar, 
+                new Vector2(plant.position, invP * 30), zoomFadeColor, 0, 0.6);
+            SpriteBatch.drawSpriteAnim(plant.sunBar, 
+                new Vector2(plant.position, invP * 30), zoomFadeColor, 0, 0.6);
+            // SpriteBatch.drawText(font, "" + Math.floor(plant.water), new Vector2(plant.position, -32));
+            // SpriteBatch.drawRect(null, new Rect(plant.position - 8, -plant.water / 10, 2, plant.water / 10), new Color(0, 0, 1, 1));
+            // SpriteBatch.drawRect(null, new Rect(plant.position - 11, -plant.sun / 10, 2, plant.sun / 10), new Color(0, 1, 0, 1));
         }
 
-        // if(PlantData.plants[i].seed == PLANT_SEED_MAX || PlantData.plants[i].biomass == PLANT_BIOMASS_MAX)
+        // if(plant.seed == PLANT_SEED_MAX || plant.biomass == PLANT_BIOMASS_MAX)
         // {
-        //     SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position, -2, 2, 2), new Color(1, 1, 1, 1));
+        //     SpriteBatch.drawRect(null, new Rect(plant.position, -2, 2, 2), new Color(1, 1, 1, 1));
         // }
 
         if (PlantMenuData.activeMenuPosition != null)
