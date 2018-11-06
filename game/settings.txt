@@ -8,7 +8,7 @@ retroResolution = 480 x 272
 retroMode = false
 
 # Name of the game to be displayed in the window's title bar
-gameName = Ottawa Game Jam 2018
+gameName = Fertile Ground
 
 # If the window is resizable and can be maximized
 resizableWindow = true

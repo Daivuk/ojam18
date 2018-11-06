@@ -106,9 +106,22 @@ function load()
 var zoomFadePercent = 0;
 var zoomFadeDelay = 3;
 var zoomFadeColor;
+
+function animVol(val, target, dt)
+{
+    if (val < target) val = Math.min(target, val + dt);
+    else if (val > target) val = Math.max(target, val - dt);
+    return val;
+}
+
 function update(dt)
 {
     if (Input.isJustDown(Key.ESCAPE)) quit();
+
+    birdVol = animVol(birdVol, birdVolT, dt);
+    cricketsVol = animVol(cricketsVol, cricketsVolT, dt);
+    birdsSound.setVolume(birdVol * ambientVolume * master_volume);
+    cricketsSound.setVolume(cricketsVol * ambientVolume * master_volume);
 
     resolution = Renderer.getResolution();
     if (MainMenuData.isDisplaying)
@@ -337,6 +350,9 @@ function init_plants()
 
 function reset_game()
 {
+    birdVolT = 0;
+    cricketsVolT = 0;
+    
     uiFade = 0;
     zoomFadeDelay = 3;
     zoomFadePercent = 0;

@@ -124,6 +124,8 @@ function debug_renderUI()
                 if(focusItem.level < 3)
                 {
                     focusItem.level++;
+                    focusItem.levelPercent = 0;
+                    playSound("levelup.wav", master_volume, 0, 2);
                 }
             }
         }

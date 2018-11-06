@@ -77,9 +77,11 @@ function plant_create(_position, _type)
         shines: [],
         shineTime: 0,
         dead: false,
+        levelPercent: 0,
         id: PlantData.globalId,
         waterBar: playSpriteAnim("bars.json", "water4"),
         sunBar: playSpriteAnim("bars.json", "sun4"),
+        prevSprite: playSpriteAnim("tree.json", "seed_level0"),
         sprite: playSpriteAnim("tree.json", "seed_level0")
     };
 
@@ -178,6 +180,7 @@ function plants_update(dt)
 
         if(!plant.dead)
         {
+            plant.levelPercent = Math.min(1, plant.levelPercent + dt);
             if (plant.seed == PLANT_SEED_MAX || plant.biomass == PLANT_BIOMASS_MAX)
             {
                 plant.shineTime -= dt;
@@ -205,15 +208,19 @@ function plants_update(dt)
             // Seed
             if(plant.type == PlantType.SEED && plant.seed < PLANT_SEED_MAX)
             {
+                var prev = plant.seed;
                 plant.seed += PLANT_SEED_PROGRESS_PD * (plant.level + 1) * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
                 plant.seed = Math.min(plant.seed, PLANT_SEED_MAX);
+                if (plant.seed > prev && plant.seed == PLANT_SEED_MAX) playSound("ready.wav", master_volume);
             }
 
             // Biomass
             if(plant.type == PlantType.NORMAL && plant.biomass < PLANT_BIOMASS_MAX)
             {
+                var prev = plant.biomass;
                 plant.biomass += PLANT_BIOMASS_PROGRESS_PD * (plant.level + 1) * (dt / DayConstants.secondsPerDay) * DayData.timeScaleFactor;
                 plant.biomass = Math.min(plant.biomass, PLANT_BIOMASS_MAX);
+                if (plant.biomass > prev && plant.biomass == PLANT_BIOMASS_MAX) playSound("ready.wav", master_volume);
             }
 
             // Water
@@ -343,8 +350,6 @@ function plants_update(dt)
     // Consume dropped resource
     if (input_is_activation_just_down() && focus_is_plant_type(FocusData.focusItems[FocusData.currentFocusItemIndex].type))
     {
-        playSound("pickup.wav", master_volume);
-
         var focusItem = FocusData.focusItems[FocusData.currentFocusItemIndex].itemData;
         if(focusItem.seed == PLANT_SEED_MAX)
         {
@@ -358,6 +363,7 @@ function plants_update(dt)
             ResourcesData.seedsBounceAnim.play();
             focusItem.seed = 0;
             PlantData.dtMsSinceLastConsume = 0;
+            playSound("pickup2.wav", master_volume);
         }
 
         if(focusItem.biomass == PLANT_BIOMASS_MAX)
@@ -372,6 +378,7 @@ function plants_update(dt)
             ResourcesData.biomassBounceAnim.play();
             focusItem.biomass = 0;
             PlantData.dtMsSinceLastConsume = 0;
+            playSound("pickup2.wav", master_volume);
         }
     }
     
@@ -432,6 +439,8 @@ function plants_update(dt)
                 if(currentFocusItem.itemData.level < 3 && ResourcesData.biomass > 0 && !currentFocusItem.itemData.dead)
                 {
                     currentFocusItem.itemData.level++;
+                    currentFocusItem.itemData.levelPercent = 0;
+                    currentFocusItem.itemData.prevSprite.play();
                     ResourcesData.biomass--;
                     playSound("levelup.wav", master_volume, 0, 2);
                 }
@@ -469,8 +478,10 @@ function plants_render()
             color = new Color(0.2, 0.2, 0.2, 1.0);
         }
 
+        plant.prevSprite.play(plant.type + "_level" + Math.max(plant.level - 1, 0));
         plant.sprite.play(plant.type + "_level" + Math.min(plant.level, 3));
-        SpriteBatch.drawSpriteAnim(plant.sprite, new Vector2(plant.position, 0.0), color);
+        if (plant.levelPercent < 1 && plant.level > 0) SpriteBatch.drawSpriteAnim(plant.prevSprite, new Vector2(plant.position, 0.0), color.mul(1 - (plant.levelPercent*plant.levelPercent)), 0, 1 + plant.levelPercent * .25);
+        if (plant.levelPercent > 0) SpriteBatch.drawSpriteAnim(plant.sprite, new Vector2(plant.position, 0.0), color.mul(plant.levelPercent * plant.levelPercent), 0, 1 - (1 - plant.levelPercent) * .25);
 
         if(!plant.dead)
         {
