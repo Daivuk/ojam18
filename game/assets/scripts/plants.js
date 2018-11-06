@@ -77,7 +77,7 @@ function plant_create(_position, _type)
         shines: [],
         shineTime: 0,
         dead: false,
-        levelPercent: 0,
+        levelPercent: .75,
         id: PlantData.globalId,
         waterBar: playSpriteAnim("bars.json", "water4"),
         sunBar: playSpriteAnim("bars.json", "sun4"),
@@ -355,12 +355,7 @@ function plants_update(dt)
         {
             updateMsSinceLastConsume = false;
             handled = true;
-            ResourcesData.seeds++;
-            ResourcesData.seedsBounceAnim.stop();
-            ResourcesData.seedsBounceAnim.set(0);
-            ResourcesData.seedsBounceAnim.queue(1, .2, Tween.EASE_OUT);
-            ResourcesData.seedsBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
-            ResourcesData.seedsBounceAnim.play();
+            resources_addRes("seed", focusItem.position);
             focusItem.seed = 0;
             PlantData.dtMsSinceLastConsume = 0;
             playSound("pickup2.wav", master_volume);
@@ -370,12 +365,7 @@ function plants_update(dt)
         {
             updateMsSinceLastConsume = false;
             handled = true;
-            ResourcesData.biomass++;
-            ResourcesData.biomassBounceAnim.stop();
-            ResourcesData.biomassBounceAnim.set(0);
-            ResourcesData.biomassBounceAnim.queue(1, .2, Tween.EASE_OUT);
-            ResourcesData.biomassBounceAnim.queue(0, .4, Tween.BOUNCE_OUT);
-            ResourcesData.biomassBounceAnim.play();
+            resources_addRes("biomass", focusItem.position);
             focusItem.biomass = 0;
             PlantData.dtMsSinceLastConsume = 0;
             playSound("pickup2.wav", master_volume);

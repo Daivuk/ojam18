@@ -195,6 +195,7 @@ function update(dt)
         Input.setMouseVisible(showDebug)
         if (!showDebug)
         {
+            resources_update(dt);
             day_update(dt);
             plants_update(dt);
             iceage_update(dt);
@@ -352,7 +353,7 @@ function reset_game()
 {
     birdVolT = 0;
     cricketsVolT = 0;
-    
+    ResourcesData = resources_reset_data();
     uiFade = 0;
     zoomFadeDelay = 3;
     zoomFadePercent = 0;
