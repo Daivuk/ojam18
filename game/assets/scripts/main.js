@@ -103,7 +103,9 @@ function load()
         }
     });
 }
-
+var zoomFadePercent = 0;
+var zoomFadeDelay = 3;
+var zoomFadeColor;
 function update(dt)
 {
     if (Input.isJustDown(Key.ESCAPE)) quit();
@@ -134,6 +136,10 @@ function update(dt)
         }
         zoom = zoom + ((zoomTarget + zoomTargetOffset) - zoom) * zoomSpeed * dt;
         var scale = zoom;
+
+        zoomFadeDelay -= dt;
+        if (zoomFadeDelay < 0) zoomFadePercent = Math.min(1, zoomFadePercent + dt);
+        zoomFadeColor = new Color(zoomFadePercent);
 
         transformWeather = Matrix.IDENTITY;
         transformWeather = transformWeather.mul(Matrix.createTranslation(new Vector3(-cameraX, 0, 0)));
@@ -332,6 +338,8 @@ function init_plants()
 function reset_game()
 {
     uiFade = 0;
+    zoomFadeDelay = 3;
+    zoomFadePercent = 0;
     saveLoadTypes.forEach(function(type) {
         var resetFunction = global[toUnderScoreFromPascalCase(type).toLowerCase() + "_reset_data"];
         if (typeof resetFunction === "function")

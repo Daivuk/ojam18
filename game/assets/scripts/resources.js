@@ -22,23 +22,28 @@ var ResourcesDataSaveProperties = [
 
 function resources_render()
 {
-    var resourcesBasePosition = new Vector2(10, 45);
-    
+    var invP = 1 - zoomFadePercent;
+    invP *= invP;
+
+    var resourcesBasePosition = new Vector2(10 - invP * 30, 45);
+
+    var patate = new Color(0, 0, 0, zoomFadeColor.a * 0.5);
+
     if (ResourcesData.seeds > 0)
     {
         var seedsSpritePosition = new Vector2(resourcesBasePosition.x + ResourcesData.seedsBounceAnim.get() * 8, resourcesBasePosition.y);
-        SpriteBatch.drawInclinedRect(null, new Rect(0, seedsSpritePosition.y - 8, 38, 16), -0.3, new Color(0, 0, 0, .5));
-        SpriteBatch.drawSpriteAnim(ResourcesConstants.seedSprite, seedsSpritePosition);
-        SpriteBatch.drawPrettyOutlinedText(font, "" + ResourcesData.seeds, new Vector2(seedsSpritePosition.x + 10, seedsSpritePosition.y), Vector2.LEFT, Color.WHITE,
-            new Color(0, 0, 0, .5), 1);
+        SpriteBatch.drawInclinedRect(null, new Rect(-invP * 30, seedsSpritePosition.y - 8, 38, 16), -0.3, patate);
+        SpriteBatch.drawSpriteAnim(ResourcesConstants.seedSprite, seedsSpritePosition, zoomFadeColor);
+        SpriteBatch.drawPrettyOutlinedText(font, "" + ResourcesData.seeds, new Vector2(seedsSpritePosition.x + 10, seedsSpritePosition.y), Vector2.LEFT, zoomFadeColor,
+            patate, 1);
     }
 
     if (ResourcesData.biomass > 0)
     {
         var biomassSpritePosition = new Vector2(resourcesBasePosition.x + ResourcesData.biomassBounceAnim.get() * 8, resourcesBasePosition.y + 20);
-        SpriteBatch.drawInclinedRect(null, new Rect(0, biomassSpritePosition.y - 8, 38, 16), -0.3, new Color(0, 0, 0, .5));
-        SpriteBatch.drawSpriteAnim(ResourcesConstants.biomassSprite, biomassSpritePosition);
-        SpriteBatch.drawPrettyOutlinedText(font, "" + ResourcesData.biomass, new Vector2(biomassSpritePosition.x + 10, biomassSpritePosition.y), Vector2.LEFT, Color.WHITE,
-            new Color(0, 0, 0, .5), 1);
+        SpriteBatch.drawInclinedRect(null, new Rect(-invP * 30, biomassSpritePosition.y - 8, 38, 16), -0.3, patate);
+        SpriteBatch.drawSpriteAnim(ResourcesConstants.biomassSprite, biomassSpritePosition, zoomFadeColor);
+        SpriteBatch.drawPrettyOutlinedText(font, "" + ResourcesData.biomass, new Vector2(biomassSpritePosition.x + 10, biomassSpritePosition.y), Vector2.LEFT, zoomFadeColor,
+            patate, 1);
     }
 }

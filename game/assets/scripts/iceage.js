@@ -39,14 +39,16 @@ function iceage_update(dt)
 
 function iceage_render()
 {
-    var xRenderPos = resolution.x - 32 * 2 - 2;
+    var invP = 1 - zoomFadePercent;
+    invP *= invP;
+    var xRenderPos = resolution.x - 32 * 2 - 2 + invP * 30;
     var yRenderPos = 50;
     var renderWidth = 56 - 2;
 
-    SpriteBatch.drawSprite(iceageTexture, new Vector2(xRenderPos, yRenderPos), Color.WHITE, 0, 2, Vector2.LEFT);
+    SpriteBatch.drawSprite(iceageTexture, new Vector2(xRenderPos, yRenderPos), zoomFadeColor, 0, 2, Vector2.LEFT);
 
     var percent = (IceageData.daysToIceage / IceageData.startingDaysToIceage);
-    SpriteBatch.drawRect(null, new Rect(4 + xRenderPos + (renderWidth - (renderWidth * percent)), yRenderPos - 4, 2.0, 10.0), Color.WHITE);
+    SpriteBatch.drawRect(null, new Rect(4 + xRenderPos + (renderWidth - (renderWidth * percent)), yRenderPos - 4, 2.0, 10.0), zoomFadeColor);
 
-    SpriteBatch.drawPrettyOutlinedText(font, "" + IceageData.seedsNeeded, new Vector2(xRenderPos + 30, yRenderPos - 19), Vector2.TOP_LEFT, Color.WHITE, new Color(0, 0, 0, .5), 1);
+    SpriteBatch.drawPrettyOutlinedText(font, "" + IceageData.seedsNeeded, new Vector2(xRenderPos + 30, yRenderPos - 19), Vector2.TOP_LEFT, zoomFadeColor, new Color(0, 0, 0, .5), 1);
 }

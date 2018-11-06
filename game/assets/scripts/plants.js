@@ -471,10 +471,12 @@ function plants_render()
 
         if(!PlantData.plants[i].dead)
         {
+            var invP = 1 - zoomFadePercent;
+            invP *= invP;
             SpriteBatch.drawSpriteAnim(PlantData.plants[i].waterBar, 
-                new Vector2(PlantData.plants[i].position, 0), Color.WHITE, 0, 0.75);
+                new Vector2(PlantData.plants[i].position, invP * 30), zoomFadeColor, 0, 0.6);
             SpriteBatch.drawSpriteAnim(PlantData.plants[i].sunBar, 
-                new Vector2(PlantData.plants[i].position, 0), Color.WHITE, 0, 0.75);
+                new Vector2(PlantData.plants[i].position, invP * 30), zoomFadeColor, 0, 0.6);
             // SpriteBatch.drawText(font, "" + Math.floor(PlantData.plants[i].water), new Vector2(PlantData.plants[i].position, -32));
             // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 8, -PlantData.plants[i].water / 10, 2, PlantData.plants[i].water / 10), new Color(0, 0, 1, 1));
             // SpriteBatch.drawRect(null, new Rect(PlantData.plants[i].position - 11, -PlantData.plants[i].sun / 10, 2, PlantData.plants[i].sun / 10), new Color(0, 1, 0, 1));

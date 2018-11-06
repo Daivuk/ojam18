@@ -60,10 +60,12 @@ function day_update(dtSeconds)
 function day_render()
 {
     var arrowPosition = new Vector2(resolution.x / 3, 3);
-    SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition);
+    SpriteBatch.drawSpriteAnim(dayArrow, arrowPosition, zoomFadeColor);
+    var invP = 1 - zoomFadePercent;
+    invP *= invP;
 
     var weatherPositionShift = DayConstants.weatherIconSize.x * (DayData.currentTimeSeconds / DayConstants.secondsPerDay);
-    var weatherPosition = new Vector2(arrowPosition.x - weatherPositionShift, arrowPosition.y + DayConstants.dayArrowSize.y + 2);
+    var weatherPosition = new Vector2(arrowPosition.x - weatherPositionShift, arrowPosition.y + DayConstants.dayArrowSize.y + 2 - invP * 30);
     DayData.weatherUIPosition = weatherPosition;
 
     var color = new Color(.75, .75, .75, 1);
@@ -73,25 +75,25 @@ function day_render()
         var percent = 1 - i / WeatherData.activeWeathers.length;
         var weather = WeatherData.weathers[WeatherData.activeWeathers[i]];
         if (i == WeatherData.activeWeathers.length - 1)
-            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition.add(incomingCardAnim.get()), color.mul(percent));
+            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition.add(incomingCardAnim.get()), color.mul(percent * zoomFadePercent));
         else
-            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition, color.mul(percent));
+            SpriteBatch.drawSpriteAnim(weather.sprite, weatherPosition, color.mul(percent * zoomFadePercent));
         weatherPosition.x += DayConstants.weatherIconSize.x;
     };
 
     if (droppingCard.weather)
     {
-        SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get(), color.mul(droppingCard.alphaAnim.get()));
+        SpriteBatch.drawSpriteAnim(droppingCard.weather.sprite, droppingCard.anim.get(), color.mul(droppingCard.alphaAnim.get() * zoomFadePercent));
     }
 
     if (DayData.timeScaleFactor >= DayConstants.timeScaleFactorDefault * 8)
     {
-        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2 - 6, 30));
-        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2 + 6, 30));
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2 - 6, 30), zoomFadeColor);
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2 + 6, 30), zoomFadeColor);
     }
     else if (DayData.timeScaleFactor >= DayConstants.timeScaleFactorDefault * 4)
     {
-        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2, 30));
+        SpriteBatch.drawSpriteAnim(DayConstants.fastForwardSprite, new Vector2(resolution.x / 2, 30), zoomFadeColor);
     }
 }
 
