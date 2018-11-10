@@ -94,7 +94,7 @@ function info_screen_render()
     SpriteBatch.drawSpriteAnim(InfoScreenConstants.snowySprite, new Vector2(xPosIcon, yPosition), new Color(uiFade));
     SpriteBatch.drawText(font, "Snowy day. Provides some sun, no water.", new Vector2(XPosText, yPosition + 3), Vector2.TOP_LEFT, textColor);
     yPosition += 20;
-    SpriteBatch.drawSprite(InfoScreenConstants.iceageTexture, new Vector2(xPosIcon + 16, yPosition + 10), Vector2.TOP_LEFT, new Color(uiFade));
+    SpriteBatch.drawSprite(InfoScreenConstants.iceageTexture, new Vector2(xPosIcon + 16, yPosition + 10), new Color(uiFade));
     SpriteBatch.drawText(font, "Ice age meter.", new Vector2(XPosText + 7, yPosition + 8), Vector2.TOP_LEFT, textColor);
     yPosition += 23;
     SpriteBatch.drawText(font, "Displays the time before the next ice age.", new Vector2(XPosText + 7, yPosition), Vector2.TOP_LEFT, textColor);
