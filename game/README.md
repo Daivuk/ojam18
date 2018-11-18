@@ -1,4 +1,4 @@
-# GAME NAME GOES HERE
+# Fertile Ground
 Game made for the Ottawa Game Jam 2018
 
 ## Credits
